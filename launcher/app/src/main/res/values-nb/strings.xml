@@ -114,4 +114,21 @@
     <string name="clock_format_system">System</string>
     <string name="clock_format_12">12 timer</string>
     <string name="clock_format_24">24 timer</string>
+    <string name="tile_netflix_button">Tilordne til Netflix-knappen</string>
+    <string name="season_name_spring">Vår</string>
+    <string name="season_name_summer">Sommer</string>
+    <string name="season_name_autumn">Høst</string>
+    <string name="season_name_winter">Vinter</string>
+    <string name="season_name_new_year">Nyttår</string>
+    <string name="season_name_lunar_new_year">Kinesisk nyttår</string>
+    <string name="season_name_valentine">Valentinsdagen</string>
+    <string name="season_name_halloween">Halloween</string>
+    <string name="season_name_christmas">Jul</string>
+    <string name="season_menu_view">Vis bakgrunn</string>
+    <string name="season_menu_auto">Bytt tema etter dato</string>
+    <string name="season_menu_theme">Tema</string>
+    <string name="season_menu_errors">Problemer i temapakken</string>
+    <string name="sleep_timer">Innsovningstidsur</string>
+    <string name="sleep_minutes">%1$d min</string>
+    <string name="sleep_warning">TV-en slår seg av om 1 minutt</string>
 </resources>

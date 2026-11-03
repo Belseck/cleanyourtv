@@ -1,0 +1,21 @@
+{
+  "name": {
+    "en": "Lunar New Year",
+    "es": "Año Nuevo Lunar"
+  },
+  "name_res": "season_name_lunar_new_year",
+  "background_opacity": 35,
+  "particles": {
+    "kind": "confetti",
+    "colors": [
+      "#D7191C",
+      "#E63946",
+      "#FFD166",
+      "#F4B400"
+    ],
+    "count": 60
+  },
+  "tiles": {
+    "ornament": "lantern"
+  }
+}

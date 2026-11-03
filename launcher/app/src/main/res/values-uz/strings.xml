@@ -114,4 +114,21 @@
     <string name="clock_format_system">Tizim</string>
     <string name="clock_format_12">12 soatlik</string>
     <string name="clock_format_24">24 soatlik</string>
+    <string name="tile_netflix_button">Netflix tugmasiga biriktirish</string>
+    <string name="season_name_spring">Bahor</string>
+    <string name="season_name_summer">Yoz</string>
+    <string name="season_name_autumn">Kuz</string>
+    <string name="season_name_winter">Qish</string>
+    <string name="season_name_new_year">Yangi yil</string>
+    <string name="season_name_lunar_new_year">Oy yangi yili</string>
+    <string name="season_name_valentine">Sevishganlar kuni</string>
+    <string name="season_name_halloween">Halloween</string>
+    <string name="season_name_christmas">Rojdestvo</string>
+    <string name="season_menu_view">Fonni ko\'rish</string>
+    <string name="season_menu_auto">Mavzuni sana bo\'yicha almashtirish</string>
+    <string name="season_menu_theme">Mavzu</string>
+    <string name="season_menu_errors">Mavzular to‘plamidagi muammolar</string>
+    <string name="sleep_timer">Uyqu taymeri</string>
+    <string name="sleep_minutes">%1$d daq</string>
+    <string name="sleep_warning">Televizor 1 daqiqadan so‘ng o‘chadi</string>
 </resources>

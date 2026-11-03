@@ -97,4 +97,21 @@
     <string name="clock_format_system">Sistem</string>
     <string name="clock_format_12">12 saat</string>
     <string name="clock_format_24">24 saat</string>
+    <string name="tile_netflix_button">Netflix düğmesine ata</string>
+    <string name="season_name_spring">İlkbahar</string>
+    <string name="season_name_summer">Yaz</string>
+    <string name="season_name_autumn">Sonbahar</string>
+    <string name="season_name_winter">Kış</string>
+    <string name="season_name_new_year">Yılbaşı</string>
+    <string name="season_name_lunar_new_year">Ay Yeni Yılı</string>
+    <string name="season_name_valentine">Sevgililer Günü</string>
+    <string name="season_name_halloween">Cadılar Bayramı</string>
+    <string name="season_name_christmas">Noel</string>
+    <string name="season_menu_view">Arka planı gör</string>
+    <string name="season_menu_auto">Temayı tarihe göre değiştir</string>
+    <string name="season_menu_theme">Tema</string>
+    <string name="season_menu_errors">Tema paketinde sorunlar</string>
+    <string name="sleep_timer">Uyku zamanlayıcısı</string>
+    <string name="sleep_minutes">%1$d dk</string>
+    <string name="sleep_warning">TV 1 dakika içinde kapanacak</string>
 </resources>

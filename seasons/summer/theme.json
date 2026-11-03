@@ -1,0 +1,22 @@
+{
+  "name": {
+    "en": "Summer",
+    "es": "Verano"
+  },
+  "name_res": "season_name_summer",
+  "background_opacity": 35,
+  "particles": {
+    "kind": "image",
+    "colors": [
+      "#FFF3C4",
+      "#FFE08A",
+      "#FFFFFF",
+      "#FFD27A"
+    ],
+    "count": 36
+  },
+  "tiles": {
+    "ornament": "image",
+    "corner": "top-right"
+  }
+}

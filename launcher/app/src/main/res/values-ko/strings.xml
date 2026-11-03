@@ -151,4 +151,21 @@
     <string name="clock_format_system">시스템</string>
     <string name="clock_format_12">12시간</string>
     <string name="clock_format_24">24시간</string>
+    <string name="tile_netflix_button">Netflix 버튼에 지정</string>
+    <string name="season_name_spring">봄</string>
+    <string name="season_name_summer">여름</string>
+    <string name="season_name_autumn">가을</string>
+    <string name="season_name_winter">겨울</string>
+    <string name="season_name_new_year">새해</string>
+    <string name="season_name_lunar_new_year">설날</string>
+    <string name="season_name_valentine">발렌타인데이</string>
+    <string name="season_name_halloween">할로윈</string>
+    <string name="season_name_christmas">크리스마스</string>
+    <string name="season_menu_view">배경 보기</string>
+    <string name="season_menu_auto">날짜에 따라 테마 변경</string>
+    <string name="season_menu_theme">테마</string>
+    <string name="season_menu_errors">테마 팩 문제</string>
+    <string name="sleep_timer">취침 타이머</string>
+    <string name="sleep_minutes">%1$d분</string>
+    <string name="sleep_warning">1분 후 TV가 꺼집니다</string>
 </resources>

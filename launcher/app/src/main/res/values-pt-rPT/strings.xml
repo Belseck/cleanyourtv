@@ -14,4 +14,21 @@
     <string name="clock_format_system">System</string>
     <string name="clock_format_12">12-hour</string>
     <string name="clock_format_24">24-hour</string>
+    <string name="tile_netflix_button">Atribuir ao botão Netflix</string>
+    <string name="season_name_spring">Primavera</string>
+    <string name="season_name_summer">Verão</string>
+    <string name="season_name_autumn">Outono</string>
+    <string name="season_name_winter">Inverno</string>
+    <string name="season_name_new_year">Ano Novo</string>
+    <string name="season_name_lunar_new_year">Ano Novo Lunar</string>
+    <string name="season_name_valentine">Dia dos Namorados</string>
+    <string name="season_name_halloween">Halloween</string>
+    <string name="season_name_christmas">Natal</string>
+    <string name="season_menu_view">Ver fundo</string>
+    <string name="season_menu_auto">Mudar tema por data</string>
+    <string name="season_menu_theme">Tema</string>
+    <string name="season_menu_errors">Problemas no pacote de temas</string>
+    <string name="sleep_timer">Temporizador para desligar</string>
+    <string name="sleep_minutes">%1$d min</string>
+    <string name="sleep_warning">A TV desliga-se dentro de 1 minuto</string>
 </resources>

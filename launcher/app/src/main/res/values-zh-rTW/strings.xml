@@ -97,4 +97,21 @@
     <string name="clock_format_system">系統</string>
     <string name="clock_format_12">12 小時制</string>
     <string name="clock_format_24">24 小時制</string>
+    <string name="tile_netflix_button">指派給 Netflix 按鈕</string>
+    <string name="season_name_spring">春季</string>
+    <string name="season_name_summer">夏季</string>
+    <string name="season_name_autumn">秋季</string>
+    <string name="season_name_winter">冬季</string>
+    <string name="season_name_new_year">新年</string>
+    <string name="season_name_lunar_new_year">農曆新年</string>
+    <string name="season_name_valentine">情人節</string>
+    <string name="season_name_halloween">萬聖節</string>
+    <string name="season_name_christmas">聖誕節</string>
+    <string name="season_menu_view">檢視背景</string>
+    <string name="season_menu_auto">依日期切換主題</string>
+    <string name="season_menu_theme">主題</string>
+    <string name="season_menu_errors">主題包問題</string>
+    <string name="sleep_timer">睡眠定時器</string>
+    <string name="sleep_minutes">%1$d 分鐘</string>
+    <string name="sleep_warning">電視將在 1 分鐘後關閉</string>
 </resources>

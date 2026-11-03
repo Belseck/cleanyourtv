@@ -1,0 +1,76 @@
+{
+  "seasons": [
+    {
+      "folder": "new-year",
+      "dates": {
+        "from": "12-31",
+        "to": "01-02"
+      },
+      "priority": 10
+    },
+    {
+      "folder": "lunar-new-year",
+      "dates": {
+        "rule": "lunar-new-year",
+        "days": 3
+      },
+      "priority": 10
+    },
+    {
+      "folder": "valentine",
+      "dates": {
+        "from": "02-14",
+        "to": "02-14"
+      },
+      "priority": 11
+    },
+    {
+      "folder": "halloween",
+      "dates": {
+        "from": "10-01",
+        "to": "10-31"
+      },
+      "priority": 10
+    },
+    {
+      "folder": "christmas",
+      "dates": {
+        "from": "12-01",
+        "to": "12-30"
+      },
+      "priority": 10
+    },
+    {
+      "folder": "spring",
+      "dates": {
+        "from": "03-20",
+        "to": "06-20"
+      },
+      "priority": 0
+    },
+    {
+      "folder": "summer",
+      "dates": {
+        "from": "06-21",
+        "to": "09-22"
+      },
+      "priority": 0
+    },
+    {
+      "folder": "autumn",
+      "dates": {
+        "from": "09-23",
+        "to": "12-20"
+      },
+      "priority": 0
+    },
+    {
+      "folder": "winter",
+      "dates": {
+        "from": "12-21",
+        "to": "03-19"
+      },
+      "priority": 0
+    }
+  ]
+}

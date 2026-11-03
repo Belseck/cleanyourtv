@@ -115,4 +115,21 @@
     <string name="clock_format_system">Järjestelmä</string>
     <string name="clock_format_12">12 tuntia</string>
     <string name="clock_format_24">24 tuntia</string>
+    <string name="tile_netflix_button">Määritä Netflix-painikkeelle</string>
+    <string name="season_name_spring">Kevät</string>
+    <string name="season_name_summer">Kesä</string>
+    <string name="season_name_autumn">Syksy</string>
+    <string name="season_name_winter">Talvi</string>
+    <string name="season_name_new_year">Uusi vuosi</string>
+    <string name="season_name_lunar_new_year">Kuun uusi vuosi</string>
+    <string name="season_name_valentine">Ystävänpäivä</string>
+    <string name="season_name_halloween">Halloween</string>
+    <string name="season_name_christmas">Joulu</string>
+    <string name="season_menu_view">Näytä tausta</string>
+    <string name="season_menu_auto">Vaihda teema päivämäärän mukaan</string>
+    <string name="season_menu_theme">Teema</string>
+    <string name="season_menu_errors">Teemapaketin ongelmat</string>
+    <string name="sleep_timer">Uniajastin</string>
+    <string name="sleep_minutes">%1$d min</string>
+    <string name="sleep_warning">Televisio sammuu 1 minuutin kuluttua</string>
 </resources>

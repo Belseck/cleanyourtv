@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Crescent moon with a small star, for the sleep timer. Tinted by the pill's text colour. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="22dp" android:height="22dp"
+    android:viewportWidth="24" android:viewportHeight="24">
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M12.3,3.1A7.5,7.5 0,1 0,20.9 13.4A6.2,6.2 0,0 1,12.3 3.1ZM18,3L18.6,4.6L20.2,5.2L18.6,5.8L18,7.4L17.4,5.8L15.8,5.2L17.4,4.6Z" />
+</vector>

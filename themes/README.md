@@ -187,6 +187,7 @@ A new key needs one there in the same pull request.
 | `cinematic_white_focus` | bool | With `cinematic_home`, the focus highlight stays white on the dock instead of taking the focused app's colour (`false` by default); `app_glow` still colours every tile |
 | `cinematic_scrim` | 0 to 100 | With `cinematic_home`, the strength of the dark scrim behind the shelf's name (`100` by default); lower lets a wallpaper show through |
 | `cinematic_art` | 0 to 100 | With `cinematic_home`, the opacity of the focused app's softened artwork (`50` by default); `0` leaves the wallpaper uncovered |
+| `seasonal_calendar` | bool, config.xml only | This fork: seasonal looks by date, from the season pack in `/sdcard/TVHome/seasons/` or the built-in one (particles on Home, a tile ornament, themed top-bar icons, a background, a sparkle button to pick a theme). `true` in this fork's config.xml; format in [docs/seasons.md](../docs/seasons.md) |
 | `dock_even_padding` | bool | The dock band's padding equals the gap between its tiles on all four sides, as far as the grid's edges leave room (`false` by default) |
 | `dock_glass` | bool | The dock band as light frosted glass like the top bar's pills (`false` by default); suits `sky_intensity` or a wallpaper, where the solid band reads as a dark slab |
 | `dock_band` | bool | Draw the dock band and its edge (`true` by default); `false` leaves the tiles floating on the wallpaper with no band, border or dark slab |

@@ -115,4 +115,21 @@
     <string name="clock_format_system">Systeem</string>
     <string name="clock_format_12">12-uurs</string>
     <string name="clock_format_24">24-uurs</string>
+    <string name="tile_netflix_button">Toewijzen aan Netflix-knop</string>
+    <string name="season_name_spring">Lente</string>
+    <string name="season_name_summer">Zomer</string>
+    <string name="season_name_autumn">Herfst</string>
+    <string name="season_name_winter">Winter</string>
+    <string name="season_name_new_year">Nieuwjaar</string>
+    <string name="season_name_lunar_new_year">Chinees nieuwjaar</string>
+    <string name="season_name_valentine">Valentijnsdag</string>
+    <string name="season_name_halloween">Halloween</string>
+    <string name="season_name_christmas">Kerstmis</string>
+    <string name="season_menu_view">Achtergrond bekijken</string>
+    <string name="season_menu_auto">Thema wijzigen op datum</string>
+    <string name="season_menu_theme">Thema</string>
+    <string name="season_menu_errors">Problemen in het themapakket</string>
+    <string name="sleep_timer">Slaaptimer</string>
+    <string name="sleep_minutes">%1$d min</string>
+    <string name="sleep_warning">De tv gaat over 1 minuut uit</string>
 </resources>

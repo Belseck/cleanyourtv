@@ -1,0 +1,22 @@
+{
+  "name": {
+    "en": "Christmas",
+    "es": "Navidad"
+  },
+  "name_res": "season_name_christmas",
+  "background_opacity": 35,
+  "particles": {
+    "kind": "image",
+    "colors": [
+      "#FFFFFF",
+      "#F2F8FF",
+      "#DCEBFF"
+    ],
+    "count": 100,
+    "seconds": 7
+  },
+  "tiles": {
+    "ornament": "image",
+    "corner": "top"
+  }
+}

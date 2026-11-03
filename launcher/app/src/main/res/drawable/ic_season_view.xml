@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Three sparkles, for the button that shows the season's background on its own. Tinted by the pill's text colour. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="22dp" android:height="22dp"
+    android:viewportWidth="24" android:viewportHeight="24">
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M10,3L11.6,8.4L17,10L11.6,11.6L10,17L8.4,11.6L3,10L8.4,8.4ZM18,13L18.8,15.2L21,16L18.8,16.8L18,19L17.2,16.8L15,16L17.2,15.2ZM17,2L17.6,3.4L19,4L17.6,4.6L17,6L16.4,4.6L15,4L16.4,3.4Z" />
+</vector>

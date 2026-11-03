@@ -1,0 +1,24 @@
+{
+  "name": {
+    "en": "New Year",
+    "es": "Año Nuevo"
+  },
+  "name_res": "season_name_new_year",
+  "background_opacity": 35,
+  "particles": {
+    "kind": "confetti",
+    "colors": [
+      "#FF3B30",
+      "#FFCC00",
+      "#34C759",
+      "#0A84FF",
+      "#BF5AF2",
+      "#FF9F0A",
+      "#FF2D92"
+    ],
+    "count": 70
+  },
+  "tiles": {
+    "ornament": "sparkles"
+  }
+}

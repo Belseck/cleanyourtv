@@ -126,4 +126,21 @@
     <string name="clock_format_system">Hệ thống</string>
     <string name="clock_format_12">12 giờ</string>
     <string name="clock_format_24">24 giờ</string>
+    <string name="tile_netflix_button">Gán cho nút Netflix</string>
+    <string name="season_name_spring">Mùa xuân</string>
+    <string name="season_name_summer">Mùa hè</string>
+    <string name="season_name_autumn">Mùa thu</string>
+    <string name="season_name_winter">Mùa đông</string>
+    <string name="season_name_new_year">Năm mới</string>
+    <string name="season_name_lunar_new_year">Tết Nguyên Đán</string>
+    <string name="season_name_valentine">Lễ Tình nhân</string>
+    <string name="season_name_halloween">Halloween</string>
+    <string name="season_name_christmas">Giáng sinh</string>
+    <string name="season_menu_view">Xem hình nền</string>
+    <string name="season_menu_auto">Đổi giao diện theo ngày</string>
+    <string name="season_menu_theme">Giao diện</string>
+    <string name="season_menu_errors">Lỗi trong gói giao diện</string>
+    <string name="sleep_timer">Hẹn giờ tắt</string>
+    <string name="sleep_minutes">%1$d phút</string>
+    <string name="sleep_warning">TV sẽ tắt sau 1 phút</string>
 </resources>

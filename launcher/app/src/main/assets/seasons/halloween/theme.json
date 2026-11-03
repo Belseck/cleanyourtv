@@ -1,0 +1,16 @@
+{
+  "name": {
+    "en": "Halloween",
+    "es": "Halloween"
+  },
+  "name_res": "season_name_halloween",
+  "background_opacity": 35,
+  "accent": "#FF7A1A",
+  "skin": "halloween",
+  "particles": {
+    "kind": "bats"
+  },
+  "tiles": {
+    "ornament": "cobweb"
+  }
+}

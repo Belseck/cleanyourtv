@@ -152,4 +152,21 @@
     <string name="clock_format_system">מערכת</string>
     <string name="clock_format_12">12 שעות</string>
     <string name="clock_format_24">24 שעות</string>
+    <string name="tile_netflix_button">הקצה ללחצן Netflix</string>
+    <string name="season_name_spring">אביב</string>
+    <string name="season_name_summer">קיץ</string>
+    <string name="season_name_autumn">סתיו</string>
+    <string name="season_name_winter">חורף</string>
+    <string name="season_name_new_year">ראש השנה האזרחית</string>
+    <string name="season_name_lunar_new_year">ראש השנה הסיני</string>
+    <string name="season_name_valentine">יום האהבה</string>
+    <string name="season_name_halloween">האלווין</string>
+    <string name="season_name_christmas">חג המולד</string>
+    <string name="season_menu_view">הצג רקע</string>
+    <string name="season_menu_auto">החלפת ערכת נושא לפי תאריך</string>
+    <string name="season_menu_theme">ערכת נושא</string>
+    <string name="season_menu_errors">בעיות בחבילת ערכות הנושא</string>
+    <string name="sleep_timer">טיימר שינה</string>
+    <string name="sleep_minutes">%1$d דק׳</string>
+    <string name="sleep_warning">הטלוויזיה תיכבה בעוד דקה</string>
 </resources>

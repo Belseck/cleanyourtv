@@ -2,6 +2,36 @@
   <a href="https://cleanyour.tv"><img src="https://raw.githubusercontent.com/Gathin23/cleanyourtv/main/docs/banner.png" alt="CleanYourTV. Your TV, minus the ads. Strip the bloatware from any Android TV or Google TV over Wi-Fi and replace the ad-filled home screen with a clean launcher that looks like an Apple TV. No root, no cable, nothing uninstalled, and a one-line restore." width="800"></a>
 </p>
 
+> [!NOTE]
+> **This is a fork of [Gathin23/cleanyourtv](https://github.com/Gathin23/cleanyourtv)** with seasonal looks
+> and a sleep timer added to the launcher. Everything else is the upstream project, described below.
+>
+> - **Seasonal themes by date.** Particles on Home (snow, petals, leaves, hearts, confetti, sparks or your own
+>   PNGs), an ornament on every tile, themed top-bar icons, an accent colour and a background that can rotate. A
+>   built-in pack covers the four seasons, New Year, Lunar New Year, Valentine's Day, Halloween and Christmas. Your
+>   own pack in `/sdcard/TVHome/seasons/` replaces it: fixed dates, nth weekday, Easter offsets or Lunar New Year,
+>   with priorities. A sparkle button in the top bar picks a theme or follows the dates. See
+>   [docs/seasons.md](docs/seasons.md) and the example pack in [`seasons/`](seasons/), pushed with
+>   `tools/season.sh`.
+> - **Day and night backgrounds**, from optional `background/day/` and `background/night/` folders, switched at
+>   sunrise and sunset.
+> - **Theme pack problems** in the theme menu: a mistake in a pack is shown on the TV instead of being skipped
+>   in silence.
+> - **Sleep timer.** A moon pill in the top bar: 1, 10, 20, 30, 60, 90, 120, 180 or 240 minutes, a notice one
+>   minute before, then standby. With HDMI-CEC on (SIMPLINK, Anynet+, BRAVIA Sync…) the TV switches off with
+>   the box.
+> - **Assign to Netflix button**, in a tile's hold-OK menu: the remote's Netflix key opens that app instead.
+>
+> The sleep timer and the Netflix button need the key helper, and the pack needs file access. Install with:
+>
+> ```
+> (cd launcher && HOME_KEY_SERVICE=1 ./build-and-install.sh)
+> tools/venv/bin/python -I tools/tv.py 'appops set com.gathin.tvhome MANAGE_EXTERNAL_STORAGE allow'
+> ```
+>
+> This fork adds the `MANAGE_EXTERNAL_STORAGE` permission and builds an APK above upstream's 576 KB gate, which is
+> why it lives in its own repository. Tested on a Chromecast with Google TV 4K (Google TV 14) with an LG TV.
+
 <p align="center">
   Read in: <a href="README.zh-CN.md">简体中文</a> · <a href="README.zh-TW.md">正體中文</a> · <a href="README.vi.md">Tiếng Việt</a> · <a href="README.ja.md">日本語</a> · <a href="README.it.md">Italiano</a> · <a href="README.nl.md">Nederlands</a> · <a href="README.de.md">Deutsch</a> · <a href="README.uk.md">Українська</a> · <a href="README.tr.md">Türkçe</a>
 </p>
@@ -203,6 +233,7 @@ tools/theme.sh themes/aurora                                 # push a theme; --r
 | [`tools/philips-api.py`](tools/philips-api.py) | Philips only: checks that the JointSpace control API Home Assistant uses still answers, before and after a debloat (`tools/venv/bin/python -I tools/philips-api.py <tv ip>`). Port 1926 over HTTPS first, then 1925; reads only what answers without pairing. |
 | [`tools/privacy.py`](tools/privacy.py) | Audits the TV for voice, ACR and telemetry candidates and prints the evidence for each; `--write` turns the findings into a list `disable.sh` and `restore.sh` already understand. |
 | [`tools/theme.sh`](tools/theme.sh), [`theme_restart.py`](tools/theme_restart.py) | Push a folder from [`themes/`](themes/) to the launcher and restart Home. |
+| [`tools/season.sh`](tools/season.sh) | This fork: check a season pack (`--check`), push it to `/sdcard/TVHome/seasons/`, or remove it (`--reset`). Format in [docs/seasons.md](docs/seasons.md). |
 | [`tools/manage.py`](tools/manage.py) | List every add-on, theme and switch with its screenshot, see what is on the TV, and install, update or remove one by running its creator's own script. |
 | [`tools/bench.py`](tools/bench.py) | Measures the launcher that answers HOME: key latency, how far the focus moved, janky frames, cold start, return to Home, and the idle CPU and PSS it costs. Changes nothing on the TV and writes the raw per-key numbers to JSON; no extra install. |
 | [`tools/trace.py`](tools/trace.py), [`trace_report.py`](tools/trace_report.py) | Records Perfetto traces of the launcher (return to Home, cold start, D-pad) and reports where its time goes, per run and before against after. Optional: needs [`requirements-perf.txt`](tools/requirements-perf.txt). [Guide](tools/trace.md). |

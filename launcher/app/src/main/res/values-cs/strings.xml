@@ -112,4 +112,21 @@
     <string name="clock_format_system">Systém</string>
     <string name="clock_format_12">12hodinové</string>
     <string name="clock_format_24">24hodinové</string>
+    <string name="tile_netflix_button">Přiřadit tlačítku Netflix</string>
+    <string name="season_name_spring">Jaro</string>
+    <string name="season_name_summer">Léto</string>
+    <string name="season_name_autumn">Podzim</string>
+    <string name="season_name_winter">Zima</string>
+    <string name="season_name_new_year">Nový rok</string>
+    <string name="season_name_lunar_new_year">Lunární Nový rok</string>
+    <string name="season_name_valentine">Valentýn</string>
+    <string name="season_name_halloween">Halloween</string>
+    <string name="season_name_christmas">Vánoce</string>
+    <string name="season_menu_view">Zobrazit pozadí</string>
+    <string name="season_menu_auto">Měnit motiv podle data</string>
+    <string name="season_menu_theme">Motiv</string>
+    <string name="season_menu_errors">Problémy v balíčku motivů</string>
+    <string name="sleep_timer">Časovač vypnutí</string>
+    <string name="sleep_minutes">%1$d min</string>
+    <string name="sleep_warning">Televize se vypne za 1 minutu</string>
 </resources>

@@ -112,4 +112,21 @@
     <string name="clock_format_system">Sistema</string>
     <string name="clock_format_12">12 hores</string>
     <string name="clock_format_24">24 hores</string>
+    <string name="tile_netflix_button">Assigna al botó de Netflix</string>
+    <string name="season_name_spring">Primavera</string>
+    <string name="season_name_summer">Estiu</string>
+    <string name="season_name_autumn">Tardor</string>
+    <string name="season_name_winter">Hivern</string>
+    <string name="season_name_new_year">Any Nou</string>
+    <string name="season_name_lunar_new_year">Any Nou Lunar</string>
+    <string name="season_name_valentine">Sant Valentí</string>
+    <string name="season_name_halloween">Halloween</string>
+    <string name="season_name_christmas">Nadal</string>
+    <string name="season_menu_view">Mostra el fons</string>
+    <string name="season_menu_auto">Canvia el tema per data</string>
+    <string name="season_menu_theme">Tema</string>
+    <string name="season_menu_errors">Problemes al paquet de temes</string>
+    <string name="sleep_timer">Temporitzador d\'apagada</string>
+    <string name="sleep_minutes">%1$d min</string>
+    <string name="sleep_warning">El televisor s\'apaga d\'aquí a 1 minut</string>
 </resources>

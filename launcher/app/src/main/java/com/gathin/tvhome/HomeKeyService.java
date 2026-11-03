@@ -60,6 +60,10 @@ public class HomeKeyService extends AccessibilityService {
     /** consume_volume_keys: Volume Up/Down go to VolumeKeys instead of on to the firmware. */
     private boolean consumeVolumeKeys;
     /** app_keys, the same maps InputKeyService reads, for setups that run only this service. */
+    /** Google TV remotes send their Netflix button as KEYCODE_BUTTON_4 (191). */
+    static final int NETFLIX_KEY = KeyEvent.KEYCODE_BUTTON_4;
+    /** Settings key holding the package the Netflix button opens, set from a tile's hold-OK menu. */
+    static final String NETFLIX_BUTTON_APP = "netflix_button_app";
     private Map<Integer, String> appKeys = Collections.emptyMap();
     private Map<Integer, String> appScancodes = Collections.emptyMap();
     private Map<Integer, String> holdAppKeys = Collections.emptyMap();
@@ -138,6 +142,7 @@ public class HomeKeyService extends AccessibilityService {
     @Override
     public void onDestroy() {
         if (running == this) running = null;
+        sleepHandler.removeCallbacksAndMessages(null);
         RemoteKeys.release(this);
         stopWaitingForUnlock();
         if (screenOnReceiver != null) unregisterReceiver(screenOnReceiver);
@@ -276,8 +281,13 @@ public class HomeKeyService extends AccessibilityService {
             }
             return true;
         }
-        if (RemoteKeys.handle(this, event, inFront(appKeys, frontAppKeys, event.getKeyCode()),
-                holdAppKeys.get(event.getKeyCode()))) return true;
+        String target = inFront(appKeys, frontAppKeys, event.getKeyCode());
+        // The app picked from a tile's hold-OK menu wins over app_keys for the Netflix button.
+        if (event.getKeyCode() == NETFLIX_KEY) {
+            String picked = getSharedPreferences(Config.SETTINGS_NAME, MODE_PRIVATE).getString(NETFLIX_BUTTON_APP, "");
+            if (!picked.isEmpty()) target = picked;
+        }
+        if (RemoteKeys.handle(this, event, target, holdAppKeys.get(event.getKeyCode()))) return true;
         // home_long_press_home: Android never sees the Home key, so a held press cannot turn into ALL_APPS.
         if (homeLongPressHome && event.getKeyCode() == KeyEvent.KEYCODE_HOME) {
             if (event.getAction() == KeyEvent.ACTION_UP && !event.isCanceled()) openHome();
@@ -365,6 +375,57 @@ public class HomeKeyService extends AccessibilityService {
     static void openPowerMenu() {
         HomeKeyService service = running;
         if (service != null) service.performGlobalAction(GLOBAL_ACTION_POWER_DIALOG);
+    }
+
+    // ---- sleep timer -------------------------------------------------------------------------------
+
+    /** One minute before standby a notice says so, over whatever app is in front. */
+    static final long SLEEP_WARNING_MS = 60_000;
+    /** A step this late means the box slept meanwhile (the handler counts uptime) and has just been woken. */
+    private static final long SLEEP_STALE_MS = 2 * 60_000;
+    /** Wall-clock end of the sleep timer, 0 when it is off. */
+    private long sleepAt;
+    private final Handler sleepHandler = new Handler(Looper.getMainLooper());
+    private final Runnable sleepWarning = this::sleepWarning;
+    private final Runnable sleepNow = this::sleepNow;
+
+    /** The timer lives here, not in Home, so it keeps running while another app is in front. */
+    static boolean canSleep() {
+        return running != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P;
+    }
+
+    /** Wall-clock end of the sleep timer, 0 when it is off. */
+    static long sleepTimerEnd() {
+        HomeKeyService service = running;
+        return service == null ? 0 : service.sleepAt;
+    }
+
+    /** Starts the sleep timer for {@code minutes}, or stops it with 0. */
+    static void setSleepTimer(int minutes) {
+        HomeKeyService service = running;
+        if (service == null) return;
+        service.sleepHandler.removeCallbacksAndMessages(null);
+        long ms = Math.max(0, minutes) * 60_000L;
+        service.sleepAt = ms == 0 ? 0 : System.currentTimeMillis() + ms;
+        if (ms == 0) return;
+        service.sleepHandler.postDelayed(service.sleepWarning, Math.max(0, ms - SLEEP_WARNING_MS));
+        service.sleepHandler.postDelayed(service.sleepNow, ms);
+    }
+
+    private boolean sleepStepDue(long due) {
+        return Math.abs(System.currentTimeMillis() - due) < SLEEP_STALE_MS
+                && getSystemService(PowerManager.class).isInteractive();
+    }
+
+    private void sleepWarning() {
+        if (sleepStepDue(sleepAt - SLEEP_WARNING_MS)) Toast.makeText(this, R.string.sleep_warning, Toast.LENGTH_LONG).show();
+    }
+
+    private void sleepNow() {
+        boolean due = sleepStepDue(sleepAt);
+        sleepAt = 0;
+        // Standby, as the remote's power button: with HDMI-CEC on, the box switches the TV off with it.
+        if (due && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN);
     }
 
     static boolean powerOnRedirect(String liveTv, CharSequence pkg, long now, long armedUntil) {

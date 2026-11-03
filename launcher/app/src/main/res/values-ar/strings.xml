@@ -101,4 +101,21 @@
     <string name="clock_format_system">النظام</string>
     <string name="clock_format_12">12 ساعة</string>
     <string name="clock_format_24">24 ساعة</string>
+    <string name="tile_netflix_button">تعيين لزر Netflix</string>
+    <string name="season_name_spring">الربيع</string>
+    <string name="season_name_summer">الصيف</string>
+    <string name="season_name_autumn">الخريف</string>
+    <string name="season_name_winter">الشتاء</string>
+    <string name="season_name_new_year">رأس السنة</string>
+    <string name="season_name_lunar_new_year">رأس السنة القمرية</string>
+    <string name="season_name_valentine">عيد الحب</string>
+    <string name="season_name_halloween">الهالوين</string>
+    <string name="season_name_christmas">عيد الميلاد</string>
+    <string name="season_menu_view">عرض الخلفية</string>
+    <string name="season_menu_auto">تغيير السمة حسب التاريخ</string>
+    <string name="season_menu_theme">السمة</string>
+    <string name="season_menu_errors">مشكلات في حزمة السمات</string>
+    <string name="sleep_timer">مؤقت النوم</string>
+    <string name="sleep_minutes">%1$d د</string>
+    <string name="sleep_warning">سيتم إيقاف التلفاز خلال دقيقة واحدة</string>
 </resources>

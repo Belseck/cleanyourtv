@@ -1,0 +1,23 @@
+{
+  "name": {
+    "en": "Autumn",
+    "es": "Otoño"
+  },
+  "name_res": "season_name_autumn",
+  "background_opacity": 35,
+  "particles": {
+    "kind": "image",
+    "colors": [
+      "#D2691E",
+      "#E08A1E",
+      "#B23A1B",
+      "#E6B422",
+      "#8C4A1A"
+    ],
+    "count": 36
+  },
+  "tiles": {
+    "ornament": "image",
+    "corner": "top-right"
+  }
+}

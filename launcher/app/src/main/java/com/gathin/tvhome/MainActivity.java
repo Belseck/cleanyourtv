@@ -273,6 +273,18 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     private int greetingColor;
     /** The day the petal shower last played, so it greets the first Home of each day only. */
     private static LocalDate lastPetalShower;
+    /** config.xml seasonal_calendar: today's season from the season pack, or null when off or none is due. */
+    private SeasonPack.Season season;
+    /** The pack's own particle picture, decoded on the first shower that needs it. */
+    private Bitmap[] particleSprites;
+    /** seasonFolderStamp() when Home was built, to rebuild after files are copied into the pack folder. */
+    private String seasonStamp = "";
+    /** The season's background view, kept visible while the showcase hides everything else. */
+    private View seasonArtView;
+    /** The showcase (btnSeason): Home's UI faded out to show the season's background, with each view's alpha. */
+    private final Map<View, Float> showcaseHidden = new java.util.LinkedHashMap<>();
+    private SeasonShowerView seasonShower;
+    private final Runnable seasonShowerTask = this::playSeasonShower;
     /** boot_to_live_tv: open the Live TV app on the first Home of each boot. */
     private boolean bootToLiveTv;
     /** open_on_start_choice: the app picked in Launcher settings may open on the first Home of each boot. */
@@ -342,6 +354,11 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     /** fill_dock false: how many dock slots held an app when reorder mode started. */
     private int dockedAtStart;
     private View btnReorder;
+    private View btnSeason;
+    private TextView btnSleep;
+    private final Runnable sleepPillTick = this::refreshSleepPill;
+    /** The theme folder's Wi-Fi picture, which the network updates dim instead of replacing; null when none. */
+    private Drawable themedWifiIcon;
     /** dock_apps as loaded (config.xml or a theme): a saved Order only applies while these are unchanged. */
     private List<String> dockApps;
     /** fill_dock false: the dock can have empty slots, which reorder mode leaves out and restores afterwards. */
@@ -480,6 +497,14 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         focusOvershoot = cfg.focusOvershoot;
         festival = cfg.festival;
         festive = festival.active(LocalDate.now());
+        season = seasonToday();
+        if (season != null) seasonStamp = seasonFolderStamp();
+        // October borrows the built-in Halloween skin (pumpkin, bat, ghost, bats), unless a theme set a festival.
+        if (season != null && Festival.HALLOWEEN.equals(season.skin) && !festive) {
+            // Until today: tomorrow's resume rebuilds Home and the calendar decides again (a preview works too).
+            festival = Festival.parse(Festival.HALLOWEEN, LocalDate.now().toString(), "", "");
+            festive = festival.active(LocalDate.now());
+        }
         liveTvPkg = cfg.liveTvPackage;
         idleClockMs = cfg.homeIdleClockMinutes * MINUTE_MS;
         backOpensClock = cfg.backOpensClock;
@@ -542,7 +567,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         greetingColor = greeting.getCurrentTextColor();
         if (!cfg.showGreeting) greeting.setVisibility(View.GONE);
         // Keep the other header layouts as designed: their extra lines change the block's centre.
-        if (!cfg.showGreeting && !cfg.dateBelowClock && !cfg.shamsiDate && !cfg.lunarDate
+        if (!cfg.showGreeting && !cfg.dateBelowClock && !cfg.shamsiDate && !cfg.lunarDate && season == null
                 && !cfg.topMenu && !getResources().getBoolean(R.bool.rtl_menu_bar)) {
             centerCompactHeader();
         }
@@ -588,6 +613,11 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         lunar = cfg.lunarDate;
         lunarOffset = Lunar.offsetFor(cfg.lunarUtcOffset, Locale.getDefault());
         if (lunar) lunarDate.setVisibility(View.VISIBLE);
+        if (season != null) {
+            TextView seasonName = findViewById(R.id.seasonName);
+            seasonName.setText(seasonName(season));
+            seasonName.setVisibility(View.VISIBLE);
+        }
         greetingName = cfg.greetingName;
         if (cfg.dateBelowClock) moveDateBelowClock();
         if (cfg.dateBelowClock && cfg.iconOnlyButtons && !cfg.topMenu
@@ -690,6 +720,12 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
                     AnimationUtils.loadAnimation(this, R.anim.tile_enter), 0.06f));
         }
         adapter = new AppAdapter(this, this, COLUMNS, cfg);
+        if (season != null) {
+            adapter.setSeasonDecor(season.ornament, season.ornamentColors, seasonBitmap(season.folder + "/ornament.png", 256),
+                    season.ornamentCorner);
+            if (!festive && season.accent != 0) glass.setAccent(season.accent);
+        }
+        addSeasonArt();
         dockApps = cfg.dockApps;
         fillDockLeavesSlots = !cfg.fillDock;
         Order savedOrder = Order.load(Order.file(this));
@@ -843,6 +879,16 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             libraryFromTopBar = true;   // closing it goes back to this button, not to the pill after the last row
         });
         btnLibraryTop.setVisibility(cfg.libraryButton && cfg.appLibrary ? View.VISIBLE : View.GONE);
+        btnSeason = findViewById(R.id.btnSeason);
+        // Shown whenever the calendar is on, even with no theme in force, so the theme menu can turn one back on.
+        if (getResources().getBoolean(R.bool.seasonal_calendar) && !cfg.topMenu) {
+            btnSeason.setContentDescription(getString(R.string.season_menu_theme));
+            btnSeason.setOnClickListener(v -> showSeasonMenu());
+            btnSeason.setVisibility(View.VISIBLE);
+        }
+        btnSleep = findViewById(R.id.btnSleep);
+        btnSleep.setContentDescription(getString(R.string.sleep_timer));
+        btnSleep.setOnClickListener(v -> showSleepMenu());
         addTopBarApps(cfg.topBarApps, cfg.launchActions);
         iconOnlyButtons = cfg.iconOnlyButtons;
         topMenu = cfg.topMenu;
@@ -913,9 +959,12 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         btnSettings.setOnKeyListener(pillKeys);
         btnReorder.setOnKeyListener(pillKeys);
         btnLibraryTop.setOnKeyListener(pillKeys);
+        btnSeason.setOnKeyListener(pillKeys);
+        btnSleep.setOnKeyListener(pillKeys);
         for (View button : topAppButtons) button.setOnKeyListener(pillKeys);
         if (advancedEffects) {
-            List<View> pills = new ArrayList<>(Arrays.asList(btnInputs, btnWifi, btnVpn, btnReorder, btnLibraryTop, btnSettings));
+            List<View> pills = new ArrayList<>(Arrays.asList(btnInputs, btnWifi, btnSeason, btnSleep, btnVpn, btnReorder,
+                    btnLibraryTop, btnSettings));
             pills.addAll(topAppButtons);
             for (View button : pills) {
                 button.setOnFocusChangeListener((view, focused) -> view.animate()
@@ -924,6 +973,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             }
         }
         if (festive) applyFestiveSkin((TextView) btnInputs, (TextView) btnSettings);
+        else if (season != null) applySeasonIcons();
 
         // Hide the glass when focus leaves the tiles.
         getWindow().getDecorView().getViewTreeObserver().addOnGlobalFocusChangeListener((oldF, newF) -> {
@@ -1084,7 +1134,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         super.onResume();
         resumed = true;
         // A festival that started or ended while Home was in the background: rebuild with or without it.
-        if (festive != festival.active(LocalDate.now())) {
+        if (festive != festival.active(LocalDate.now()) || !seasonId(season).equals(seasonId(seasonToday()))
+                || (season != null && !seasonStamp.equals(seasonFolderStamp()))) {
             recreate();
             return;
         }
@@ -1136,11 +1187,446 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         if (festive && lamp != null) {
             lamp.start();
             LocalDate today = LocalDate.now();
-            if (!reducedMotion && !today.equals(lastPetalShower)) {
+            // With the seasonal calendar, its own shower (bats included) plays on every arrival instead.
+            if (!reducedMotion && season == null && !today.equals(lastPetalShower)) {
                 lastPetalShower = today;
                 handler.postDelayed(this::playPetalShower, 450);
             }
         }
+        // Every arrival at Home, unlike the festival's once-a-day shower.
+        if (season != null && !reducedMotion && animations) {
+            handler.postDelayed(seasonShowerTask, 450);
+        }
+        scheduleSeasonBackground();
+        refreshSleepPill();
+    }
+
+    /** Folder in the launcher's external files where tools/season.sh puts a season pack. */
+    private static final String SEASON_DIR = "seasons";
+
+    /**
+     * Today's season from the pack (seasons/seasons.json pushed by tools/season.sh, else the built-in
+     * assets/seasons/), or null with seasonal_calendar off or nothing due today. A file named season_preview
+     * holding a season id forces that one, for testing a pack.
+     */
+    private SeasonPack.Season seasonToday() {
+        if (!getResources().getBoolean(R.bool.seasonal_calendar)) return null;
+        SeasonPack pack = seasonPack();
+        java.io.File dir = getExternalFilesDir(null);
+        String preview = dir == null ? "" : readSmallFile(new java.io.File(dir, "season_preview")).trim();
+        if (!preview.isEmpty()) {
+            for (SeasonPack.Season s : pack.seasons) if (s.id.equals(preview)) return s;
+        }
+        SharedPreferences prefs = getSharedPreferences(Config.SETTINGS_NAME, MODE_PRIVATE);
+        if (prefs.getBoolean(SEASON_AUTO, true)) return pack.resolve(LocalDate.now());
+        // Change by date off: the theme picked in the theme menu, or none.
+        String fixed = prefs.getString(SEASON_FIXED, "");
+        for (SeasonPack.Season s : pack.seasons) if (s.id.equals(fixed)) return s;
+        return null;
+    }
+
+    /**
+     * Where the season pack lives: /sdcard/TVHome/seasons when it holds a seasons.json and All files access is
+     * granted, so a file manager on the TV can change it without developer options; else the app's own folder
+     * that tools/season.sh used to fill. Null when neither can be reached.
+     */
+    private java.io.File seasonFolder() {
+        java.io.File shared = new java.io.File(Environment.getExternalStorageDirectory(), "TVHome/seasons");
+        // Below Android 11 there is no All files access: those sets keep the app's own folder.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && Environment.isExternalStorageManager()
+                && new java.io.File(shared, "seasons.json").isFile()) return shared;
+        java.io.File dir = getExternalFilesDir(null);
+        return dir == null ? null : new java.io.File(dir, SEASON_DIR);
+    }
+
+    /** Changes when any file of the pack folder is added, removed or replaced, so Home rebuilds with it. */
+    private String seasonFolderStamp() {
+        java.io.File folder = seasonFolder();
+        java.io.File[] files = folder == null ? null : folder.listFiles();
+        long sum = 0;
+        // Two levels: seasons.json and each theme folder's files.
+        if (files != null) for (java.io.File f : files) {
+            sum += f.getName().hashCode() * 31L + f.lastModified() + f.length();
+            java.io.File[] inner = f.isDirectory() ? f.listFiles() : null;
+            if (inner != null) for (java.io.File g : inner) sum += g.getName().hashCode() * 17L + g.lastModified() + g.length();
+        }
+        return (folder == null ? "" : folder.getPath()) + ":" + sum;
+    }
+
+    /** What was wrong in the pushed pack the last time it was read, for the theme menu. */
+    private java.util.List<String> seasonErrors = java.util.Collections.emptyList();
+
+    /** The pushed pack when it holds at least one valid season, else the built-in one; errors go to logcat. */
+    private SeasonPack seasonPack() {
+        java.io.File folder = seasonFolder();
+        String pushed = folder == null ? "" : readSmallFile(new java.io.File(folder, "seasons.json"));
+        seasonErrors = java.util.Collections.emptyList();
+        if (!pushed.isEmpty()) {
+            SeasonPack pack = SeasonPack.parse(pushed, f -> readSmallFile(new java.io.File(folder, f + "/theme.json")));
+            for (String e : pack.errors) android.util.Log.w("TvHomeSeasons", e);
+            seasonErrors = pack.errors;
+            if (!pack.seasons.isEmpty()) return pack;
+        }
+        // The built-in pack has the same layout under assets/seasons/, without pictures.
+        return SeasonPack.parse(readAsset("seasons/seasons.json"), f -> readAsset("seasons/" + f + "/theme.json"));
+    }
+
+    /** A text asset, or "" when it is missing. */
+    private String readAsset(String path) {
+        try (java.io.InputStream in = getAssets().open(path)) {
+            java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
+            byte[] buf = new byte[8192];
+            for (int n; (n = in.read(buf)) > 0; ) out.write(buf, 0, n);
+            return out.toString("UTF-8");
+        } catch (java.io.IOException e) {
+            return "";
+        }
+    }
+
+    /** A text file of at most 256 KB, or "" when it is missing, unreadable or larger. */
+    private static String readSmallFile(java.io.File f) {
+        if (f == null || !f.isFile() || f.length() > 256 * 1024) return "";
+        try {
+            return new String(java.nio.file.Files.readAllBytes(f.toPath()), java.nio.charset.StandardCharsets.UTF_8);
+        } catch (java.io.IOException e) {
+            return "";
+        }
+    }
+
+    private static String seasonId(SeasonPack.Season s) {
+        return s == null ? "" : s.id;
+    }
+
+    /** The season's name: its built-in translated string when it names one, else the pack's own names. */
+    private String seasonName(SeasonPack.Season s) {
+        int res = s.nameRes.isEmpty() ? 0 : getResources().getIdentifier(s.nameRes, "string", getPackageName());
+        return res != 0 ? getString(res) : SeasonPack.localizedName(s.names, Locale.getDefault());
+    }
+
+    /**
+     * A picture from the pack folder, downscaled on decode so its longest side is at most {@code maxSide} px.
+     * JPEGs decode as RGB_565; a PNG with transparency keeps its alpha (BitmapFactory falls back to ARGB_8888).
+     */
+    private Bitmap seasonBitmap(String name, int maxSide) {
+        if (name == null || name.isEmpty()) return null;
+        java.io.File folder = seasonFolder();
+        return folder == null ? null : seasonBitmap(new java.io.File(folder, name), maxSide);
+    }
+
+    private static Bitmap seasonBitmap(java.io.File f, int maxSide) {
+        if (!f.isFile() || f.length() > 4L * 1024 * 1024) return null;
+        android.graphics.BitmapFactory.Options o = new android.graphics.BitmapFactory.Options();
+        o.inJustDecodeBounds = true;
+        android.graphics.BitmapFactory.decodeFile(f.getPath(), o);
+        if (o.outWidth <= 0 || o.outHeight <= 0) return null;
+        int sample = 1;
+        while (Math.max(o.outWidth, o.outHeight) / (sample * 2) >= maxSide) sample *= 2;
+        o = new android.graphics.BitmapFactory.Options();
+        o.inSampleSize = sample;
+        o.inPreferredConfig = Bitmap.Config.RGB_565;
+        Bitmap b = android.graphics.BitmapFactory.decodeFile(f.getPath(), o);
+        if (b == null) return null;
+        int longest = Math.max(b.getWidth(), b.getHeight());
+        if (longest <= maxSide) return b;
+        float k = maxSide / (float) longest;
+        Bitmap scaled = Bitmap.createScaledBitmap(b, Math.max(1, Math.round(b.getWidth() * k)),
+                Math.max(1, Math.round(b.getHeight() * k)), true);
+        if (scaled != b) b.recycle();
+        return scaled;
+    }
+
+    /** Pictures of a theme subfolder (particles/, background/) with the given extensions, in file-name order. */
+    private java.util.List<java.io.File> seasonFiles(String sub, int max, String... extensions) {
+        java.util.List<java.io.File> out = new ArrayList<>();
+        java.io.File folder = seasonFolder();
+        java.io.File[] files = folder == null || season == null ? null
+                : new java.io.File(folder, season.folder + "/" + sub).listFiles();
+        if (files == null) return out;
+        Arrays.sort(files);
+        for (java.io.File f : files) {
+            String n = f.getName().toLowerCase(Locale.ROOT);
+            for (String e : extensions) if (f.isFile() && n.endsWith(e)) { out.add(f); break; }
+            if (out.size() >= max) break;
+        }
+        return out;
+    }
+
+    /** Share of the picture's width (left edge) and height (bottom edge) that fades out into the background. */
+    private static final float SEASON_ART_FADE = 0.35f;
+    /** Marks the season's background views, which the showcase keeps on screen. */
+    private static final Object SEASON_ART_TAG = new Object();
+    /** background/ pictures for the rotation (empty: a single background.png or .jpg) and the one on screen. */
+    private java.util.List<java.io.File> seasonBackgrounds = new ArrayList<>();
+    private int seasonBackgroundIndex;
+    private final Runnable seasonBackgroundTick = this::nextSeasonBackground;
+    private java.util.concurrent.ExecutorService seasonDecoder;
+
+    /**
+     * {@code art} scaled to fit the screen keeping its aspect ratio, with its left and bottom edges faded to
+     * transparent, so it melts into whatever is behind it. Baked once per picture: no frame pays for the fade.
+     */
+    private static Bitmap fadeSeasonArt(Bitmap art, int screenW, int screenH) {
+        float k = Math.min(screenW / (float) art.getWidth(), screenH / (float) art.getHeight());
+        int w = Math.max(1, Math.round(art.getWidth() * k)), h = Math.max(1, Math.round(art.getHeight() * k));
+        Bitmap faded = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(faded);
+        c.drawBitmap(art, null, new Rect(0, 0, w, h), new Paint(Paint.FILTER_BITMAP_FLAG));
+        art.recycle();
+        Paint mask = new Paint();
+        mask.setXfermode(new android.graphics.PorterDuffXfermode(android.graphics.PorterDuff.Mode.DST_IN));
+        // Two alpha ramps multiplied in: transparent at the left edge and at the bottom edge, opaque inside.
+        mask.setShader(new LinearGradient(0, 0, w * SEASON_ART_FADE, 0, 0x00000000, 0xFF000000, Shader.TileMode.CLAMP));
+        c.drawRect(0, 0, w, h, mask);
+        mask.setShader(new LinearGradient(0, h, 0, h * (1 - SEASON_ART_FADE), 0x00000000, 0xFF000000, Shader.TileMode.CLAMP));
+        c.drawRect(0, 0, w, h, mask);
+        return faded;
+    }
+
+    /** A faded picture as a background view, top-right, over the glow and under the shelf's scrim. */
+    private ImageView addSeasonArtView(Bitmap faded) {
+        ImageView view = new ImageView(this);
+        view.setScaleType(ImageView.ScaleType.FIT_XY);
+        view.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+        view.setImageBitmap(faded);
+        view.setImageAlpha(season.backgroundOpacity * 255 / 100);   // drawable alpha: no offscreen layer
+        view.setTag(SEASON_ART_TAG);
+        View scrim = findViewById(R.id.heroScrim);
+        int at = scrim == null ? 0 : root.indexOfChild(scrim);
+        root.addView(view, Math.max(0, at), new FrameLayout.LayoutParams(faded.getWidth(), faded.getHeight(),
+                Gravity.TOP | Gravity.END));
+        return view;
+    }
+
+    private static final String[] SEASON_PICTURES = {".jpg", ".jpeg", ".png"};
+    /** The theme has background/day or background/night pictures, and which of the two is in force. */
+    private boolean seasonDayparts;
+    private String seasonDaypartNow = "";
+    private final Runnable seasonDaypartTick = this::scheduleSeasonBackground;
+
+    /** "day" between sunrise and sunset at config.xml's latitude and longitude (fixed hours when unset), else "night". */
+    private String seasonDaypart() {
+        int[] sun = seasonSun();
+        int minute = java.time.LocalTime.now().toSecondOfDay() / 60;
+        return minute >= sun[0] && minute < sun[1] ? "day" : "night";
+    }
+
+    private int[] seasonSun() {
+        return WallpaperMood.sun(LocalDate.now(), getString(R.string.latitude), getString(R.string.longitude),
+                java.time.ZoneId.systemDefault());
+    }
+
+    /** Time until the next sunrise or sunset, a few seconds past it, so the check after it sees the change. */
+    private long msToNextDaypart() {
+        int[] sun = seasonSun();
+        int second = java.time.LocalTime.now().toSecondOfDay();
+        int next = second < sun[0] * 60 ? sun[0] * 60 : second < sun[1] * 60 ? sun[1] * 60 : 86400 + sun[0] * 60;
+        return Math.max(30, next - second + 5) * 1000L;
+    }
+
+    /**
+     * The pictures in force: background/day or background/night for the time of day when that folder has any,
+     * else background/, else background.png or .jpg alone.
+     */
+    private java.util.List<java.io.File> seasonBackgroundFiles() {
+        java.util.List<java.io.File> files = seasonDayparts
+                ? seasonFiles("background/" + seasonDaypartNow, 30, SEASON_PICTURES) : new ArrayList<>();
+        if (files.isEmpty()) files = seasonFiles("background", 30, SEASON_PICTURES);
+        java.io.File folder = seasonFolder();
+        if (files.isEmpty() && folder != null) {
+            for (String name : new String[]{"background.png", "background.jpg"}) {
+                java.io.File f = new java.io.File(folder, season.folder + "/" + name);
+                if (f.isFile()) {
+                    files.add(f);
+                    break;
+                }
+            }
+        }
+        return files;
+    }
+
+    private int firstSeasonBackground() {
+        return "shuffle".equals(season.backgroundOrder) ? new java.util.Random().nextInt(seasonBackgrounds.size()) : 0;
+    }
+
+    /**
+     * The season's background: the background/ pictures in rotation when that folder holds any (order and interval
+     * from theme.json), else background.png or .jpg; background/day and background/night take over at their time
+     * of day when the theme has them. Any size works: fitted to the screen top-right, edges faded.
+     * A missing picture leaves Home as it was.
+     */
+    private void addSeasonArt() {
+        if (season == null) return;
+        android.util.DisplayMetrics dm = getResources().getDisplayMetrics();
+        int screenW = dm.widthPixels, screenH = dm.heightPixels;
+        seasonDayparts = !seasonFiles("background/day", 1, SEASON_PICTURES).isEmpty()
+                || !seasonFiles("background/night", 1, SEASON_PICTURES).isEmpty();
+        seasonDaypartNow = seasonDaypart();
+        seasonBackgrounds = seasonBackgroundFiles();
+        if (seasonBackgrounds.isEmpty()) return;
+        seasonBackgroundIndex = firstSeasonBackground();
+        Bitmap art = seasonBitmap(seasonBackgrounds.get(seasonBackgroundIndex), Math.max(screenW, screenH));
+        if (art == null) return;
+        seasonArtView = addSeasonArtView(fadeSeasonArt(art, screenW, screenH));
+    }
+
+    /**
+     * While Home is in front: arms the next background change (two or more pictures) and, with day or night
+     * pictures, the next sunrise or sunset; switches to the other set now if its time came while Home was away.
+     */
+    private void scheduleSeasonBackground() {
+        handler.removeCallbacks(seasonBackgroundTick);
+        handler.removeCallbacks(seasonDaypartTick);
+        if (season == null || !resumed) return;
+        if (seasonDayparts && !seasonDaypart().equals(seasonDaypartNow)) {
+            seasonDaypartNow = seasonDaypart();
+            seasonBackgrounds = seasonBackgroundFiles();
+            if (!seasonBackgrounds.isEmpty()) {
+                showSeasonBackground(firstSeasonBackground());   // schedules again once it is on screen
+                return;
+            }
+        }
+        if (seasonBackgrounds.size() > 1) handler.postDelayed(seasonBackgroundTick, season.backgroundInterval * 1000L);
+        if (seasonDayparts) handler.postDelayed(seasonDaypartTick, msToNextDaypart());
+    }
+
+    private void nextSeasonBackground() {
+        if (season == null || seasonBackgrounds.size() < 2 || !resumed) return;
+        int n = seasonBackgrounds.size(), next;
+        if ("shuffle".equals(season.backgroundOrder)) {
+            next = new java.util.Random().nextInt(n - 1);
+            if (next >= seasonBackgroundIndex) next++;   // never the same picture twice in a row
+        } else {
+            next = (seasonBackgroundIndex + 1) % n;
+        }
+        showSeasonBackground(next);
+    }
+
+    /** Decodes picture {@code chosen} off the main thread, then cross-fades it over the current one. */
+    private void showSeasonBackground(int chosen) {
+        final java.io.File file = seasonBackgrounds.get(chosen);
+        android.util.DisplayMetrics dm = getResources().getDisplayMetrics();
+        final int screenW = dm.widthPixels, screenH = dm.heightPixels;
+        if (seasonDecoder == null) seasonDecoder = java.util.concurrent.Executors.newSingleThreadExecutor();
+        seasonDecoder.execute(() -> {
+            Bitmap art = seasonBitmap(file, Math.max(screenW, screenH));
+            Bitmap faded = art == null ? null : fadeSeasonArt(art, screenW, screenH);
+            handler.post(() -> {
+                if (isDestroyed() || season == null) {
+                    if (faded != null) faded.recycle();
+                    return;
+                }
+                seasonBackgroundIndex = chosen;   // also when unreadable: skip it next time round
+                if (faded != null) {
+                    View old = seasonArtView;
+                    ImageView fresh = addSeasonArtView(faded);
+                    fresh.setAlpha(0f);
+                    seasonArtView = fresh;
+                    fresh.animate().alpha(1f).setDuration(reducedMotion ? Motion.REDUCED_MS : 1200)
+                            .withEndAction(() -> {
+                                if (old != null) root.removeView(old);
+                            }).start();
+                }
+                scheduleSeasonBackground();
+            });
+        });
+    }
+
+    /** Whether a root child stays on screen in the showcase: the season's background and its particles only. */
+    private boolean isBackdrop(View v) {
+        return v.getTag() == SEASON_ART_TAG
+                || v instanceof SeasonShowerView || v instanceof PetalShowerView || v instanceof BatFlightView;
+    }
+
+    /** Fades out everything but the background and replays the season's shower; any key brings Home back. */
+    private void enterShowcase() {
+        if (!showcaseHidden.isEmpty()) return;
+        for (int i = 0; i < root.getChildCount(); i++) {
+            View v = root.getChildAt(i);
+            if (isBackdrop(v) || v.getVisibility() != View.VISIBLE) continue;
+            showcaseHidden.put(v, v.getAlpha());
+            v.animate().alpha(0f).setDuration(reducedMotion ? Motion.REDUCED_MS : 350).start();
+        }
+        handler.removeCallbacks(seasonShowerTask);
+        handler.postDelayed(seasonShowerTask, 300);
+        // Nothing left to compete with: the picture at full strength while the showcase lasts.
+        fadeSeasonArtAlpha(255);
+    }
+
+    private void fadeSeasonArtAlpha(int target) {
+        if (!(seasonArtView instanceof ImageView) || season == null) return;
+        ImageView art = (ImageView) seasonArtView;
+        ValueAnimator a = ValueAnimator.ofInt(art.getImageAlpha(), target);
+        a.setDuration(reducedMotion ? Motion.REDUCED_MS : 450);
+        a.addUpdateListener(v -> art.setImageAlpha((int) v.getAnimatedValue()));
+        a.start();
+    }
+
+    private void exitShowcase(boolean animate) {
+        if (!showcaseHidden.isEmpty() && seasonArtView instanceof ImageView && season != null) {
+            if (animate) fadeSeasonArtAlpha(season.backgroundOpacity * 255 / 100);
+            else ((ImageView) seasonArtView).setImageAlpha(season.backgroundOpacity * 255 / 100);
+        }
+        for (Map.Entry<View, Float> e : showcaseHidden.entrySet()) {
+            View v = e.getKey();
+            v.animate().cancel();
+            if (animate) v.animate().alpha(e.getValue()).setDuration(reducedMotion ? Motion.REDUCED_MS : 250).start();
+            else v.setAlpha(e.getValue());
+        }
+        showcaseHidden.clear();
+    }
+
+    private void playSeasonShower() {
+        if (isFinishing() || isDestroyed() || !resumed || season == null) return;
+        String kindName = season.particles;
+        if ("bats".equals(kindName)) {
+            BatFlightView bats = new BatFlightView(this);
+            root.addView(bats, new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            bats.play(season.particleCount > 0 ? season.particleCount : 26,
+                    season.particleSeconds > 0 ? season.particleSeconds * 1000L : 4500, () -> root.removeView(bats));
+            return;
+        }
+        if ("marigold".equals(kindName)) {
+            // Cempasuchil petals: the marigold shower built for Diwali is the right flower.
+            PetalShowerView petals = new PetalShowerView(this);
+            root.addView(petals, new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            petals.play(season.particleCount > 0 ? season.particleCount : 55,
+                    season.particleSeconds > 0 ? season.particleSeconds * 1000L : 5000, () -> root.removeView(petals));
+            return;
+        }
+        int kind = SeasonShowerView.kindOf(kindName);
+        boolean image = "image".equals(kindName);
+        if (kind < 0 && !image) return;
+        if (seasonShower != null && seasonShower.isPlaying()) return;
+        if (seasonShower == null) {
+            seasonShower = new SeasonShowerView(this);
+            root.addView(seasonShower, new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        }
+        long ms = season.particleSeconds > 0 ? season.particleSeconds * 1000L
+                : image ? 6000 : SeasonShowerView.durationMs(kind);
+        if (image) {
+            if (particleSprites == null) {
+                List<Bitmap> loaded = new ArrayList<>();
+                for (java.io.File f : seasonFiles("particles", 12, ".png")) {
+                    Bitmap b = seasonBitmap(f, 128);
+                    if (b != null) loaded.add(b);
+                }
+                if (loaded.isEmpty()) {
+                    Bitmap single = seasonBitmap(season.folder + "/particle.png", 128);
+                    if (single != null) loaded.add(single);
+                }
+                particleSprites = loaded.toArray(new Bitmap[0]);
+            }
+            if (particleSprites.length > 0) {
+                seasonShower.playImages(particleSprites, season.particleCount > 0 ? season.particleCount : 40, ms, null);
+            }
+            return;
+        }
+        int[] colors = season.particleColors.length > 0 ? season.particleColors : SeasonShowerView.palette(kind);
+        seasonShower.play(kind, colors, season.particleCount > 0 ? season.particleCount : SeasonShowerView.count(kind),
+                ms, null);
     }
 
     /** Launcher settings' change count (Config.SETTINGS_REVISION_KEY); onResume rebuilds Home when it moved. */
@@ -1303,6 +1789,11 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         // Only Home's own share is dropped: a key service that saw the same DOWN keeps its hold.
         RemoteKeys.release(this);
         cancelHoldOk();
+        handler.removeCallbacks(seasonShowerTask);
+        handler.removeCallbacks(seasonBackgroundTick);
+        handler.removeCallbacks(seasonDaypartTick);
+        handler.removeCallbacks(sleepPillTick);
+        exitShowcase(false);
         root.removeCallbacks(showIdleClock);
         endReorder();   // Home or another app while reordering keeps the order so far
         wallpaperPlayer.stop();
@@ -1372,6 +1863,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (seasonDecoder != null) seasonDecoder.shutdownNow();
         RemoteKeys.release(this);
         cancelHoldOk();
         if (gameDay != null) gameDay.shutdown();
@@ -1419,6 +1911,11 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
      */
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
+        // In the showcase every key belongs to it: the press that ends it must not also move focus or open an app.
+        if (!showcaseHidden.isEmpty()) {
+            if (event.getAction() == KeyEvent.ACTION_UP) exitShowcase(true);
+            return true;
+        }
         // Vendor keys (TCL Netflix button, 4062) never reach the key services, only the focused window, so their
         // "hold:" entries run here too or nowhere. Only while resumed: onPause releases Home's holds, and a DOWN
         // taken after that would arm one nothing releases.
@@ -2995,6 +3492,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             if (online && flame == 0) flame = 3;   // online some other way (cellular, USB tethering)
             lamp.setSteady(steady);
             lamp.setFlame(flame);
+        } else if (themedWifiIcon != null) {
+            themedWifiIcon.setAlpha(online ? 255 : 110);   // the theme's own picture dims while offline
         } else {
             if (icon != wifiIcon) {
                 wifiIcon = icon;
@@ -3076,6 +3575,34 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         setFestiveIcon(settings, marigold);
         addFocusAction(inputs, bell::ring);
         addFocusAction(settings, marigold::turn);
+    }
+
+    /**
+     * The theme folder's icon-wifi.png, icon-theme.png and icon-settings.png in place of the plain pill icons, each
+     * one only when the folder has it. Like the festive icons they keep their own colours instead of the focus tint.
+     */
+    private void applySeasonIcons() {
+        themedWifiIcon = seasonIcon("icon-wifi.png");
+        if (themedWifiIcon != null) setSeasonIcon(btnWifi, themedWifiIcon);
+        Drawable theme = seasonIcon("icon-theme.png");
+        if (theme != null) setSeasonIcon((TextView) btnSeason, theme);
+        Drawable settings = seasonIcon("icon-settings.png");
+        if (settings != null) setSeasonIcon((TextView) findViewById(R.id.btnSettings), settings);
+    }
+
+    private Drawable seasonIcon(String file) {
+        int px = Math.round(22 * density);
+        Bitmap b = seasonBitmap(season.folder + "/" + file, px * 3);
+        if (b == null) return null;
+        BitmapDrawable d = new BitmapDrawable(getResources(), b);
+        d.setFilterBitmap(true);
+        d.setBounds(0, 0, px, px);
+        return d;
+    }
+
+    private static void setSeasonIcon(TextView pill, Drawable icon) {
+        pill.setCompoundDrawableTintList(null);
+        pill.setCompoundDrawablesRelative(icon, null, null, null);
     }
 
     private static void setFestiveIcon(TextView pill, Drawable icon) {
@@ -3683,6 +4210,156 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         rows.getChildAt(0).requestFocus();
     }
 
+    /** Launcher settings keys of the theme menu: follow the calendar, and the season shown when it does not. */
+    private static final String SEASON_AUTO = "season_auto", SEASON_FIXED = "season_fixed";
+
+    /** The theme menu under btnSeason: view the background, change theme by date on or off, pick a theme. */
+    private void showSeasonMenu() {
+        View anchor = btnSeason;
+        View panel = getLayoutInflater().inflate(R.layout.popup_inputs, root, false);
+        LinearLayout rows = panel.findViewById(R.id.rows);
+        PopupWindow popup = glassPopup(panel, (int) (260 * density));
+        SharedPreferences prefs = getSharedPreferences(Config.SETTINGS_NAME, MODE_PRIVATE);
+        boolean auto = prefs.getBoolean(SEASON_AUTO, true);
+        if (season != null) addInputRow(rows, popup, R.drawable.ic_picture, getString(R.string.season_menu_view), -1,
+                () -> root.post(this::enterShowcase));
+        addInputRow(rows, popup, R.drawable.ic_season_view, getString(R.string.season_menu_auto), -1, () -> {
+            prefs.edit().putBoolean(SEASON_AUTO, !auto).apply();
+            recreate();
+        });
+        setRowStatus(rows, getString(auto ? R.string.on : R.string.off));
+        // The picker opens its own list once this one has closed.
+        addInputRow(rows, popup, R.drawable.ic_season_view, getString(R.string.season_menu_theme), -1,
+                () -> root.post(this::showSeasonPicker));
+        setRowStatus(rows, season != null ? seasonName(season) : getString(R.string.wallpaper_none));
+        // A typo in a theme.json drops that theme silently; this row says which file and why.
+        if (!seasonErrors.isEmpty()) {
+            java.util.List<String> errors = seasonErrors;
+            addInputRow(rows, popup, R.drawable.ic_warning, getString(R.string.season_menu_errors), -1,
+                    () -> root.post(() -> showSeasonErrors(errors)));
+            setRowStatus(rows, String.valueOf(errors.size()));
+        }
+        panel.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        popup.setWidth(Math.max((int) (260 * density), Math.min(panel.getMeasuredWidth(), (int) (420 * density))));
+        dropIn(popup, panel, anchor, getResources().getBoolean(R.bool.rtl_menu_bar) ? Gravity.START : Gravity.END);
+        rows.getChildAt(0).requestFocus();
+    }
+
+    private static void setRowStatus(LinearLayout rows, CharSequence text) {
+        TextView status = rows.getChildAt(rows.getChildCount() - 1).findViewById(R.id.status);
+        status.setText(text);
+        status.setVisibility(View.VISIBLE);
+    }
+
+    /** Every theme of the pack, plus None. Picking one fixes it, so it also turns change by date off. */
+    private void showSeasonPicker() {
+        View panel = getLayoutInflater().inflate(R.layout.popup_inputs, root, false);
+        LinearLayout rows = panel.findViewById(R.id.rows);
+        // A pack can hold up to 64 themes: the list scrolls, and D-pad focus scrolls it.
+        android.widget.ScrollView scroll = new android.widget.ScrollView(this);
+        scroll.setVerticalScrollBarEnabled(false);
+        scroll.setClipToPadding(false);
+        scroll.addView(panel);
+        PopupWindow popup = glassPopup(scroll, (int) (260 * density));
+        SharedPreferences prefs = getSharedPreferences(Config.SETTINGS_NAME, MODE_PRIVATE);
+        String current = seasonId(season);
+        int focus = 0;
+        addInputRow(rows, popup, R.drawable.ic_season_view, getString(R.string.wallpaper_none), -1,
+                () -> pickSeason(prefs, ""));
+        for (SeasonPack.Season s : seasonPack().seasons) {
+            if (s.id.equals(current)) focus = rows.getChildCount();
+            addInputRow(rows, popup, R.drawable.ic_season_view, seasonName(s), -1, () -> pickSeason(prefs, s.id));
+        }
+        panel.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        popup.setWidth(Math.max((int) (260 * density), Math.min(panel.getMeasuredWidth(), (int) (420 * density))));
+        popup.setHeight(Math.min(panel.getMeasuredHeight(), (int) (root.getHeight() * 0.7f)));
+        dropIn(popup, scroll, btnSeason, getResources().getBoolean(R.bool.rtl_menu_bar) ? Gravity.START : Gravity.END);
+        rows.getChildAt(focus).requestFocus();
+    }
+
+    /**
+     * The pack's errors, one row each, wrapped over up to four lines. shortcut: the messages are the parser's own
+     * English text naming the JSON keys; translate them if the pack format is ever shared beyond its author.
+     */
+    private void showSeasonErrors(java.util.List<String> errors) {
+        View panel = getLayoutInflater().inflate(R.layout.popup_inputs, root, false);
+        LinearLayout rows = panel.findViewById(R.id.rows);
+        android.widget.ScrollView scroll = new android.widget.ScrollView(this);
+        scroll.setVerticalScrollBarEnabled(false);
+        scroll.setClipToPadding(false);
+        scroll.addView(panel);
+        PopupWindow popup = glassPopup(scroll, (int) (420 * density));
+        for (String e : errors) {
+            View row = addInputRow(rows, popup, R.drawable.ic_warning, e, -1, () -> { });
+            TextView title = row.findViewById(R.id.title);
+            title.setSingleLine(false);
+            title.setMaxLines(4);
+            title.setTextSize(13);
+            row.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            row.setPadding(row.getPaddingLeft(), (int) (8 * density), row.getPaddingRight(), (int) (8 * density));
+        }
+        popup.setWidth((int) (560 * density));
+        panel.measure(View.MeasureSpec.makeMeasureSpec((int) (560 * density), View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.UNSPECIFIED);
+        popup.setHeight(Math.min(panel.getMeasuredHeight(), (int) (root.getHeight() * 0.7f)));
+        dropIn(popup, scroll, btnSeason, getResources().getBoolean(R.bool.rtl_menu_bar) ? Gravity.START : Gravity.END);
+        rows.getChildAt(0).requestFocus();
+    }
+
+    /** 1 minute, then the lengths an LG TV's own sleep timer offers. */
+    private static final int[] SLEEP_MINUTES = {1, 10, 20, 30, 60, 90, 120, 180, 240};
+
+    /** The sleep pill: shown while the key helper is bound, an icon alone, or the icon and the minutes left. */
+    private void refreshSleepPill() {
+        handler.removeCallbacks(sleepPillTick);
+        if (btnSleep == null) return;
+        boolean can = HomeKeyService.canSleep() && !topMenu;
+        btnSleep.setVisibility(can ? View.VISIBLE : View.GONE);
+        long left = HomeKeyService.sleepTimerEnd() - System.currentTimeMillis();
+        boolean on = can && HomeKeyService.sleepTimerEnd() > 0 && left > 0;
+        btnSleep.setText(on ? getString(R.string.sleep_minutes, (int) ((left + 59_999) / 60_000)) : "");
+        ViewGroup.LayoutParams lp = btnSleep.getLayoutParams();
+        lp.width = on ? ViewGroup.LayoutParams.WRAP_CONTENT : (int) (42 * density);
+        btnSleep.setLayoutParams(lp);
+        btnSleep.setCompoundDrawablePadding(on ? (int) (6 * density) : 0);
+        btnSleep.setPaddingRelative((int) (10 * density), btnSleep.getPaddingTop(), (int) ((on ? 14 : 10) * density),
+                btnSleep.getPaddingBottom());
+        // Ticks on each whole minute left while Home is in front.
+        if (on && resumed) handler.postDelayed(sleepPillTick, (left - 1) % 60_000 + 1);
+    }
+
+    /** Off, then the timer lengths. */
+    private void showSleepMenu() {
+        View panel = getLayoutInflater().inflate(R.layout.popup_inputs, root, false);
+        LinearLayout rows = panel.findViewById(R.id.rows);
+        // Ten rows are taller than the space under the top bar: the list scrolls, and D-pad focus scrolls it.
+        android.widget.ScrollView scroll = new android.widget.ScrollView(this);
+        scroll.setVerticalScrollBarEnabled(false);
+        scroll.setClipToPadding(false);
+        scroll.addView(panel);
+        PopupWindow popup = glassPopup(scroll, (int) (240 * density));
+        addInputRow(rows, popup, R.drawable.ic_sleep, getString(R.string.off), -1, () -> setSleepTimer(0));
+        for (int minutes : SLEEP_MINUTES) {
+            addInputRow(rows, popup, R.drawable.ic_sleep, getString(R.string.sleep_minutes, minutes), -1,
+                    () -> setSleepTimer(minutes));
+        }
+        panel.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        popup.setWidth(Math.max((int) (240 * density), panel.getMeasuredWidth()));
+        popup.setHeight(Math.min(panel.getMeasuredHeight(), (int) (root.getHeight() * 0.7f)));
+        dropIn(popup, scroll, btnSleep, getResources().getBoolean(R.bool.rtl_menu_bar) ? Gravity.START : Gravity.END);
+        rows.getChildAt(0).requestFocus();
+    }
+
+    private void setSleepTimer(int minutes) {
+        HomeKeyService.setSleepTimer(minutes);
+        refreshSleepPill();
+    }
+
+    private void pickSeason(SharedPreferences prefs, String id) {
+        prefs.edit().putBoolean(SEASON_AUTO, false).putString(SEASON_FIXED, id).apply();
+        recreate();
+    }
+
     /** The header opens launcher settings directly; hold OK keeps the extra home actions available. */
     private void showSettingsMenu() {
         View anchor = findViewById(R.id.btnSettings);
@@ -3837,6 +4514,11 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         // Some firmware has no App info page at all; a row that only toasts "can't open" helps nobody.
         Intent info = SystemSettings.appInfo(this, pkg);
         if (info != null) addSettingsMenuRow(rows, popup, R.string.library_app_info, () -> open(info));
+        addSettingsMenuRow(rows, popup, R.string.tile_netflix_button, () -> {
+            getSharedPreferences(Config.SETTINGS_NAME, MODE_PRIVATE).edit()
+                    .putString(HomeKeyService.NETFLIX_BUTTON_APP, pkg).apply();
+            Toast.makeText(this, getString(R.string.tile_netflix_button) + " ✓", Toast.LENGTH_SHORT).show();
+        });
         panel.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
         popup.setWidth(Math.max((int) (200 * density), panel.getMeasuredWidth()));
         // Dock tiles sit near the bottom of the screen: open the menu above the tile when it would not fit below.

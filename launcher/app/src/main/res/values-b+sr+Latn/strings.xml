@@ -79,4 +79,21 @@
     <string name="clock_format_system">Sistem</string>
     <string name="clock_format_12">12-časovni</string>
     <string name="clock_format_24">24-časovni</string>
+    <string name="tile_netflix_button">Dodeli dugmetu Netflix</string>
+    <string name="season_name_spring">Proleće</string>
+    <string name="season_name_summer">Leto</string>
+    <string name="season_name_autumn">Jesen</string>
+    <string name="season_name_winter">Zima</string>
+    <string name="season_name_new_year">Nova godina</string>
+    <string name="season_name_lunar_new_year">Lunarna Nova godina</string>
+    <string name="season_name_valentine">Dan zaljubljenih</string>
+    <string name="season_name_halloween">Noć veštica</string>
+    <string name="season_name_christmas">Božić</string>
+    <string name="season_menu_view">Prikaži pozadinu</string>
+    <string name="season_menu_auto">Promeni temu prema datumu</string>
+    <string name="season_menu_theme">Tema</string>
+    <string name="season_menu_errors">Problemi u paketu tema</string>
+    <string name="sleep_timer">Tajmer za isključivanje</string>
+    <string name="sleep_minutes">%1$d min</string>
+    <string name="sleep_warning">TV se isključuje za 1 minut</string>
 </resources>

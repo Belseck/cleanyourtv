@@ -155,4 +155,21 @@
     <string name="clock_format_system">Системные</string>
     <string name="clock_format_12">12-часовой</string>
     <string name="clock_format_24">24-часовой</string>
+    <string name="tile_netflix_button">Назначить на кнопку Netflix</string>
+    <string name="season_name_spring">Весна</string>
+    <string name="season_name_summer">Лето</string>
+    <string name="season_name_autumn">Осень</string>
+    <string name="season_name_winter">Зима</string>
+    <string name="season_name_new_year">Новый год</string>
+    <string name="season_name_lunar_new_year">Лунный Новый год</string>
+    <string name="season_name_valentine">День святого Валентина</string>
+    <string name="season_name_halloween">Хэллоуин</string>
+    <string name="season_name_christmas">Рождество</string>
+    <string name="season_menu_view">Посмотреть фон</string>
+    <string name="season_menu_auto">Менять тему по дате</string>
+    <string name="season_menu_theme">Тема</string>
+    <string name="season_menu_errors">Проблемы в пакете тем</string>
+    <string name="sleep_timer">Таймер сна</string>
+    <string name="sleep_minutes">%1$d мин</string>
+    <string name="sleep_warning">Телевизор выключится через 1 минуту</string>
 </resources>

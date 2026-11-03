@@ -71,4 +71,21 @@
     <string name="clock_format_system">ระบบ</string>
     <string name="clock_format_12">12 ชั่วโมง</string>
     <string name="clock_format_24">24 ชั่วโมง</string>
+    <string name="tile_netflix_button">กำหนดให้ปุ่ม Netflix</string>
+    <string name="season_name_spring">ฤดูใบไม้ผลิ</string>
+    <string name="season_name_summer">ฤดูร้อน</string>
+    <string name="season_name_autumn">ฤดูใบไม้ร่วง</string>
+    <string name="season_name_winter">ฤดูหนาว</string>
+    <string name="season_name_new_year">ปีใหม่</string>
+    <string name="season_name_lunar_new_year">ตรุษจีน</string>
+    <string name="season_name_valentine">วันวาเลนไทน์</string>
+    <string name="season_name_halloween">ฮาโลวีน</string>
+    <string name="season_name_christmas">คริสต์มาส</string>
+    <string name="season_menu_view">ดูพื้นหลัง</string>
+    <string name="season_menu_auto">เปลี่ยนธีมตามวันที่</string>
+    <string name="season_menu_theme">ธีม</string>
+    <string name="season_menu_errors">ปัญหาในแพ็กธีม</string>
+    <string name="sleep_timer">ตั้งเวลาปิด</string>
+    <string name="sleep_minutes">%1$d นาที</string>
+    <string name="sleep_warning">ทีวีจะปิดใน 1 นาที</string>
 </resources>

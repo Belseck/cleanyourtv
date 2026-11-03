@@ -508,6 +508,8 @@ public class AppAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             h.label.setText(e.label);
             h.label.setVisibility(uniformTiles ? View.GONE : View.VISIBLE);
         }
+        h.card.setForeground(ornament == null ? null : new TileDecorDrawable(ornament, ornamentColors, ornamentImage,
+                ornamentCorner, String.valueOf(e.pkg).hashCode()));
         h.card.setOnClickListener(v -> launch(e));
         h.card.setOnLongClickListener(v -> {
             if (tileMenu) {
@@ -597,6 +599,19 @@ public class AppAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (savedDocked < 0) return favourites.contains(e.pkg);
         Integer rank = savedRanks.get(e.component.flattenToShortString());
         return rank != null && rank < savedDocked;
+    }
+
+    /** The season pack's tile ornament (TileDecorDrawable names); null draws none. */
+    private String ornament;
+    private int[] ornamentColors;
+    private android.graphics.Bitmap ornamentImage;
+    private String ornamentCorner;
+
+    void setSeasonDecor(String name, int[] colors, android.graphics.Bitmap image, String corner) {
+        ornament = name == null || name.isEmpty() || "none".equals(name) ? null : name;
+        ornamentColors = colors;
+        ornamentImage = image;
+        ornamentCorner = corner;
     }
 
     /** Reorder mode on or off; takes effect at the next reload() (empty dock slots are left out while on). */

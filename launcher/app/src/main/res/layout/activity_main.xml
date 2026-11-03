@@ -297,6 +297,22 @@
                             android:letterSpacing="0.14"
                             android:textAllCaps="true"
                             android:visibility="gone" />
+
+                        <!-- The seasonal look in force ("Christmas"), shown when seasonal_calendar is on. -->
+                        <TextView
+                            android:id="@+id/seasonName"
+                            android:gravity="left"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:singleLine="true"
+                            android:ellipsize="end"
+                            android:textColor="#80FFFFFF"
+                            android:textSize="14sp"
+                            android:fontFamily="@string/font_regular"
+                            android:letterSpacing="0.14"
+                            android:textAllCaps="true"
+                            android:visibility="gone" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -347,6 +363,22 @@
                     android:ellipsize="end"
                     android:text="@string/wifi"
                     android:drawableStart="@drawable/ic_wifi"
+                    android:nextFocusDown="@+id/grid" />
+
+                <!-- Shows the season's background alone and replays its shower; shown with seasonal_calendar. -->
+                <TextView
+                    android:id="@+id/btnSeason"
+                    style="@style/TopButtonIcon"
+                    android:visibility="gone"
+                    android:drawableStart="@drawable/ic_season_view"
+                    android:nextFocusDown="@+id/grid" />
+
+                <!-- Sleep timer: shown while HomeKeyService is bound, with the minutes left while it runs. -->
+                <TextView
+                    android:id="@+id/btnSleep"
+                    style="@style/TopButtonIcon"
+                    android:visibility="gone"
+                    android:drawableStart="@drawable/ic_sleep"
                     android:nextFocusDown="@+id/grid" />
 
                 <TextView

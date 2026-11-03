@@ -102,4 +102,21 @@
     <string name="clock_format_system">সিস্টেম</string>
     <string name="clock_format_12">১২ ঘণ্টা</string>
     <string name="clock_format_24">২৪ ঘণ্টা</string>
+    <string name="tile_netflix_button">Netflix বোতামে নির্ধারণ করুন</string>
+    <string name="season_name_spring">বসন্ত</string>
+    <string name="season_name_summer">গ্রীষ্ম</string>
+    <string name="season_name_autumn">শরৎ</string>
+    <string name="season_name_winter">শীত</string>
+    <string name="season_name_new_year">নববর্ষ</string>
+    <string name="season_name_lunar_new_year">চন্দ্র নববর্ষ</string>
+    <string name="season_name_valentine">ভ্যালেন্টাইনস ডে</string>
+    <string name="season_name_halloween">হ্যালোইন</string>
+    <string name="season_name_christmas">বড়দিন</string>
+    <string name="season_menu_view">ব্যাকগ্রাউন্ড দেখুন</string>
+    <string name="season_menu_auto">তারিখ অনুযায়ী থিম পরিবর্তন</string>
+    <string name="season_menu_theme">থিম</string>
+    <string name="season_menu_errors">থিম প্যাকে সমস্যা</string>
+    <string name="sleep_timer">স্লিপ টাইমার</string>
+    <string name="sleep_minutes">%1$d মিনিট</string>
+    <string name="sleep_warning">১ মিনিটের মধ্যে টিভি বন্ধ হবে</string>
 </resources>

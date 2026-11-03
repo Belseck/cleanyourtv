@@ -113,4 +113,21 @@
     <string name="clock_format_system">Sistem</string>
     <string name="clock_format_12">12 jam</string>
     <string name="clock_format_24">24 jam</string>
+    <string name="tile_netflix_button">Tetapkan ke tombol Netflix</string>
+    <string name="season_name_spring">Musim Semi</string>
+    <string name="season_name_summer">Musim Panas</string>
+    <string name="season_name_autumn">Musim Gugur</string>
+    <string name="season_name_winter">Musim Dingin</string>
+    <string name="season_name_new_year">Tahun Baru</string>
+    <string name="season_name_lunar_new_year">Tahun Baru Imlek</string>
+    <string name="season_name_valentine">Hari Valentine</string>
+    <string name="season_name_halloween">Halloween</string>
+    <string name="season_name_christmas">Natal</string>
+    <string name="season_menu_view">Lihat latar</string>
+    <string name="season_menu_auto">Ubah tema sesuai tanggal</string>
+    <string name="season_menu_theme">Tema</string>
+    <string name="season_menu_errors">Masalah di paket tema</string>
+    <string name="sleep_timer">Timer tidur</string>
+    <string name="sleep_minutes">%1$d mnt</string>
+    <string name="sleep_warning">TV mati dalam 1 menit</string>
 </resources>

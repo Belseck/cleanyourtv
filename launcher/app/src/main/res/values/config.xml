@@ -493,6 +493,12 @@
     <integer name="cinematic_scrim">100</integer>
     <integer name="cinematic_art">50</integer>
 
+    <!-- Seasonal looks by date: a short shower of snow, petals, leaves, hearts, confetti or sparks each time Home
+         comes up, an ornament on every tile and an optional background. The built-in pack (assets/seasons/) has
+         the four seasons, New Year, Lunar New Year, Valentine's Day, Halloween and Christmas; a pack in
+         /sdcard/TVHome/seasons/ replaces it (docs/seasons.md). Skipped with reduced_motion. -->
+    <bool name="seasonal_calendar">true</bool>
+
     <!-- The glow behind the dock in the focused app's colour (red for YouTube, blue for Prime Video). false keeps
          only background_color or the wallpaper behind everything. Can also be set with "ambient_glow": false in a
          theme's config.json. -->

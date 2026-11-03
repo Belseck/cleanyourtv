@@ -1,0 +1,22 @@
+{
+  "name": {
+    "en": "Spring",
+    "es": "Primavera"
+  },
+  "name_res": "season_name_spring",
+  "background_opacity": 35,
+  "particles": {
+    "kind": "image",
+    "colors": [
+      "#FFC6D9",
+      "#FFB0CB",
+      "#FFDDE8",
+      "#FF9FBF"
+    ],
+    "count": 45
+  },
+  "tiles": {
+    "ornament": "image",
+    "corner": "top-right"
+  }
+}

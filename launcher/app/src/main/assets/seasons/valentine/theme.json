@@ -1,0 +1,21 @@
+{
+  "name": {
+    "en": "Valentine's Day",
+    "es": "San Valentín"
+  },
+  "name_res": "season_name_valentine",
+  "background_opacity": 35,
+  "particles": {
+    "kind": "heart",
+    "colors": [
+      "#E0123F",
+      "#FF4D6D",
+      "#FF8FA3",
+      "#C9184A"
+    ],
+    "count": 34
+  },
+  "tiles": {
+    "ornament": "heart"
+  }
+}

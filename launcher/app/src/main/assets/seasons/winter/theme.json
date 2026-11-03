@@ -1,0 +1,21 @@
+{
+  "name": {
+    "en": "Winter",
+    "es": "Invierno"
+  },
+  "name_res": "season_name_winter",
+  "background_opacity": 35,
+  "particles": {
+    "kind": "snow",
+    "colors": [
+      "#FFFFFF",
+      "#F2F8FF",
+      "#DCEBFF"
+    ],
+    "count": 55,
+    "seconds": 7
+  },
+  "tiles": {
+    "ornament": "frost"
+  }
+}

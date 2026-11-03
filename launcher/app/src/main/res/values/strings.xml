@@ -158,4 +158,21 @@
     <string name="clock_format_system">System</string>
     <string name="clock_format_12">12-hour</string>
     <string name="clock_format_24">24-hour</string>
+    <string name="tile_netflix_button">Assign to Netflix button</string>
+    <string name="season_name_spring">Spring</string>
+    <string name="season_name_summer">Summer</string>
+    <string name="season_name_autumn">Autumn</string>
+    <string name="season_name_winter">Winter</string>
+    <string name="season_name_new_year">New Year</string>
+    <string name="season_name_lunar_new_year">Lunar New Year</string>
+    <string name="season_name_valentine">Valentine\'s Day</string>
+    <string name="season_name_halloween">Halloween</string>
+    <string name="season_name_christmas">Christmas</string>
+    <string name="season_menu_view">View background</string>
+    <string name="season_menu_auto">Change theme by date</string>
+    <string name="season_menu_theme">Theme</string>
+    <string name="season_menu_errors">Theme pack problems</string>
+    <string name="sleep_timer">Sleep timer</string>
+    <string name="sleep_minutes">%1$d min</string>
+    <string name="sleep_warning">The TV turns off in 1 minute</string>
 </resources>

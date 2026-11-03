@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Warning triangle, for the theme pack's error rows. Tinted by the row's text colour. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="22dp" android:height="22dp"
+    android:viewportWidth="24" android:viewportHeight="24">
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M12,2.5L22.5,20.5L1.5,20.5ZM11,9.5L11,14.5L13,14.5L13,9.5ZM11,16.2L11,18.2L13,18.2L13,16.2Z" />
+</vector>

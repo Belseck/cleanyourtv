@@ -119,4 +119,21 @@
     <string name="race_race_short">CARRERA</string>
     <string name="last_opened">Abierta per última vegada %1$s</string>
     <string name="game_live">En direutu</string>
+    <string name="tile_netflix_button">Asignar al botón de Netflix</string>
+    <string name="season_name_spring">Primavera</string>
+    <string name="season_name_summer">Branu</string>
+    <string name="season_name_autumn">Seronda</string>
+    <string name="season_name_winter">Iviernu</string>
+    <string name="season_name_new_year">Añu Nuevu</string>
+    <string name="season_name_lunar_new_year">Añu Nuevu Lunar</string>
+    <string name="season_name_valentine">San Valentín</string>
+    <string name="season_name_halloween">Halloween</string>
+    <string name="season_name_christmas">Navidá</string>
+    <string name="season_menu_view">Ver el fondu</string>
+    <string name="season_menu_auto">Cambéu automáticu pola data</string>
+    <string name="season_menu_theme">Tema</string>
+    <string name="season_menu_errors">Problemes nel paquete de temes</string>
+    <string name="sleep_timer">Temporizador d\'apagáu</string>
+    <string name="sleep_minutes">%1$d min</string>
+    <string name="sleep_warning">La tele apágase en 1 minutu</string>
 </resources>
