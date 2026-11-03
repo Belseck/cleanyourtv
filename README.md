@@ -3,36 +3,190 @@
 </p>
 
 > [!NOTE]
-> **This is a fork of [Gathin23/cleanyourtv](https://github.com/Gathin23/cleanyourtv)** with seasonal looks
-> and a sleep timer added to the launcher. Everything else is the upstream project, described below.
->
-> - **Seasonal themes by date.** Particles on Home (snow, petals, leaves, hearts, confetti, sparks or your own
->   PNGs), an ornament on every tile, themed top-bar icons, an accent colour and a background that can rotate. A
->   built-in pack covers the four seasons, New Year, Lunar New Year, Valentine's Day, Halloween and Christmas. Your
->   own pack in `/sdcard/TVHome/seasons/` replaces it: fixed dates, nth weekday, Easter offsets or Lunar New Year,
->   with priorities. A sparkle button in the top bar picks a theme or follows the dates. See
->   [docs/seasons.md](docs/seasons.md) and the example pack in [`seasons/`](seasons/), pushed with
->   `tools/season.sh`.
-> <img src="docs/seasons-screenshot.jpg" width="640" alt="Home with the example pack's Valentine's Day theme: hearts falling over Home, a heart on every tile and heart icons in the top bar">
->
-> - **Day and night backgrounds**, from optional `background/day/` and `background/night/` folders, switched at
->   sunrise and sunset.
-> - **Theme pack problems** in the theme menu: a mistake in a pack is shown on the TV instead of being skipped
->   in silence.
-> - **Sleep timer.** A moon pill in the top bar: 1, 10, 20, 30, 60, 90, 120, 180 or 240 minutes, a notice one
->   minute before, then standby. With HDMI-CEC on (SIMPLINK, Anynet+, BRAVIA Sync…) the TV switches off with
->   the box.
-> - **Assign to Netflix button**, in a tile's hold-OK menu: the remote's Netflix key opens that app instead.
->
-> The sleep timer and the Netflix button need the key helper, and the pack needs file access. Install with:
->
-> ```
-> (cd launcher && HOME_KEY_SERVICE=1 ./build-and-install.sh)
-> tools/venv/bin/python -I tools/tv.py 'appops set com.gathin.tvhome MANAGE_EXTERNAL_STORAGE allow'
-> ```
->
-> This fork adds the `MANAGE_EXTERNAL_STORAGE` permission and builds an APK above upstream's 576 KB gate, which is
-> why it lives in its own repository. Tested on a Chromecast with Google TV 4K (Google TV 14) with an LG TV.
+> **This is a fork of [Gathin23/cleanyourtv](https://github.com/Gathin23/cleanyourtv)** that adds seasonal themes by
+> date and a sleep timer to the launcher. [What this fork adds](#what-this-fork-adds) describes the changes. The rest
+> of this README is the upstream project, unchanged.
+
+## What this fork adds
+
+<img src="docs/seasons-screenshot.jpg" width="640" alt="Home with the example pack's Valentine's Day theme: hearts falling over Home, a heart on every tile and heart icons in the top bar">
+
+| | Upstream | This fork |
+|---|---|---|
+| Seasonal looks | One festive skin per theme (`festival`, `seasonal_skin`), switched by hand or ended with `festival_until` | **Season packs**: any number of themes, each switched on and off by its own dates and priority |
+| What a season changes | Icons and a greeting | Falling particles (built-in or your own PNGs), an ornament on every tile, the Wi-Fi, theme and Settings icons, an accent colour and a background that can rotate |
+| Backgrounds by time of day | `wallpaper_moods` (morning, evening, night) for a theme's wallpaper | `background/day/` and `background/night/` inside each season, switched at sunrise and sunset |
+| Mistakes in a pack | Not applicable | Listed on the TV under **Theme pack problems** |
+| Sleep timer | The separate Sleep Timer add-on | A moon pill in the top bar of Home, showing the minutes left |
+| Netflix key on the remote | Fixed by `app_keys` in config.xml | **Assign to Netflix button** in any tile's hold-OK menu |
+| Permissions | No new ones | `MANAGE_EXTERNAL_STORAGE`, to read the pack from `/sdcard/TVHome/seasons/` |
+| APK size | Under the 576 KB gate | About 626 KB |
+
+Nothing here needs a network connection: the launcher still has no `INTERNET` permission. Tested on a Chromecast with
+Google TV 4K (Google TV 14) with an LG TV.
+
+### Install
+
+The sleep timer and the Netflix button need the key helper, and the season pack needs file access:
+
+```
+(cd launcher && HOME_KEY_SERVICE=1 ./build-and-install.sh)
+tools/venv/bin/python -I tools/tv.py 'appops set com.gathin.tvhome MANAGE_EXTERNAL_STORAGE allow'
+```
+
+Seasonal looks are on by default (`seasonal_calendar` in `launcher/app/src/main/res/values/config.xml`). Set it to
+`false` to get the upstream Home back.
+
+### The built-in calendar
+
+With no pack on the TV, the launcher uses the pack built into the APK (`launcher/app/src/main/assets/seasons/`). The
+four seasons follow the northern hemisphere. A holiday outranks the season around it, because it has a higher
+priority.
+
+| Theme | Dates | Priority |
+|---|---|---|
+| New Year | 31 December to 2 January | 10 |
+| Lunar New Year | The first 3 days of the Chinese new year (6 to 8 February 2027) | 10 |
+| Valentine's Day | 14 February | 11 |
+| Spring | 20 March to 20 June | 0 |
+| Summer | 21 June to 22 September | 0 |
+| Autumn | 23 September to 20 December | 0 |
+| Halloween | 1 to 31 October | 10 |
+| Christmas | 1 to 30 December | 10 |
+| Winter | 21 December to 19 March | 0 |
+
+### Your own pack
+
+A pack is a folder: an index, `seasons.json`, plus one folder per theme. Images are found by fixed file names,
+never named in JSON. Every file except `seasons.json` is optional.
+
+```
+my-pack/
+  seasons.json                 which themes, on which dates, with which priority
+  christmas/
+    theme.json                 name, accent, particles, tile ornament
+    background.jpg             one background (or background.png)
+    particle.png               the falling sprite, with particles.kind "image"
+    ornament.png               the tile ornament, with tiles.ornament "image"
+    icon-wifi.png              optional top-bar icons, about 66x66 px
+    icon-theme.png
+    icon-settings.png
+  winter/
+    theme.json
+    background/                several backgrounds, rotated with a cross-fade
+      01.jpg
+      02.jpg
+      day/                     used from sunrise to sunset
+        snowy-morning.jpg
+      night/                   used from sunset to sunrise
+        northern-lights.jpg
+    particles/                 several sprites; each particle picks one
+      flake-1.png
+      flake-2.png
+  mothers-day/
+    theme.json
+    background.png
+```
+
+The [`seasons/`](seasons/) folder is a complete example: the nine built-in themes with their particles, ornaments
+and icons, all drawn in code. It has no backgrounds, so add your own.
+
+#### seasons.json
+
+```json
+{
+  "seasons": [
+    { "folder": "new-year",    "dates": { "from": "12-31", "to": "01-02" }, "priority": 10 },
+    { "folder": "christmas",   "dates": { "from": "12-01", "to": "12-30" }, "priority": 10 },
+    { "folder": "mothers-day", "dates": { "rule": "nth-weekday", "month": 5, "weekday": "sunday", "n": 2 }, "priority": 10 },
+    { "folder": "holy-week",   "dates": { "rule": "easter", "from": -7, "to": 0 }, "priority": 10 },
+    { "folder": "lunar",       "dates": { "rule": "lunar-new-year", "days": 3 }, "priority": 10 },
+    { "folder": "winter",      "dates": { "from": "12-21", "to": "03-19" }, "priority": 0 }
+  ]
+}
+```
+
+When several themes cover the same day, the higher `priority` wins; on a tie, the first one listed wins. The four
+date rules:
+
+| Rule | Example | Covers |
+|---|---|---|
+| Fixed range | `{ "from": "12-01", "to": "12-30" }` | The same days every year; a range that ends before it starts wraps over New Year |
+| nth weekday | `{ "rule": "nth-weekday", "month": 11, "weekday": "thursday", "n": 4, "days_after": 1 }` | Thanksgiving in the US and the day after. `n` is 1 to 5, or -1 for the last one; `days_before` and `days_after` are optional |
+| Easter | `{ "rule": "easter", "from": -7, "to": 0 }` | Days counted from Easter Sunday: here Palm Sunday to Easter |
+| Lunar New Year | `{ "rule": "lunar-new-year", "days": 3 }` | The first days of the Chinese calendar's year |
+
+#### theme.json
+
+A theme with your own pictures: particles from `particles/`, an ornament stretched across the top of each tile, and
+backgrounds that shuffle every two minutes.
+
+```json
+{
+  "name": { "en": "Winter", "es": "Invierno" },
+  "accent": "#8EC9FF",
+  "background_opacity": 35,
+  "background_interval": 120,
+  "background_order": "shuffle",
+  "particles": { "kind": "image", "count": 60, "seconds": 9 },
+  "tiles": { "ornament": "image", "corner": "top" }
+}
+```
+
+A theme drawn entirely by the launcher, with no image files:
+
+```json
+{
+  "name": { "en": "Spring", "es": "Primavera" },
+  "accent": "#FF9FBF",
+  "particles": { "kind": "sakura", "colors": ["#FFC6D9", "#FFB0CB", "#FFDDE8"], "count": 45, "seconds": 7 },
+  "tiles": { "ornament": "blossom", "corner": "top-right" }
+}
+```
+
+A national day with a two-colour band on every tile:
+
+```json
+{
+  "name": { "en": "National Day" },
+  "particles": { "kind": "confetti", "colors": ["#FFFFFF", "#D52B1E"] },
+  "tiles": { "ornament": "flag_band", "colors": ["#FFFFFF", "#D52B1E"] }
+}
+```
+
+- Built-in particles: `snow`, `sakura`, `leaf`, `heart`, `confetti`, `spark`, `bats` and `marigold`, plus `image`
+  for your own and `none`.
+- Built-in tile ornaments: `snow_cap`, `frost`, `blossom`, `sun`, `leaves`, `heart`, `hearts`, `sparkles`,
+  `lantern`, `flag_band`, `cobweb`, `marigold` and `candle`, plus `image` and `none`.
+
+[docs/seasons.md](docs/seasons.md) has every field, the size limits for each file and tips for composing
+backgrounds.
+
+#### Putting it on the TV
+
+```
+tools/season.sh --check my-pack                  # validate only, sends nothing
+TV_HOST=192.168.1.50 tools/season.sh my-pack     # check, then replace the pack on the TV
+TV_HOST=192.168.1.50 tools/season.sh --reset     # delete it: the built-in pack applies again
+```
+
+You can also copy the folder into `/sdcard/TVHome/seasons/` with any file manager on the TV, without a computer.
+Home picks the new pack up the next time it comes to the front.
+
+### On the TV
+
+- **Sparkle button**, next to Wi-Fi, shows that theme's icon. It opens the theme menu:
+  - **View background** shows the picture without the tiles.
+  - **Change theme by date** turns the calendar on or off.
+  - A list of every theme in the pack, to use one now, whatever the date.
+  - **Theme pack problems** appears only when something in the pack was skipped, and says which file and why.
+- **Moon pill**, the sleep timer. Choose 1, 10, 20, 30, 60, 90, 120, 180 or 240 minutes, or Off.
+  - While it runs, the pill shows the minutes left.
+  - A notice appears one minute before the end, then the box goes to standby.
+  - With HDMI-CEC on (SIMPLINK, Anynet+, BRAVIA Sync and the like), the TV turns off with the box.
+  - The timer keeps running while another app is in front.
+- **Assign to Netflix button**, in the menu that opens when you hold OK on a tile: the remote's Netflix key then
+  opens that app.
 
 <p align="center">
   Read in: <a href="README.zh-CN.md">简体中文</a> · <a href="README.zh-TW.md">正體中文</a> · <a href="README.vi.md">Tiếng Việt</a> · <a href="README.ja.md">日本語</a> · <a href="README.it.md">Italiano</a> · <a href="README.nl.md">Nederlands</a> · <a href="README.de.md">Deutsch</a> · <a href="README.uk.md">Українська</a> · <a href="README.tr.md">Türkçe</a>
