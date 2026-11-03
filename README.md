@@ -13,6 +13,8 @@
 >   with priorities. A sparkle button in the top bar picks a theme or follows the dates. See
 >   [docs/seasons.md](docs/seasons.md) and the example pack in [`seasons/`](seasons/), pushed with
 >   `tools/season.sh`.
+> <img src="docs/seasons-screenshot.jpg" width="640" alt="Home with the example pack's Valentine's Day theme: hearts falling over Home, a heart on every tile and heart icons in the top bar">
+>
 > - **Day and night backgrounds**, from optional `background/day/` and `background/night/` folders, switched at
 >   sunrise and sunset.
 > - **Theme pack problems** in the theme menu: a mistake in a pack is shown on the TV instead of being skipped
