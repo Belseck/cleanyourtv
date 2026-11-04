@@ -10,7 +10,7 @@
 
 ## What this fork adds
 
-<img src="docs/seasons-screenshot.jpg" width="640" alt="Home with the example pack's Valentine's Day theme: hearts falling over Home, a heart on every tile and heart icons in the top bar">
+<img src="docs/seasons-screenshot.jpg" width="640" alt="Home on the Christmas theme with an internet photo of a snowy village at night: snowflakes falling over Home, a snow cap on every tile and a Christmas tree icon in the top bar">
 
 | | Upstream | This fork |
 |---|---|---|
