@@ -285,6 +285,24 @@ Home picks the new pack up the next time it comes to the front.
 - **Assign to Netflix button**, in the menu that opens when you hold OK on a tile: the remote's Netflix key then
   opens that app.
 
+### Proposed to the original project
+
+The original launcher has no network and a hard size gate, so this fork's features went there cut down, each in its
+own pull request, from the ideas discussion [#3246](https://github.com/Gathin23/cleanyourtv/discussions/3246):
+
+| What | Where | In the original |
+|---|---|---|
+| This fork, in SHOWCASE.md | [#3147](https://github.com/Gathin23/cleanyourtv/pull/3147) | Merged |
+| Internet photos, the viewer and the photo screensaver, as a separate app with no key: photos of your own topics from Wikimedia Commons, at the screen's resolution, with the details on Up | [#3283](https://github.com/Gathin23/cleanyourtv/pull/3283), the **Topic Photos** add-on | Open |
+| The quick panel as a full-height sheet of tiles | [#3284](https://github.com/Gathin23/cleanyourtv/pull/3284), switch `quick_panel_sheet` | Open |
+| Holding Home opens the quick panel where the stock dashboard is gone | [#3241](https://github.com/Gathin23/cleanyourtv/pull/3241), switch `home_hold_panel` | Open |
+| AdGuard DNS blocks `sp.pluto.tv`, and Pluto TV forgets where an episode was left | [#3238](https://github.com/Gathin23/cleanyourtv/pull/3238), a troubleshooting note | Open |
+| Chromecast notes: the held Home, HDMI-CEC and the Input button | [#3239](https://github.com/Gathin23/cleanyourtv/pull/3239), in its example folder | Open |
+
+What stays only here: the seasonal calendar and season packs (a new storage permission and well over the size gate),
+internet photos as Home's background and from Unsplash (network in the launcher), and the sleep pill on Home (the
+original has the Sleep Timer add-on, countdown included).
+
 <p align="center">
   Read in: <a href="README.zh-CN.md">简体中文</a> · <a href="README.zh-TW.md">正體中文</a> · <a href="README.vi.md">Tiếng Việt</a> · <a href="README.ja.md">日本語</a> · <a href="README.it.md">Italiano</a> · <a href="README.nl.md">Nederlands</a> · <a href="README.de.md">Deutsch</a> · <a href="README.uk.md">Українська</a> · <a href="README.tr.md">Türkçe</a>
 </p>
