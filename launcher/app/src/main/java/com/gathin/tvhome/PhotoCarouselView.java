@@ -25,7 +25,7 @@ import java.util.concurrent.Executors;
 /**
  * Full-screen photos that change on their own and with the remote: Left and Right go back and forward, Up shows
  * the photo's details (where, who, which camera), Down hides them. Shared by the background viewer, the Back-key
- * screensaver and the system screensaver. Credit for Unsplash photos stays in a corner while one is on screen.
+ * screensaver and the system screensaver. The photo's credit (author, source, licence, place) stays in a corner.
  */
 final class PhotoCarouselView extends FrameLayout {
 
@@ -219,15 +219,21 @@ final class PhotoCarouselView extends FrameLayout {
         });
     }
 
-    /** "Photo: who · Unsplash · where   ▲ Details": the place joins once Unsplash has said it. */
+    /** "Photo: who · source · licence · where   ▲ Details": the place joins once it is known. */
     private String creditText(PhotoSets.Item item) {
         String hint = "▲ " + getContext().getString(R.string.photo_info);
         if (item.photo == null) return hint;
         String where = item.photo.location.isEmpty() ? "" : " · " + item.photo.location;
-        return getContext().getString(R.string.photo_credit, item.photo.photographer) + where + "    " + hint;
+        return getContext().getString(R.string.photo_credit, item.photo.photographer) + source(item.photo) + where
+                + "    " + hint;
     }
 
-    /** Asks Unsplash for the place and camera of the photo now on screen, once per photo, off the main thread. */
+    /** " · Unsplash" or " · Wikimedia Commons · CC BY-SA 4.0": the licence, when the source names one. */
+    private static String source(OnlinePhotos.Photo p) {
+        return " \u00B7 " + p.source + (p.license.isEmpty() ? "" : " \u00B7 " + p.license);
+    }
+
+    /** Asks for the place (and with Unsplash the camera) of the photo now on screen, once per photo, off the main thread. */
     private void fetchDetails(PhotoSets.Item item, int at) {
         OnlinePhotos.Photo p = item.photo;
         if (p == null || p.detailed) return;
@@ -259,10 +265,19 @@ final class PhotoCarouselView extends FrameLayout {
             infoTitle.setText(p.description.isEmpty() ? c.getString(R.string.photo_no_description) : p.description);
             String missing = p.detailed ? c.getString(R.string.photo_not_given) : "…";
             lines.add(c.getString(R.string.photo_location) + ": " + (p.location.isEmpty() ? missing : p.location));
-            lines.add(c.getString(R.string.photo_by) + ": " + p.photographer + " · Unsplash");
+            lines.add(c.getString(R.string.photo_by) + ": " + p.photographer + source(p));
             lines.add(c.getString(R.string.photo_camera) + ": " + (p.camera.isEmpty() ? missing : p.camera));
-            if (!p.taken.isEmpty()) lines.add(c.getString(R.string.photo_taken) + ": " + p.taken);
-            if (p.width > 0) lines.add(c.getString(R.string.photo_size) + ": " + p.width + " × " + p.height);
+            // Commons gives the day it was taken; Unsplash only the day it was published.
+            int dateLabel = OnlinePhotos.COMMONS_NAME.equals(p.source) ? R.string.photo_shot : R.string.photo_taken;
+            if (!p.taken.isEmpty()) lines.add(c.getString(dateLabel) + ": " + p.taken);
+            BitmapFactory.Options o = new BitmapFactory.Options();
+            o.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(item.file.getPath(), o);
+            String shown = o.outWidth > 0 ? o.outWidth + " × " + o.outHeight : "";
+            String original = p.width > 0 ? p.width + " × " + p.height : "";
+            // The file on the TV is screen-sized; the original is what the photographer uploaded.
+            if (!shown.isEmpty()) lines.add(c.getString(R.string.photo_size) + ": " + shown
+                    + (original.isEmpty() || original.equals(shown) ? "" : " (" + c.getString(R.string.photo_original, original) + ")"));
             if (!p.detailed) {
                 final int at = index;
                 details.execute(() -> {

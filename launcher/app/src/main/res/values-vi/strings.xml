@@ -148,7 +148,7 @@
     <string name="photos_source_online">Internet</string>
     <string name="photos_loading">Đang tìm ảnh…</string>
     <string name="photo_info">Chi tiết</string>
-    <string name="photo_credit">Ảnh: %1$s · Unsplash</string>
+    <string name="photo_credit">Ảnh: %1$s</string>
     <string name="photo_location">Địa điểm</string>
     <string name="photo_by">Ảnh</string>
     <string name="photo_camera">Máy ảnh</string>
@@ -163,4 +163,6 @@
     <string name="photo_not_given">Không có thông tin</string>
     <string name="photo_interval">Đổi ảnh mỗi</string>
     <string name="photo_seconds">%1$d giây</string>
+    <string name="photo_shot">Chụp ngày</string>
+    <string name="photo_original">gốc %1$s</string>
 </resources>

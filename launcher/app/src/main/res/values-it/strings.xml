@@ -171,7 +171,7 @@
     <string name="photos_source_online">Internet</string>
     <string name="photos_loading">Ricerca foto…</string>
     <string name="photo_info">Dettagli</string>
-    <string name="photo_credit">Foto: %1$s · Unsplash</string>
+    <string name="photo_credit">Foto: %1$s</string>
     <string name="photo_location">Luogo</string>
     <string name="photo_by">Foto</string>
     <string name="photo_camera">Fotocamera</string>
@@ -186,4 +186,6 @@
     <string name="photo_not_given">Non indicato</string>
     <string name="photo_interval">Cambia foto ogni</string>
     <string name="photo_seconds">%1$d s</string>
+    <string name="photo_shot">Scattata</string>
+    <string name="photo_original">originale %1$s</string>
 </resources>

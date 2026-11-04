@@ -135,7 +135,7 @@
     <string name="photos_source_online">Internet</string>
     <string name="photos_loading">Mencari foto…</string>
     <string name="photo_info">Detail</string>
-    <string name="photo_credit">Foto: %1$s · Unsplash</string>
+    <string name="photo_credit">Foto: %1$s</string>
     <string name="photo_location">Tempat</string>
     <string name="photo_by">Foto</string>
     <string name="photo_camera">Kamera</string>
@@ -150,4 +150,6 @@
     <string name="photo_not_given">Tidak disebutkan</string>
     <string name="photo_interval">Ganti foto setiap</string>
     <string name="photo_seconds">%1$d dtk</string>
+    <string name="photo_shot">Diambil</string>
+    <string name="photo_original">asli %1$s</string>
 </resources>

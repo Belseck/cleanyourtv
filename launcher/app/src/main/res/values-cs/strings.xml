@@ -134,7 +134,7 @@
     <string name="photos_source_online">Internet</string>
     <string name="photos_loading">Hledání fotek…</string>
     <string name="photo_info">Podrobnosti</string>
-    <string name="photo_credit">Foto: %1$s · Unsplash</string>
+    <string name="photo_credit">Foto: %1$s</string>
     <string name="photo_location">Místo</string>
     <string name="photo_by">Foto</string>
     <string name="photo_camera">Fotoaparát</string>
@@ -149,4 +149,6 @@
     <string name="photo_not_given">Neuvedeno</string>
     <string name="photo_interval">Měnit fotku každých</string>
     <string name="photo_seconds">%1$d s</string>
+    <string name="photo_shot">Pořízeno</string>
+    <string name="photo_original">originál %1$s</string>
 </resources>

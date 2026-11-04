@@ -176,7 +176,7 @@
     <string name="photos_source_online">Інтернет</string>
     <string name="photos_loading">Шукаю фото…</string>
     <string name="photo_info">Подробиці</string>
-    <string name="photo_credit">Фото: %1$s · Unsplash</string>
+    <string name="photo_credit">Фото: %1$s</string>
     <string name="photo_location">Місце</string>
     <string name="photo_by">Фото</string>
     <string name="photo_camera">Камера</string>
@@ -191,4 +191,6 @@
     <string name="photo_not_given">Не вказано</string>
     <string name="photo_interval">Змінювати фото кожні</string>
     <string name="photo_seconds">%1$d с</string>
+    <string name="photo_shot">Знято</string>
+    <string name="photo_original">оригінал %1$s</string>
 </resources>

@@ -103,7 +103,7 @@ A theme with the built-in kinds and no rotation:
 | `tiles.ornament` | string | `snow_cap`, `frost`, `blossom`, `sun`, `leaves`, `heart`, `hearts`, `sparkles`, `lantern`, `flag_band`, `cobweb`, `marigold`, `candle`, `image` or `none`. `image` uses `ornament.png`. |
 | `tiles.colors` | list of colours | For `flag_band`, the stripes from top to bottom, of equal height, e.g. `["#FFFFFF", "#D52B1E"]`. Without colours `flag_band` draws nothing. |
 | `tiles.corner` | string | `top-left`, `top-right` or `top`. With `top`, `ornament.png` is stretched across the tile's top edge keeping its aspect ratio (snow caps, frost, flag bands). |
-| `photos.queries` | list of text | Up to 8 Unsplash search terms of at most 80 characters, for the theme's internet photos and its share of the screensaver. English terms find the most. Without it, the theme's English name is searched. |
+| `photos.queries` | list of text | Up to 8 search terms of at most 80 characters, for the theme's internet photos (Wikimedia Commons, or Unsplash with a key) and its share of the screensaver. English terms find the most. Without it, the theme's English name is searched. The terms also decide what is kept out: a theme whose terms name a season keeps out photos of the other seasons and of holidays, and a holiday keeps out the other holidays. |
 
 A theme whose internet photos look like the season:
 

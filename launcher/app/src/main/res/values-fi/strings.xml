@@ -137,7 +137,7 @@
     <string name="photos_source_online">Internet</string>
     <string name="photos_loading">Haetaan kuvia…</string>
     <string name="photo_info">Tiedot</string>
-    <string name="photo_credit">Kuva: %1$s · Unsplash</string>
+    <string name="photo_credit">Kuva: %1$s</string>
     <string name="photo_location">Paikka</string>
     <string name="photo_by">Kuva</string>
     <string name="photo_camera">Kamera</string>
@@ -152,4 +152,6 @@
     <string name="photo_not_given">Ei ilmoitettu</string>
     <string name="photo_interval">Vaihda kuva välein</string>
     <string name="photo_seconds">%1$d s</string>
+    <string name="photo_shot">Otettu</string>
+    <string name="photo_original">alkuperäinen %1$s</string>
 </resources>

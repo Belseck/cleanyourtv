@@ -61,6 +61,40 @@ final class PhotoSets {
         return "theme-" + folder;
     }
 
+    /**
+     * Words that mark a photo as belonging to another time of year. A theme keeps out every holiday whose words its
+     * own search terms do not use, and a season (its terms name one) also the other seasons, so autumn gets no
+     * Christmas trees or snow. A holiday keeps the seasons, since Halloween photos are full of autumn leaves.
+     */
+    private static final String[][] HOLIDAYS = {
+            {"christmas", "xmas", "santa", "reindeer", "snowman", "nativity", "ornament", "ornaments"},
+            {"halloween", "pumpkin", "pumpkins", "jack", "witch", "skeleton", "spooky", "haunted"},
+            {"valentine", "valentines"},
+            {"fireworks", "firework", "new year", "champagne"},
+            {"easter", "bunny"},
+            {"lunar", "chinese new year"},
+            {"muertos", "dead", "catrina"}};
+    private static final String[][] SEASONS = {
+            {"winter", "snow", "snowy", "frozen", "ice", "icy", "frost"},
+            {"spring", "blossom", "blossoms", "tulip", "tulips", "cherry"},
+            {"summer", "beach", "tropical", "palm", "sunflower"},
+            {"autumn", "fall foliage", "fallen leaves", "foliage", "fall leaves"}};
+
+    static List<String> excludeFor(List<String> queries) {
+        String own = " " + String.join(" ", queries).toLowerCase(Locale.ROOT).replaceAll("[^a-z0-9]+", " ") + " ";
+        List<String> out = new ArrayList<>();
+        boolean season = false;
+        for (String[] group : SEASONS) if (uses(own, group)) season = true;
+        for (String[] group : HOLIDAYS) if (!uses(own, group)) out.addAll(Arrays.asList(group));
+        if (season) for (String[] group : SEASONS) if (!uses(own, group)) out.addAll(Arrays.asList(group));
+        return out;
+    }
+
+    private static boolean uses(String own, String[] group) {
+        for (String w : group) if (own.contains(" " + w + " ")) return true;
+        return false;
+    }
+
     /** The theme's photos.queries, else its English name. */
     static List<String> themeQueries(SeasonPack.Season s) {
         if (!s.photoQueries.isEmpty()) return s.photoQueries;
@@ -135,13 +169,13 @@ final class PhotoSets {
             if (!name.isEmpty()) queries.add(name);
             for (String q : p.getString(ACTIVE_QUERIES, "").split("\n")) if (!q.trim().isEmpty()) queries.add(q.trim());
             String set = "saver-theme-" + folder + suffix;
-            OnlinePhotos.refresh(c, set, withDaypart(queries, part), SAVER_THEME_COUNT, refreshed);
+            OnlinePhotos.refresh(c, set, withDaypart(queries, part), excludeFor(queries), SAVER_THEME_COUNT, refreshed);
             out.addAll(items(c, set));
         }
         List<String> topics = saverTopics(c);
         if (topics.isEmpty()) topics = DEFAULT_TOPICS;
         String set = "saver-general" + suffix;   // new topics replace the set's photos on the next fetch
-        OnlinePhotos.refresh(c, set, withDaypart(topics, part), SAVER_GENERAL_COUNT, refreshed);
+        OnlinePhotos.refresh(c, set, withDaypart(topics, part), excludeFor(topics), SAVER_GENERAL_COUNT, refreshed);
         out.addAll(items(c, set));
         return out;
     }

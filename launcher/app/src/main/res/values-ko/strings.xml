@@ -173,7 +173,7 @@
     <string name="photos_source_online">인터넷</string>
     <string name="photos_loading">사진 찾는 중…</string>
     <string name="photo_info">세부정보</string>
-    <string name="photo_credit">사진: %1$s · Unsplash</string>
+    <string name="photo_credit">사진: %1$s</string>
     <string name="photo_location">장소</string>
     <string name="photo_by">사진</string>
     <string name="photo_camera">카메라</string>
@@ -188,4 +188,6 @@
     <string name="photo_not_given">정보 없음</string>
     <string name="photo_interval">사진 변경 간격</string>
     <string name="photo_seconds">%1$d초</string>
+    <string name="photo_shot">촬영일</string>
+    <string name="photo_original">원본 %1$s</string>
 </resources>
