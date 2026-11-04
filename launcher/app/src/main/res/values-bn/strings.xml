@@ -124,7 +124,7 @@
     <string name="photos_source_online">ইন্টারনেট</string>
     <string name="photos_loading">ছবি খোঁজা হচ্ছে…</string>
     <string name="photo_info">বিস্তারিত</string>
-    <string name="photo_credit">ছবি: %1$s · Unsplash</string>
+    <string name="photo_credit">ছবি: %1$s</string>
     <string name="photo_location">স্থান</string>
     <string name="photo_by">ছবি</string>
     <string name="photo_camera">ক্যামেরা</string>
@@ -139,4 +139,6 @@
     <string name="photo_not_given">দেওয়া নেই</string>
     <string name="photo_interval">ছবি বদলান প্রতি</string>
     <string name="photo_seconds">%1$d সে</string>
+    <string name="photo_shot">তোলা হয়েছে</string>
+    <string name="photo_original">মূল %1$s</string>
 </resources>

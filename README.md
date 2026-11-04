@@ -4,8 +4,9 @@
 
 > [!NOTE]
 > **This is a fork of [Gathin23/cleanyourtv](https://github.com/Gathin23/cleanyourtv)** that adds seasonal themes by
-> date, background photos from Unsplash, a photo screensaver, a quick panel and a sleep timer to the launcher. [What this fork adds](#what-this-fork-adds) describes the changes. The rest
-> of this README is the upstream project, unchanged.
+> date, background photos from the internet, a photo screensaver, a quick panel and a sleep timer to the launcher.
+> [What this fork adds](#what-this-fork-adds) describes the changes. The rest of this README is the upstream project,
+> unchanged.
 
 ## What this fork adds
 
@@ -17,17 +18,18 @@
 | What a season changes | Icons and a greeting | Falling particles (built-in or your own PNGs), an ornament on every tile, the Wi-Fi, theme and Settings icons, an accent colour and a background that can rotate |
 | Backgrounds by time of day | `wallpaper_moods` (morning, evening, night) for a theme's wallpaper | `background/day/` and `background/night/` inside each season, switched at sunrise and sunset |
 | Mistakes in a pack | Not applicable | Listed on the TV under **Theme pack problems** |
-| Background photos | Your own wallpaper files | **Internet photos** per theme: found on Unsplash with the theme's own search terms, kept on the TV, changing on their own |
+| Background photos | Your own wallpaper files | **Internet photos** per theme, found with the theme's own search terms on Wikimedia Commons (no key) or Unsplash (with a key), kept out of the wrong season, kept on the TV and changing on their own |
 | Screensaver | `ClockDream`, a clock on black | **Photo screensaver**: the active theme's photos first, then your topics, with day and night photos if you want them |
 | Holding Home | Android TV's dashboard, where the firmware still has it | A **quick panel** of its own where the dashboard is gone: time, network, picture, sleep timer, apps, settings |
 | Sleep timer | The separate Sleep Timer add-on | A moon pill in the top bar of Home, showing the minutes left, and a countdown over any app in the last minute |
 | Netflix key on the remote | Fixed by `app_keys` in config.xml | **Assign to Netflix button** in any tile's hold-OK menu |
 | Permissions | No new ones | `MANAGE_EXTERNAL_STORAGE`, to read the pack from `/sdcard/TVHome/seasons/`; `INTERNET`, for the photos only |
-| APK size | Under the 576 KB gate | About 670 KB |
+| APK size | Under the 576 KB gate | About 676 KB |
 
-The launcher only goes online for the photos: it asks Unsplash for search results, pictures and each picture's place
-and camera, and nothing else. Without an Unsplash key in the build, the photo features stay off and nothing goes out.
-Tested on a Chromecast with Google TV 4K (Google TV 14) with an LG TV.
+The launcher only goes online for the photos: search results and pictures from Wikimedia Commons or Unsplash, and the
+name of the place a photo was taken from OpenStreetMap. Nothing about the TV or what is watched is sent. With the
+background set to **Theme** and the screensaver not in use, it does not go online at all. Tested on a Chromecast with
+Google TV 4K (Google TV 14) with an LG TV.
 
 ### Install
 
@@ -40,18 +42,87 @@ tools/venv/bin/python -I tools/tv.py 'appops set com.gathin.tvhome MANAGE_EXTERN
 tools/venv/bin/python -I tools/tv.py 'pm grant com.gathin.tvhome android.permission.WRITE_SECURE_SETTINGS'
 ```
 
-For the internet photos, create a free app at [unsplash.com/developers](https://unsplash.com/developers) and put its
-Access Key in `launcher/local.properties` before building. Git ignores that file, so the key never reaches a commit:
+The internet photos work with no setup, from Wikimedia Commons. For Unsplash's photos instead, create a free app at
+[unsplash.com/developers](https://unsplash.com/developers) and put its Access Key in `launcher/local.properties`
+before building. Git ignores that file, so the key never reaches a commit:
 
 ```
 unsplash.access_key=<your access key>
 ```
 
-A demo key allows 50 requests an hour. The first fetch of a theme uses one request per search term, and each photo's
-place and camera one more, asked once when the photo first comes on screen.
+`./gradlew -PunsplashKey= assembleRelease` builds without the key, to try Commons on a machine that has one.
 
 Seasonal looks are on by default (`seasonal_calendar` in `launcher/app/src/main/res/values/config.xml`). Set it to
 `false` to get the upstream Home back.
+
+### Background photos from the internet
+
+<img src="docs/photos-home.jpg" width="640" alt="Home on the Autumn theme with an internet photo of an autumn forest covering the whole screen behind the clock, the top bar and the dock">
+
+A theme can take its background from the internet instead of its own pictures. In the theme menu (the button next to
+Wi-Fi), **Background** is a list with two choices:
+
+- **Theme**: the pack's own pictures, as before.
+- **Internet**: photos found with the theme's search terms, covering the whole screen and changing on their own.
+  **Change photo every** sets the pace, from 10 seconds to 30 minutes (Launcher settings has the same setting).
+
+<img src="docs/photos-menu.jpg" width="640" alt="The theme menu open under the leaf button: View background, Background set to Internet, Change photo every 30 s, Change theme by date on, and Theme Autumn">
+
+**Where the photos come from.** Without any setup, from [Wikimedia Commons](https://commons.wikimedia.org): freely
+licensed photos, no key and no account. With an Unsplash key in the build, from [Unsplash](https://unsplash.com).
+Adding or removing the key later switches the photos on the next fetch.
+
+**Which photos.** Each theme lists its search terms in `theme.json` (`photos.queries`); the built-in themes and the
+example pack already have them. A photo whose own words belong to another time of year is left out:
+
+- A season keeps out the holidays and the other seasons, so Autumn never shows a Christmas tree or snow.
+- A holiday keeps out the other holidays, but keeps the seasons: Halloween photos are full of autumn leaves.
+- From Commons, only landscape JPEGs, and at most three by one author for each term.
+- From Unsplash, very bright photos go last, so the clock and the dock stay readable.
+
+**Size.** The launcher reads the screen's resolution from the device (1920 x 1080 on a Full HD box) and sends it with
+every search: Commons returns only files at least that size, and Unsplash results smaller than the screen are dropped,
+so no photo is stretched. Each photo is then downloaded at exactly the screen's size, never at the size the
+photographer uploaded; the details show both. A theme keeps about 24 photos on the TV, so they show without a network; they are fetched again
+after three days, or when the search terms change.
+
+**Credit.** Every photo shows its author, source and licence, and the place it was taken when it is known.
+
+### View background and the details of a photo
+
+**View background** in the theme menu shows the photos full screen:
+
+| Key | What it does |
+|---|---|
+| Left / Right | The previous or the next photo |
+| Up | The photo's details |
+| Down, or Back | Hides the details |
+| Back, or Home | Back to Home |
+
+<img src="docs/photos-viewer.jpg" width="640" alt="A photo full screen with its credit line at the bottom: the photographer, the source and the place, and a hint that Up shows the details">
+
+<img src="docs/photos-details.jpg" width="640" alt="The details panel over a photo: its description, place, photographer and source, camera, date and size, with the original size beside the size on the TV">
+
+The details are the description, the place, the author and licence, the camera (Unsplash only), the date (taken, on
+Commons; published, on Unsplash) and the size on the TV beside the original's. What a photographer left out says
+**Not given**. Place names come from the photo's coordinates through OpenStreetMap, in the TV's language, asked once
+per photo.
+
+### Photo screensaver
+
+The same carousel is a screensaver. Press **Back** on Home to start it, or let the TV start it when idle: the installer
+step above makes it the TV's screensaver. It shows the active theme's photos first (its name and search terms), then
+**Screensaver topics** from Launcher settings, or a varied mix when none are set. With **Day and night photos** on, it
+looks for daylight photos by day and night photos after sunset. The keys are those of View background.
+
+With a theme on, the cinematic shelf's app-colour glow and artwork stay off, so they never wash over the photo.
+
+### Quick panel and sleep countdown
+
+- **Hold Home**, where the firmware has no dashboard of its own, for a quick panel: the time and date, TV settings,
+  network, picture, the sleep timer, apps and Launcher settings.
+- In the sleep timer's last minute, a countdown stays at the top of the screen over any app until the box goes to
+  standby.
 
 ### The built-in calendar
 
@@ -192,20 +263,14 @@ Home picks the new pack up the next time it comes to the front.
 ### On the TV
 
 - **Sparkle button**, next to Wi-Fi, shows that theme's icon. It opens the theme menu:
-  - **View background** shows the pictures full screen. Left and Right change the picture, Up shows its details
-    (description, place, photographer, camera, date and size), Down or Back hides them, Back again returns to Home.
-  - **Background**: **Theme** (the pack's own pictures) or **Internet** (photos found with the theme's
-    `photos.queries`, which cover the whole screen).
-  - **Change photo every** 10 s to 30 min, shown while the background is Internet. Launcher settings has the same
-    setting.
+  - **View background**, **Background** and **Change photo every**, described in
+    [Background photos from the internet](#background-photos-from-the-internet).
   - **Change theme by date** turns the calendar on or off.
   - A list of every theme in the pack, to use one now, whatever the date.
   - **Theme pack problems** appears only when something in the pack was skipped, and says which file and why.
-- **Back on Home** opens the photo screensaver, which the TV also starts on its own when idle. It shows the active
-  theme's photos first, then **Screensaver topics** from Launcher settings (or a varied mix), and with **Day and
-  night photos** on, daylight photos by day and night photos after sunset. The same keys as View background work.
-- With a theme on, the cinematic shelf's app-colour glow and artwork stay off, so they never wash over the theme.
-- **Hold Home**, where the firmware has no dashboard of its own, for the quick panel.
+- **Back on Home** opens the [photo screensaver](#photo-screensaver).
+- **Hold Home**, where the firmware has no dashboard of its own, for the
+  [quick panel](#quick-panel-and-sleep-countdown).
 - **Moon pill**, the sleep timer. Choose 1, 10, 20, 30, 60, 90, 120, 180 or 240 minutes, or Off.
   - While it runs, the pill shows the minutes left.
   - In the last minute a countdown stays at the top of the screen, over any app, until the box goes to standby.

@@ -173,7 +173,7 @@
     <string name="photos_source_online">互联网</string>
     <string name="photos_loading">正在查找照片…</string>
     <string name="photo_info">详情</string>
-    <string name="photo_credit">照片：%1$s · Unsplash</string>
+    <string name="photo_credit">照片：%1$s</string>
     <string name="photo_location">地点</string>
     <string name="photo_by">照片</string>
     <string name="photo_camera">相机</string>
@@ -188,4 +188,6 @@
     <string name="photo_not_given">未提供</string>
     <string name="photo_interval">照片切换间隔</string>
     <string name="photo_seconds">%1$d 秒</string>
+    <string name="photo_shot">拍摄于</string>
+    <string name="photo_original">原图 %1$s</string>
 </resources>

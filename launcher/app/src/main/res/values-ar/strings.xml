@@ -123,7 +123,7 @@
     <string name="photos_source_online">الإنترنت</string>
     <string name="photos_loading">جارٍ البحث عن صور…</string>
     <string name="photo_info">التفاصيل</string>
-    <string name="photo_credit">الصورة: %1$s · Unsplash</string>
+    <string name="photo_credit">الصورة: %1$s</string>
     <string name="photo_location">المكان</string>
     <string name="photo_by">الصورة</string>
     <string name="photo_camera">الكاميرا</string>
@@ -138,4 +138,6 @@
     <string name="photo_not_given">غير محدد</string>
     <string name="photo_interval">تغيير الصورة كل</string>
     <string name="photo_seconds">%1$d ث</string>
+    <string name="photo_shot">التُقطت</string>
+    <string name="photo_original">الأصل %1$s</string>
 </resources>

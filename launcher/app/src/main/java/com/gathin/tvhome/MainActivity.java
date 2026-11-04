@@ -1500,7 +1500,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     private void refreshThemePhotos() {
         if (season == null || !PhotoSets.themeOnline(this, season.folder)) return;
         String folder = season.folder;
-        OnlinePhotos.refresh(this, PhotoSets.themeSet(folder), PhotoSets.themeQueries(season), PhotoSets.THEME_COUNT, () -> {
+        List<String> queries = PhotoSets.themeQueries(season);
+        OnlinePhotos.refresh(this, PhotoSets.themeSet(folder), queries, PhotoSets.excludeFor(queries), PhotoSets.THEME_COUNT, () -> {
             if (isDestroyed() || season == null || !folder.equals(season.folder)) return;
             seasonBackgrounds = seasonBackgroundFiles();
             seasonOnlineArt = !onlineBackgroundFiles().isEmpty();
@@ -1539,7 +1540,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
      */
     private void assignPhotoScreensaver() {
         SharedPreferences prefs = getSharedPreferences(Config.SETTINGS_NAME, MODE_PRIVATE);
-        if (!OnlinePhotos.hasKey(this) || prefs.getBoolean("photo_dream_assigned", false)
+        if (prefs.getBoolean("photo_dream_assigned", false)
                 || checkSelfPermission(android.Manifest.permission.WRITE_SECURE_SETTINGS)
                 != android.content.pm.PackageManager.PERMISSION_GRANTED) return;
         try {
@@ -2361,10 +2362,10 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     @Override
     @SuppressWarnings("deprecation")
     public void onBackPressed() {
-        // Home screen: Back opens the clock with back_opens_clock, else the photo screensaver when photos are set up.
+        // Home screen: Back opens the clock with back_opens_clock, else the photo screensaver.
         if (backOpensClock) {
             startActivity(new Intent(this, ClockActivity.class));
-        } else if (OnlinePhotos.hasKey(this)) {
+        } else {
             // The photo screensaver, on demand.
             startActivity(new Intent(this, PhotoViewerActivity.class).putExtra(PhotoViewerActivity.EXTRA_SAVER, true));
         }
@@ -4398,10 +4399,6 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
 
     private void setBackgroundSource(String folder, boolean was, boolean online) {
         if (online == was) return;
-        if (online && !OnlinePhotos.hasKey(this)) {
-            Toast.makeText(this, R.string.not_available, Toast.LENGTH_SHORT).show();
-            return;
-        }
         PhotoSets.setThemeOnline(this, folder, online);
         recreate();
     }

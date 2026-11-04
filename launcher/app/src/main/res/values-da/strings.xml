@@ -123,7 +123,7 @@
     <string name="photos_source_online">Internet</string>
     <string name="photos_loading">Finder fotos…</string>
     <string name="photo_info">Detaljer</string>
-    <string name="photo_credit">Foto: %1$s · Unsplash</string>
+    <string name="photo_credit">Foto: %1$s</string>
     <string name="photo_location">Sted</string>
     <string name="photo_by">Foto</string>
     <string name="photo_camera">Kamera</string>
@@ -138,4 +138,6 @@
     <string name="photo_not_given">Ikke angivet</string>
     <string name="photo_interval">Skift foto hvert</string>
     <string name="photo_seconds">%1$d s</string>
+    <string name="photo_shot">Taget</string>
+    <string name="photo_original">original %1$s</string>
 </resources>

@@ -101,7 +101,7 @@
     <string name="photos_source_online">Internet</string>
     <string name="photos_loading">Tražim fotografije…</string>
     <string name="photo_info">Detalji</string>
-    <string name="photo_credit">Foto: %1$s · Unsplash</string>
+    <string name="photo_credit">Foto: %1$s</string>
     <string name="photo_location">Mesto</string>
     <string name="photo_by">Foto</string>
     <string name="photo_camera">Kamera</string>
@@ -116,4 +116,6 @@
     <string name="photo_not_given">Nije navedeno</string>
     <string name="photo_interval">Menjaj fotografiju na</string>
     <string name="photo_seconds">%1$d s</string>
+    <string name="photo_shot">Snimljeno</string>
+    <string name="photo_original">original %1$s</string>
 </resources>
