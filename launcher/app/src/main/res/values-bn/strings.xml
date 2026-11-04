@@ -119,4 +119,24 @@
     <string name="sleep_timer">স্লিপ টাইমার</string>
     <string name="sleep_minutes">%1$d মিনিট</string>
     <string name="sleep_warning">১ মিনিটের মধ্যে টিভি বন্ধ হবে</string>
+    <string name="photos_background">পটভূমি</string>
+    <string name="photos_source_theme">থিম থেকে</string>
+    <string name="photos_source_online">ইন্টারনেট</string>
+    <string name="photos_loading">ছবি খোঁজা হচ্ছে…</string>
+    <string name="photo_info">বিস্তারিত</string>
+    <string name="photo_credit">ছবি: %1$s · Unsplash</string>
+    <string name="photo_location">স্থান</string>
+    <string name="photo_by">ছবি</string>
+    <string name="photo_camera">ক্যামেরা</string>
+    <string name="photo_taken">প্রকাশিত</string>
+    <string name="photo_size">আকার</string>
+    <string name="saver_topics">স্ক্রিনসেভারের বিষয়</string>
+    <string name="saver_topics_hint">কমা দিয়ে আলাদা করুন, যেমন পাহাড়, সমুদ্র, রাতের শহর। সক্রিয় থিমের ছবি আগে আসবে।</string>
+    <string name="saver_topics_default">বিভিন্ন</string>
+    <string name="saver_daynight">দিন ও রাতের ছবি</string>
+    <string name="photo_dream_name">ছবি</string>
+    <string name="photo_no_description">এই ছবির কোনো বিবরণ নেই</string>
+    <string name="photo_not_given">দেওয়া নেই</string>
+    <string name="photo_interval">ছবি বদলান প্রতি</string>
+    <string name="photo_seconds">%1$d সে</string>
 </resources>

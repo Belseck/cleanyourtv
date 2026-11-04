@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Quick settings opened by the remote's Settings button: the Inputs dropdown's glass panel, placed
-     under the Settings pill so it lines up on Home and sits top right over any app. -->
+<!-- Quick panel, opened by the remote's Settings button (settings_key_panel) or by holding Home where the
+     system has no panel of its own: a full-height sheet at the edge, like Android TV's dashboard, over a
+     scrim that darkens only that side. -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/scrim"
     android:layout_width="match_parent"
@@ -8,16 +9,36 @@
 
     <LinearLayout
         android:id="@+id/panel"
-        android:layout_width="wrap_content"
-        android:minWidth="220dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|end"
-        android:layout_marginTop="105dp"
-        android:layout_marginEnd="56dp"
+        android:layout_width="400dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:layout_margin="20dp"
         android:orientation="vertical"
-        android:background="@drawable/glass_panel"
-        android:padding="6dp"
-        android:elevation="12dp">
+        android:background="@drawable/qs_panel_bg"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:paddingTop="26dp"
+        android:paddingBottom="24dp"
+        android:elevation="16dp">
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFFFF"
+            android:textSize="40sp"
+            android:fontFamily="@string/font_light"
+            android:includeFontPadding="false" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="24dp"
+            android:textColor="#B3FFFFFF"
+            android:textSize="15sp"
+            android:fontFamily="@string/font_regular" />
 
         <LinearLayout
             android:id="@+id/rows"

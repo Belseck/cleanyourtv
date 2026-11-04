@@ -142,4 +142,24 @@
     <string name="sleep_timer">Insomningstimer</string>
     <string name="sleep_minutes">%1$d min</string>
     <string name="sleep_warning">Tv:n stängs av om 1 minut</string>
+    <string name="photos_background">Bakgrund</string>
+    <string name="photos_source_theme">Från tema</string>
+    <string name="photos_source_online">Internet</string>
+    <string name="photos_loading">Söker foton…</string>
+    <string name="photo_info">Detaljer</string>
+    <string name="photo_credit">Foto: %1$s · Unsplash</string>
+    <string name="photo_location">Plats</string>
+    <string name="photo_by">Foto</string>
+    <string name="photo_camera">Kamera</string>
+    <string name="photo_taken">Publicerad</string>
+    <string name="photo_size">Storlek</string>
+    <string name="saver_topics">Skärmsläckarens ämnen</string>
+    <string name="saver_topics_hint">Separerade med kommatecken, t.ex. berg, hav, stad på natten. Det aktiva temats foton kommer först.</string>
+    <string name="saver_topics_default">Blandat</string>
+    <string name="saver_daynight">Dag- och nattfoton</string>
+    <string name="photo_dream_name">Foton</string>
+    <string name="photo_no_description">Fotot saknar beskrivning</string>
+    <string name="photo_not_given">Inte angivet</string>
+    <string name="photo_interval">Byt foto var</string>
+    <string name="photo_seconds">%1$d s</string>
 </resources>

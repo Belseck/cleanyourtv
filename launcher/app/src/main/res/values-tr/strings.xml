@@ -114,4 +114,24 @@
     <string name="sleep_timer">Uyku zamanlayıcısı</string>
     <string name="sleep_minutes">%1$d dk</string>
     <string name="sleep_warning">TV 1 dakika içinde kapanacak</string>
+    <string name="photos_background">Arka plan</string>
+    <string name="photos_source_theme">Temadan</string>
+    <string name="photos_source_online">İnternet</string>
+    <string name="photos_loading">Fotoğraflar aranıyor…</string>
+    <string name="photo_info">Ayrıntılar</string>
+    <string name="photo_credit">Fotoğraf: %1$s · Unsplash</string>
+    <string name="photo_location">Yer</string>
+    <string name="photo_by">Fotoğraf</string>
+    <string name="photo_camera">Kamera</string>
+    <string name="photo_taken">Yayınlanma</string>
+    <string name="photo_size">Boyut</string>
+    <string name="saver_topics">Ekran koruyucu konuları</string>
+    <string name="saver_topics_hint">Virgülle ayırın, ör. dağlar, okyanus, gece şehir. Önce etkin temanın fotoğrafları gelir.</string>
+    <string name="saver_topics_default">Karışık</string>
+    <string name="saver_daynight">Gündüz ve gece fotoğrafları</string>
+    <string name="photo_dream_name">Fotoğraflar</string>
+    <string name="photo_no_description">Bu fotoğrafın açıklaması yok</string>
+    <string name="photo_not_given">Belirtilmemiş</string>
+    <string name="photo_interval">Fotoğrafı değiştirme sıklığı</string>
+    <string name="photo_seconds">%1$d sn</string>
 </resources>

@@ -172,4 +172,24 @@
     <string name="sleep_timer">Таймер сна</string>
     <string name="sleep_minutes">%1$d мин</string>
     <string name="sleep_warning">Телевизор выключится через 1 минуту</string>
+    <string name="photos_background">Фон</string>
+    <string name="photos_source_theme">Из темы</string>
+    <string name="photos_source_online">Интернет</string>
+    <string name="photos_loading">Ищу фото…</string>
+    <string name="photo_info">Подробности</string>
+    <string name="photo_credit">Фото: %1$s · Unsplash</string>
+    <string name="photo_location">Место</string>
+    <string name="photo_by">Фото</string>
+    <string name="photo_camera">Камера</string>
+    <string name="photo_taken">Опубликовано</string>
+    <string name="photo_size">Размер</string>
+    <string name="saver_topics">Темы заставки</string>
+    <string name="saver_topics_hint">Через запятую, напр. горы, океан, ночной город. Сначала фото активной темы.</string>
+    <string name="saver_topics_default">Разные</string>
+    <string name="saver_daynight">Дневные и ночные фото</string>
+    <string name="photo_dream_name">Фото</string>
+    <string name="photo_no_description">У этого фото нет описания</string>
+    <string name="photo_not_given">Не указано</string>
+    <string name="photo_interval">Менять фото каждые</string>
+    <string name="photo_seconds">%1$d с</string>
 </resources>

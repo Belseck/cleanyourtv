@@ -129,4 +129,24 @@
     <string name="sleep_timer">Časovač vypnutí</string>
     <string name="sleep_minutes">%1$d min</string>
     <string name="sleep_warning">Televize se vypne za 1 minutu</string>
+    <string name="photos_background">Pozadí</string>
+    <string name="photos_source_theme">Z motivu</string>
+    <string name="photos_source_online">Internet</string>
+    <string name="photos_loading">Hledání fotek…</string>
+    <string name="photo_info">Podrobnosti</string>
+    <string name="photo_credit">Foto: %1$s · Unsplash</string>
+    <string name="photo_location">Místo</string>
+    <string name="photo_by">Foto</string>
+    <string name="photo_camera">Fotoaparát</string>
+    <string name="photo_taken">Zveřejněno</string>
+    <string name="photo_size">Velikost</string>
+    <string name="saver_topics">Témata spořiče</string>
+    <string name="saver_topics_hint">Oddělená čárkami, např. hory, oceán, město v noci. Nejdřív fotky aktivního motivu.</string>
+    <string name="saver_topics_default">Různá</string>
+    <string name="saver_daynight">Denní a noční fotky</string>
+    <string name="photo_dream_name">Fotky</string>
+    <string name="photo_no_description">Tato fotka nemá popis</string>
+    <string name="photo_not_given">Neuvedeno</string>
+    <string name="photo_interval">Měnit fotku každých</string>
+    <string name="photo_seconds">%1$d s</string>
 </resources>

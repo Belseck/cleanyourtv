@@ -17,5 +17,14 @@
   },
   "tiles": {
     "ornament": "frost"
+  },
+  "photos": {
+    "queries": [
+      "snowy mountains",
+      "snow covered forest",
+      "frozen lake ice",
+      "northern lights snow",
+      "winter cabin snow"
+    ]
   }
 }

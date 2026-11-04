@@ -171,4 +171,24 @@
     <string name="sleep_timer">Таймер сну</string>
     <string name="sleep_minutes">%1$d хв</string>
     <string name="sleep_warning">Телевізор вимкнеться через 1 хвилину</string>
+    <string name="photos_background">Тло</string>
+    <string name="photos_source_theme">З теми</string>
+    <string name="photos_source_online">Інтернет</string>
+    <string name="photos_loading">Шукаю фото…</string>
+    <string name="photo_info">Подробиці</string>
+    <string name="photo_credit">Фото: %1$s · Unsplash</string>
+    <string name="photo_location">Місце</string>
+    <string name="photo_by">Фото</string>
+    <string name="photo_camera">Камера</string>
+    <string name="photo_taken">Опубліковано</string>
+    <string name="photo_size">Розмір</string>
+    <string name="saver_topics">Теми заставки</string>
+    <string name="saver_topics_hint">Через кому, напр. гори, океан, нічне місто. Спершу фото активної теми.</string>
+    <string name="saver_topics_default">Різні</string>
+    <string name="saver_daynight">Денні й нічні фото</string>
+    <string name="photo_dream_name">Фото</string>
+    <string name="photo_no_description">Це фото не має опису</string>
+    <string name="photo_not_given">Не вказано</string>
+    <string name="photo_interval">Змінювати фото кожні</string>
+    <string name="photo_seconds">%1$d с</string>
 </resources>

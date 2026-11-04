@@ -19,5 +19,14 @@
   "tiles": {
     "ornament": "image",
     "corner": "top-right"
+  },
+  "photos": {
+    "queries": [
+      "autumn forest red leaves",
+      "fall foliage orange trees",
+      "autumn lake reflection",
+      "fallen leaves path",
+      "misty autumn morning"
+    ]
   }
 }

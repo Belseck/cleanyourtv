@@ -13,5 +13,13 @@
   "tiles": {
     "ornament": "image",
     "corner": "top-left"
+  },
+  "photos": {
+    "queries": [
+      "halloween pumpkins night",
+      "haunted forest fog",
+      "jack o lantern",
+      "full moon spooky"
+    ]
   }
 }

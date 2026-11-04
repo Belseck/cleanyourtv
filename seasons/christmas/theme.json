@@ -18,5 +18,13 @@
   "tiles": {
     "ornament": "image",
     "corner": "top"
+  },
+  "photos": {
+    "queries": [
+      "christmas lights night",
+      "christmas tree bokeh",
+      "snowy village night",
+      "christmas ornaments dark"
+    ]
   }
 }

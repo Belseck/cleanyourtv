@@ -80,6 +80,8 @@ public class HomeKeyService extends AccessibilityService {
     private long powerOnUntil;
     /** home_long_press_home: this service takes every Home press, held ones included. */
     private boolean homeLongPressHome;
+    /** Holding Home opens the quick panel: only where no app takes Android's own panel (launcherx disabled). */
+    private boolean homeHoldPanel;
     /** app_keys "front:" entries, and the package of the activity in front, from window changes while there are any. */
     private Map<Integer, String> frontAppKeys = Collections.emptyMap();
     private Map<Integer, String> frontAppScancodes = Collections.emptyMap();
@@ -143,6 +145,7 @@ public class HomeKeyService extends AccessibilityService {
     public void onDestroy() {
         if (running == this) running = null;
         sleepHandler.removeCallbacksAndMessages(null);
+        hideSleepNotice();
         RemoteKeys.release(this);
         stopWaitingForUnlock();
         if (screenOnReceiver != null) unregisterReceiver(screenOnReceiver);
@@ -201,6 +204,8 @@ public class HomeKeyService extends AccessibilityService {
         appScancodes = RemoteKeys.parseAppScancodes(config.appKeys);
         RemoteKeys.applyKeyFilter(this, config.keyFilter);
         homeLongPressHome = config.homeLongPressHome;
+        homeHoldPanel = getPackageManager().queryIntentActivities(
+                new Intent("android.app.action.TOGGLE_NOTIFICATION_HANDLER_PANEL"), 0).isEmpty();
         frontAppKeys = RemoteKeys.parseFrontAppKeys(config.appKeys);
         frontAppScancodes = RemoteKeys.parseFrontAppScancodes(config.appKeys);
         boolean watchFront = !frontAppKeys.isEmpty() || !frontAppScancodes.isEmpty();
@@ -293,6 +298,14 @@ public class HomeKeyService extends AccessibilityService {
             if (event.getAction() == KeyEvent.ACTION_UP && !event.isCanceled()) openHome();
             return true;
         }
+        // A held Home opens the panel. Key repeats are made after this filter, so the hold is timed here, as long as
+        // Android's own long press: that one swallows the release, so Home is not opened as well. The events go on.
+        if (homeHoldPanel && event.getKeyCode() == KeyEvent.KEYCODE_HOME) {
+            handler.removeCallbacks(homeHeld);
+            if (event.getAction() == KeyEvent.ACTION_DOWN && event.getRepeatCount() == 0) {
+                handler.postDelayed(homeHeld, android.view.ViewConfiguration.getLongPressTimeout() + 50L);
+            }
+        }
         if (event.getKeyCode() == KeyEvent.KEYCODE_HOME && !stockHome.isEmpty()) {
             redirectHomeKey(event);
             return false;
@@ -381,6 +394,8 @@ public class HomeKeyService extends AccessibilityService {
 
     /** One minute before standby a notice says so, over whatever app is in front. */
     static final long SLEEP_WARNING_MS = 60_000;
+    /** Timer lengths: 1 minute, then the lengths an LG TV's own sleep timer offers. */
+    static final int[] SLEEP_MINUTES = {1, 10, 20, 30, 60, 90, 120, 180, 240};
     /** A step this late means the box slept meanwhile (the handler counts uptime) and has just been woken. */
     private static final long SLEEP_STALE_MS = 2 * 60_000;
     /** Wall-clock end of the sleep timer, 0 when it is off. */
@@ -405,6 +420,7 @@ public class HomeKeyService extends AccessibilityService {
         HomeKeyService service = running;
         if (service == null) return;
         service.sleepHandler.removeCallbacksAndMessages(null);
+        service.hideSleepNotice();
         long ms = Math.max(0, minutes) * 60_000L;
         service.sleepAt = ms == 0 ? 0 : System.currentTimeMillis() + ms;
         if (ms == 0) return;
@@ -417,11 +433,74 @@ public class HomeKeyService extends AccessibilityService {
                 && getSystemService(PowerManager.class).isInteractive();
     }
 
+    /** The last minute's countdown, drawn over whatever app is in front until standby or until the timer stops. */
+    private android.view.View sleepNotice;
+    private android.widget.TextView sleepNoticeText;
+    private final Runnable sleepTick = this::sleepTick;
+
     private void sleepWarning() {
-        if (sleepStepDue(sleepAt - SLEEP_WARNING_MS)) Toast.makeText(this, R.string.sleep_warning, Toast.LENGTH_LONG).show();
+        if (!sleepStepDue(sleepAt - SLEEP_WARNING_MS)) return;
+        showSleepNotice();
+        sleepTick();
+    }
+
+    private void sleepTick() {
+        long left = sleepAt - System.currentTimeMillis();
+        if (sleepNotice == null || left <= 0) return;
+        long s = (left + 999) / 1000;
+        sleepNoticeText.setText(getString(R.string.sleep_timer) + "   "
+                + String.format(java.util.Locale.getDefault(), "%d:%02d", s / 60, s % 60));
+        sleepHandler.postDelayed(sleepTick, (left - 1) % 1000 + 1);   // at the next whole second
+    }
+
+    /** An accessibility overlay: no extra permission, and unlike a toast it stays up and never takes focus. */
+    private void showSleepNotice() {
+        if (sleepNotice != null) return;
+        float d = getResources().getDisplayMetrics().density;
+        android.widget.LinearLayout box = new android.widget.LinearLayout(this);
+        box.setGravity(android.view.Gravity.CENTER_VERTICAL);
+        box.setBackgroundResource(R.drawable.qs_panel_bg);
+        box.setPadding((int) (20 * d), (int) (12 * d), (int) (24 * d), (int) (12 * d));
+        android.widget.ImageView icon = new android.widget.ImageView(this);
+        icon.setImageResource(R.drawable.ic_sleep);
+        box.addView(icon, new android.widget.LinearLayout.LayoutParams((int) (28 * d), (int) (28 * d)));
+        android.widget.TextView text = new android.widget.TextView(this);
+        text.setTextColor(0xFFFFFFFF);
+        text.setTextSize(20);
+        text.setFontFeatureSettings("tnum");
+        text.setPaddingRelative((int) (12 * d), 0, 0, 0);
+        box.addView(text);
+        android.view.WindowManager.LayoutParams lp = new android.view.WindowManager.LayoutParams(
+                android.view.WindowManager.LayoutParams.WRAP_CONTENT, android.view.WindowManager.LayoutParams.WRAP_CONTENT,
+                android.view.WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY,
+                android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                        | android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                android.graphics.PixelFormat.TRANSLUCENT);
+        lp.gravity = android.view.Gravity.TOP | android.view.Gravity.CENTER_HORIZONTAL;
+        lp.y = (int) (40 * d);
+        try {
+            getSystemService(android.view.WindowManager.class).addView(box, lp);
+        } catch (RuntimeException e) {
+            Toast.makeText(this, R.string.sleep_warning, Toast.LENGTH_LONG).show();
+            return;
+        }
+        sleepNotice = box;
+        sleepNoticeText = text;
+    }
+
+    private void hideSleepNotice() {
+        if (sleepNotice == null) return;
+        try {
+            getSystemService(android.view.WindowManager.class).removeView(sleepNotice);
+        } catch (RuntimeException ignored) {
+            // Already gone with the window token.
+        }
+        sleepNotice = null;
+        sleepNoticeText = null;
     }
 
     private void sleepNow() {
+        hideSleepNotice();
         boolean due = sleepStepDue(sleepAt);
         sleepAt = 0;
         // Standby, as the remote's power button: with HDMI-CEC on, the box switches the TV off with it.
@@ -458,6 +537,8 @@ public class HomeKeyService extends AccessibilityService {
     /** Lets the system see the key, so a long press still does what the firmware gives it. */
     private static final long HOME_KEY_DELAY_MS = 250;
     private final Handler handler = new Handler(Looper.getMainLooper());
+    private final Runnable homeHeld = () -> startActivity(
+            new Intent(this, QuickSettingsActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
 
     /** stock_home_redirect on the Home key: when the stock home is already on screen (it came up at boot, before
      *  Android bound this service), Home brings it up again with no window change, so the redirect above never

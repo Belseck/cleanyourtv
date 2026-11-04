@@ -18,5 +18,13 @@
   "tiles": {
     "ornament": "image",
     "corner": "top-right"
+  },
+  "photos": {
+    "queries": [
+      "red roses dark",
+      "romantic candlelight",
+      "heart bokeh lights",
+      "pink flowers moody"
+    ]
   }
 }

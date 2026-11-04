@@ -132,4 +132,24 @@
     <string name="sleep_timer">Slaaptimer</string>
     <string name="sleep_minutes">%1$d min</string>
     <string name="sleep_warning">De tv gaat over 1 minuut uit</string>
+    <string name="photos_background">Achtergrond</string>
+    <string name="photos_source_theme">Van thema</string>
+    <string name="photos_source_online">Internet</string>
+    <string name="photos_loading">Foto\'s zoeken…</string>
+    <string name="photo_info">Details</string>
+    <string name="photo_credit">Foto: %1$s · Unsplash</string>
+    <string name="photo_location">Plaats</string>
+    <string name="photo_by">Foto</string>
+    <string name="photo_camera">Camera</string>
+    <string name="photo_taken">Gepubliceerd</string>
+    <string name="photo_size">Grootte</string>
+    <string name="saver_topics">Onderwerpen screensaver</string>
+    <string name="saver_topics_hint">Gescheiden door komma\'s, bijv. bergen, oceaan, stad bij nacht. Foto\'s van het actieve thema komen eerst.</string>
+    <string name="saver_topics_default">Gevarieerd</string>
+    <string name="saver_daynight">Dag- en nachtfoto\'s</string>
+    <string name="photo_dream_name">Foto\'s</string>
+    <string name="photo_no_description">Deze foto heeft geen beschrijving</string>
+    <string name="photo_not_given">Niet opgegeven</string>
+    <string name="photo_interval">Foto wisselen elke</string>
+    <string name="photo_seconds">%1$d s</string>
 </resources>

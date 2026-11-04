@@ -131,4 +131,24 @@
     <string name="sleep_timer">Uyqu taymeri</string>
     <string name="sleep_minutes">%1$d daq</string>
     <string name="sleep_warning">Televizor 1 daqiqadan so‘ng o‘chadi</string>
+    <string name="photos_background">Fon</string>
+    <string name="photos_source_theme">Mavzudan</string>
+    <string name="photos_source_online">Internet</string>
+    <string name="photos_loading">Rasmlar qidirilmoqda…</string>
+    <string name="photo_info">Tafsilotlar</string>
+    <string name="photo_credit">Rasm: %1$s · Unsplash</string>
+    <string name="photo_location">Joy</string>
+    <string name="photo_by">Rasm</string>
+    <string name="photo_camera">Kamera</string>
+    <string name="photo_taken">Eʼlon qilingan</string>
+    <string name="photo_size">Hajmi</string>
+    <string name="saver_topics">Ekran saqlovchi mavzulari</string>
+    <string name="saver_topics_hint">Vergul bilan ajrating, masalan tog‘lar, okean, tungi shahar. Avval faol mavzu rasmlari chiqadi.</string>
+    <string name="saver_topics_default">Turli</string>
+    <string name="saver_daynight">Kunduzgi va tungi rasmlar</string>
+    <string name="photo_dream_name">Rasmlar</string>
+    <string name="photo_no_description">Bu rasmda tavsif yo‘q</string>
+    <string name="photo_not_given">Ko‘rsatilmagan</string>
+    <string name="photo_interval">Rasmni almashtirish oralig‘i</string>
+    <string name="photo_seconds">%1$d s</string>
 </resources>

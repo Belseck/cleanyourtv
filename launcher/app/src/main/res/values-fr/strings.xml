@@ -115,4 +115,24 @@
     <string name="sleep_timer">Minuteur de mise en veille</string>
     <string name="sleep_minutes">%1$d min</string>
     <string name="sleep_warning">La télé s\'éteint dans 1 minute</string>
+    <string name="photos_background">Fond</string>
+    <string name="photos_source_theme">Du thème</string>
+    <string name="photos_source_online">Internet</string>
+    <string name="photos_loading">Recherche de photos…</string>
+    <string name="photo_info">Détails</string>
+    <string name="photo_credit">Photo : %1$s · Unsplash</string>
+    <string name="photo_location">Lieu</string>
+    <string name="photo_by">Photo</string>
+    <string name="photo_camera">Appareil</string>
+    <string name="photo_taken">Publiée</string>
+    <string name="photo_size">Taille</string>
+    <string name="saver_topics">Thèmes de l\'écran de veille</string>
+    <string name="saver_topics_hint">Séparés par des virgules, p. ex. montagnes, océan, ville la nuit. Les photos du thème actif passent en premier.</string>
+    <string name="saver_topics_default">Variés</string>
+    <string name="saver_daynight">Photos de jour et de nuit</string>
+    <string name="photo_dream_name">Photos</string>
+    <string name="photo_no_description">Cette photo n\'a pas de description</string>
+    <string name="photo_not_given">Non indiqué</string>
+    <string name="photo_interval">Changer de photo toutes les</string>
+    <string name="photo_seconds">%1$d s</string>
 </resources>

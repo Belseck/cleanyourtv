@@ -168,6 +168,12 @@ public final class LauncherSettingsActivity extends Activity {
             changed();
             refresh();
         });
+        findViewById(R.id.saverTopicsChoice).setOnClickListener(v -> editSaverTopics());
+        findViewById(R.id.photoIntervalChoice).setOnClickListener(v -> pickPhotoInterval());
+        findViewById(R.id.saverDayNightChoice).setOnClickListener(v -> {
+            choices.edit().putBoolean(PhotoSets.SAVER_DAYNIGHT, !choices.getBoolean(PhotoSets.SAVER_DAYNIGHT, false)).apply();
+            refresh();
+        });
         findViewById(R.id.defaultHomeChoice).setOnClickListener(v ->
                 open(new Intent(this, HomeSettingsActivity.class)));
         findViewById(R.id.tvSettingsChoice).setOnClickListener(v ->
@@ -292,6 +298,54 @@ public final class LauncherSettingsActivity extends Activity {
         refresh();
     }
 
+    /** "30 s", "5 min". */
+    private String intervalLabel(int seconds) {
+        return seconds < 60 ? getString(R.string.photo_seconds, seconds) : getString(R.string.sleep_minutes, seconds / 60);
+    }
+
+    /** How often every photo carousel changes: Home's internet background, View background and the screensaver. */
+    private void pickPhotoInterval() {
+        int[] values = PhotoSets.INTERVALS;
+        String[] labels = new String[values.length];
+        int current = PhotoSets.interval(this), checked = -1;
+        for (int i = 0; i < values.length; i++) {
+            labels[i] = intervalLabel(values[i]);
+            if (values[i] == current) checked = i;
+        }
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.photo_interval)
+                .setSingleChoiceItems(labels, checked, (dialog, which) -> {
+                    choices.edit().putInt(PhotoSets.INTERVAL, values[which]).apply();
+                    changed();   // Home rebuilds with the new pace
+                    refresh();
+                    dialog.dismiss();
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
+
+    /** Comma-separated search terms for the screensaver's photos; empty uses a varied default. */
+    private void editSaverTopics() {
+        android.widget.EditText field = new android.widget.EditText(this);
+        field.setSingleLine(true);
+        field.setText(choices.getString(PhotoSets.SAVER_TOPICS, ""));
+        field.setHint(String.join(", ", PhotoSets.DEFAULT_TOPICS.subList(0, 3)));
+        int pad = (int) (20 * getResources().getDisplayMetrics().density);
+        android.widget.FrameLayout box = new android.widget.FrameLayout(this);
+        box.setPadding(pad, pad / 2, pad, 0);
+        box.addView(field);
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.saver_topics)
+                .setMessage(R.string.saver_topics_hint)
+                .setView(box)
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    choices.edit().putString(PhotoSets.SAVER_TOPICS, field.getText().toString().trim()).apply();
+                    refresh();
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
+
     private void refresh() {
         for (int i = 0; i < columnChoices.length; i++) {
             columnChoices[i].setSelected(columns == i + 4);
@@ -305,6 +359,13 @@ public final class LauncherSettingsActivity extends Activity {
         for (int i = 0; i < clockChoices.length; i++) {
             clockChoices[i].setSelected(CLOCK_FORMATS[i].equals(clockFormat));
         }
+        String topics = String.join(", ", PhotoSets.saverTopics(this));
+        ((TextView) findViewById(R.id.saverTopicsChoice)).setText(getString(R.string.saver_topics) + ": "
+                + (topics.isEmpty() ? getString(R.string.saver_topics_default) : topics));
+        ((TextView) findViewById(R.id.photoIntervalChoice)).setText(getString(R.string.photo_interval) + ": "
+                + intervalLabel(PhotoSets.interval(this)));
+        ((TextView) findViewById(R.id.saverDayNightChoice)).setText(getString(R.string.saver_daynight) + ": "
+                + getString(choices.getBoolean(PhotoSets.SAVER_DAYNIGHT, false) ? R.string.on : R.string.off));
         animationsChoice.setText(getString(R.string.animations_state,
                 getString(animations ? R.string.on : R.string.off)));
         advancedChoice.setText(getString(R.string.advanced_effects_state,

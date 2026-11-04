@@ -17,5 +17,13 @@
   },
   "tiles": {
     "ornament": "snow_cap"
+  },
+  "photos": {
+    "queries": [
+      "christmas lights night",
+      "christmas tree bokeh",
+      "snowy village night",
+      "christmas ornaments dark"
+    ]
   }
 }

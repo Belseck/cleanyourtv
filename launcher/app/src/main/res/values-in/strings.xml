@@ -130,4 +130,24 @@
     <string name="sleep_timer">Timer tidur</string>
     <string name="sleep_minutes">%1$d mnt</string>
     <string name="sleep_warning">TV mati dalam 1 menit</string>
+    <string name="photos_background">Latar</string>
+    <string name="photos_source_theme">Dari tema</string>
+    <string name="photos_source_online">Internet</string>
+    <string name="photos_loading">Mencari foto…</string>
+    <string name="photo_info">Detail</string>
+    <string name="photo_credit">Foto: %1$s · Unsplash</string>
+    <string name="photo_location">Tempat</string>
+    <string name="photo_by">Foto</string>
+    <string name="photo_camera">Kamera</string>
+    <string name="photo_taken">Diterbitkan</string>
+    <string name="photo_size">Ukuran</string>
+    <string name="saver_topics">Topik screensaver</string>
+    <string name="saver_topics_hint">Pisahkan dengan koma, mis. gunung, laut, kota malam hari. Foto tema aktif tampil lebih dulu.</string>
+    <string name="saver_topics_default">Beragam</string>
+    <string name="saver_daynight">Foto siang dan malam</string>
+    <string name="photo_dream_name">Foto</string>
+    <string name="photo_no_description">Foto ini tidak memiliki deskripsi</string>
+    <string name="photo_not_given">Tidak disebutkan</string>
+    <string name="photo_interval">Ganti foto setiap</string>
+    <string name="photo_seconds">%1$d dtk</string>
 </resources>

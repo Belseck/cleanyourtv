@@ -103,6 +103,18 @@ A theme with the built-in kinds and no rotation:
 | `tiles.ornament` | string | `snow_cap`, `frost`, `blossom`, `sun`, `leaves`, `heart`, `hearts`, `sparkles`, `lantern`, `flag_band`, `cobweb`, `marigold`, `candle`, `image` or `none`. `image` uses `ornament.png`. |
 | `tiles.colors` | list of colours | For `flag_band`, the stripes from top to bottom, of equal height, e.g. `["#FFFFFF", "#D52B1E"]`. Without colours `flag_band` draws nothing. |
 | `tiles.corner` | string | `top-left`, `top-right` or `top`. With `top`, `ornament.png` is stretched across the tile's top edge keeping its aspect ratio (snow caps, frost, flag bands). |
+| `photos.queries` | list of text | Up to 8 Unsplash search terms of at most 80 characters, for the theme's internet photos and its share of the screensaver. English terms find the most. Without it, the theme's English name is searched. |
+
+A theme whose internet photos look like the season:
+
+```json
+{
+  "name": { "en": "Autumn", "es": "Otoño" },
+  "photos": { "queries": ["autumn forest red leaves", "fall foliage orange trees", "autumn lake reflection"] }
+}
+```
+
+Keep each theme's terms specific to it. A term two themes share ("mountains") brings the same photos to both.
 
 ## Fixed file names
 
@@ -233,7 +245,10 @@ Exit status: 0 done, 1 the push failed, 2 refused before sending anything.
 
 The sparkle button next to Wi-Fi in the top bar opens the theme menu:
 
-- **View background** shows the current background picture on its own, without the tiles.
+- **View background** shows the pictures full screen: Left and Right change the picture, Up shows its details.
+- **Background**: Theme, the pack's pictures, or Internet, photos found with `photos.queries`. Internet photos are
+  fetched again when the terms change or after three days, and stay on the TV in between.
+- **Change photo every**, while the background is Internet.
 - **Change theme by date** on/off. On, the theme follows the dates in `seasons.json`. Off, the theme you picked
   stays.
 - **A theme list.** Pick any theme from the pack to use it right now, whatever the date.

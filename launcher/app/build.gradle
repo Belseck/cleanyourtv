@@ -15,6 +15,12 @@ android {
         targetSdk 34
         versionCode 12
         versionName '3.3'
+        // Unsplash access key for the background photos, from launcher/local.properties (unsplash.access_key=...),
+        // which git ignores. Without it the photo features stay off.
+        def localProps = new Properties()
+        def localFile = rootProject.file('local.properties')
+        if (localFile.exists()) localFile.withInputStream { localProps.load(it) }
+        resValue 'string', 'unsplash_key', localProps.getProperty('unsplash.access_key', '')
     }
 
     buildTypes {

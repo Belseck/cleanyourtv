@@ -53,6 +53,8 @@ final class SeasonPack {
         /** background/ rotation: seconds per picture and "sequential" or "shuffle"; set after construction. */
         int backgroundInterval = 300;
         String backgroundOrder = "sequential";
+        /** photos.queries: search terms for the theme's internet photos (empty: its English name). */
+        List<String> photoQueries = Collections.emptyList();
 
         Season(String folder, Map<String, String> names, String nameRes, int priority, SeasonRule rule,
                int backgroundOpacity, String skin, String particles, int[] particleColors, int particleCount,
@@ -210,7 +212,24 @@ final class SeasonPack {
                 accent.isEmpty() ? 0 : color(accent));
         season.backgroundInterval = clamp(num(o, "background_interval", 300), 10, 86400);
         season.backgroundOrder = order;
+        season.photoQueries = queries(obj(o, "photos"));
         return season;
+    }
+
+    /** photos.queries: up to 8 search terms of at most 80 characters each. */
+    static List<String> queries(JSONObject photos) {
+        Object v = photos.opt("queries");
+        if (v == null || v == JSONObject.NULL) return Collections.emptyList();
+        if (!(v instanceof JSONArray)) throw new IllegalArgumentException("photos.queries must be a list of text");
+        JSONArray arr = (JSONArray) v;
+        List<String> out = new ArrayList<>();
+        for (int i = 0; i < arr.length() && out.size() < 8; i++) {
+            Object q = arr.opt(i);
+            if (!(q instanceof String)) throw new IllegalArgumentException("photos.queries must be a list of text");
+            String t = ((String) q).trim();
+            if (!t.isEmpty()) out.add(t.length() > 80 ? t.substring(0, 80) : t);
+        }
+        return Collections.unmodifiableList(out);
     }
 
     private static JSONObject obj(JSONObject o, String key) {

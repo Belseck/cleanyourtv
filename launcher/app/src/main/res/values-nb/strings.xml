@@ -131,4 +131,24 @@
     <string name="sleep_timer">Innsovningstidsur</string>
     <string name="sleep_minutes">%1$d min</string>
     <string name="sleep_warning">TV-en slår seg av om 1 minutt</string>
+    <string name="photos_background">Bakgrunn</string>
+    <string name="photos_source_theme">Fra tema</string>
+    <string name="photos_source_online">Internett</string>
+    <string name="photos_loading">Finner bilder…</string>
+    <string name="photo_info">Detaljer</string>
+    <string name="photo_credit">Foto: %1$s · Unsplash</string>
+    <string name="photo_location">Sted</string>
+    <string name="photo_by">Foto</string>
+    <string name="photo_camera">Kamera</string>
+    <string name="photo_taken">Publisert</string>
+    <string name="photo_size">Størrelse</string>
+    <string name="saver_topics">Emner for skjermsparer</string>
+    <string name="saver_topics_hint">Skilt med komma, f.eks. fjell, hav, by om natten. Bildene fra det aktive temaet kommer først.</string>
+    <string name="saver_topics_default">Variert</string>
+    <string name="saver_daynight">Dag- og nattbilder</string>
+    <string name="photo_dream_name">Bilder</string>
+    <string name="photo_no_description">Dette bildet har ingen beskrivelse</string>
+    <string name="photo_not_given">Ikke oppgitt</string>
+    <string name="photo_interval">Bytt bilde hvert</string>
+    <string name="photo_seconds">%1$d s</string>
 </resources>

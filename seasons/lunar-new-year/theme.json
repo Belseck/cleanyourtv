@@ -18,5 +18,13 @@
   "tiles": {
     "ornament": "image",
     "corner": "top-right"
+  },
+  "photos": {
+    "queries": [
+      "red lanterns night",
+      "chinese new year festival",
+      "lantern festival",
+      "red and gold decorations"
+    ]
   }
 }

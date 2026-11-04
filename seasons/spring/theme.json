@@ -18,5 +18,14 @@
   "tiles": {
     "ornament": "image",
     "corner": "top-right"
+  },
+  "photos": {
+    "queries": [
+      "cherry blossom trees",
+      "spring tulip field",
+      "blooming flower garden",
+      "fresh green leaves sunlight",
+      "spring wildflower meadow"
+    ]
   }
 }

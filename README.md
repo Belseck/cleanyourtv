@@ -4,7 +4,7 @@
 
 > [!NOTE]
 > **This is a fork of [Gathin23/cleanyourtv](https://github.com/Gathin23/cleanyourtv)** that adds seasonal themes by
-> date and a sleep timer to the launcher. [What this fork adds](#what-this-fork-adds) describes the changes. The rest
+> date, background photos from Unsplash, a photo screensaver, a quick panel and a sleep timer to the launcher. [What this fork adds](#what-this-fork-adds) describes the changes. The rest
 > of this README is the upstream project, unchanged.
 
 ## What this fork adds
@@ -17,22 +17,38 @@
 | What a season changes | Icons and a greeting | Falling particles (built-in or your own PNGs), an ornament on every tile, the Wi-Fi, theme and Settings icons, an accent colour and a background that can rotate |
 | Backgrounds by time of day | `wallpaper_moods` (morning, evening, night) for a theme's wallpaper | `background/day/` and `background/night/` inside each season, switched at sunrise and sunset |
 | Mistakes in a pack | Not applicable | Listed on the TV under **Theme pack problems** |
-| Sleep timer | The separate Sleep Timer add-on | A moon pill in the top bar of Home, showing the minutes left |
+| Background photos | Your own wallpaper files | **Internet photos** per theme: found on Unsplash with the theme's own search terms, kept on the TV, changing on their own |
+| Screensaver | `ClockDream`, a clock on black | **Photo screensaver**: the active theme's photos first, then your topics, with day and night photos if you want them |
+| Holding Home | Android TV's dashboard, where the firmware still has it | A **quick panel** of its own where the dashboard is gone: time, network, picture, sleep timer, apps, settings |
+| Sleep timer | The separate Sleep Timer add-on | A moon pill in the top bar of Home, showing the minutes left, and a countdown over any app in the last minute |
 | Netflix key on the remote | Fixed by `app_keys` in config.xml | **Assign to Netflix button** in any tile's hold-OK menu |
-| Permissions | No new ones | `MANAGE_EXTERNAL_STORAGE`, to read the pack from `/sdcard/TVHome/seasons/` |
-| APK size | Under the 576 KB gate | About 626 KB |
+| Permissions | No new ones | `MANAGE_EXTERNAL_STORAGE`, to read the pack from `/sdcard/TVHome/seasons/`; `INTERNET`, for the photos only |
+| APK size | Under the 576 KB gate | About 670 KB |
 
-Nothing here needs a network connection: the launcher still has no `INTERNET` permission. Tested on a Chromecast with
-Google TV 4K (Google TV 14) with an LG TV.
+The launcher only goes online for the photos: it asks Unsplash for search results, pictures and each picture's place
+and camera, and nothing else. Without an Unsplash key in the build, the photo features stay off and nothing goes out.
+Tested on a Chromecast with Google TV 4K (Google TV 14) with an LG TV.
 
 ### Install
 
-The sleep timer and the Netflix button need the key helper, and the season pack needs file access:
+The sleep timer, the quick panel and the Netflix button need the key helper, the season pack needs file access,
+and the photo screensaver is set as the TV's screensaver once the launcher may write secure settings:
 
 ```
 (cd launcher && HOME_KEY_SERVICE=1 ./build-and-install.sh)
 tools/venv/bin/python -I tools/tv.py 'appops set com.gathin.tvhome MANAGE_EXTERNAL_STORAGE allow'
+tools/venv/bin/python -I tools/tv.py 'pm grant com.gathin.tvhome android.permission.WRITE_SECURE_SETTINGS'
 ```
+
+For the internet photos, create a free app at [unsplash.com/developers](https://unsplash.com/developers) and put its
+Access Key in `launcher/local.properties` before building. Git ignores that file, so the key never reaches a commit:
+
+```
+unsplash.access_key=<your access key>
+```
+
+A demo key allows 50 requests an hour. The first fetch of a theme uses one request per search term, and each photo's
+place and camera one more, asked once when the photo first comes on screen.
 
 Seasonal looks are on by default (`seasonal_calendar` in `launcher/app/src/main/res/values/config.xml`). Set it to
 `false` to get the upstream Home back.
@@ -176,13 +192,23 @@ Home picks the new pack up the next time it comes to the front.
 ### On the TV
 
 - **Sparkle button**, next to Wi-Fi, shows that theme's icon. It opens the theme menu:
-  - **View background** shows the picture without the tiles.
+  - **View background** shows the pictures full screen. Left and Right change the picture, Up shows its details
+    (description, place, photographer, camera, date and size), Down or Back hides them, Back again returns to Home.
+  - **Background**: **Theme** (the pack's own pictures) or **Internet** (photos found with the theme's
+    `photos.queries`, which cover the whole screen).
+  - **Change photo every** 10 s to 30 min, shown while the background is Internet. Launcher settings has the same
+    setting.
   - **Change theme by date** turns the calendar on or off.
   - A list of every theme in the pack, to use one now, whatever the date.
   - **Theme pack problems** appears only when something in the pack was skipped, and says which file and why.
+- **Back on Home** opens the photo screensaver, which the TV also starts on its own when idle. It shows the active
+  theme's photos first, then **Screensaver topics** from Launcher settings (or a varied mix), and with **Day and
+  night photos** on, daylight photos by day and night photos after sunset. The same keys as View background work.
+- With a theme on, the cinematic shelf's app-colour glow and artwork stay off, so they never wash over the theme.
+- **Hold Home**, where the firmware has no dashboard of its own, for the quick panel.
 - **Moon pill**, the sleep timer. Choose 1, 10, 20, 30, 60, 90, 120, 180 or 240 minutes, or Off.
   - While it runs, the pill shows the minutes left.
-  - A notice appears one minute before the end, then the box goes to standby.
+  - In the last minute a countdown stays at the top of the screen, over any app, until the box goes to standby.
   - With HDMI-CEC on (SIMPLINK, Anynet+, BRAVIA Sync and the like), the TV turns off with the box.
   - The timer keeps running while another app is in front.
 - **Assign to Netflix button**, in the menu that opens when you hold OK on a tile: the remote's Netflix key then

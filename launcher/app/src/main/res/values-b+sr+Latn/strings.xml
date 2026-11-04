@@ -96,4 +96,24 @@
     <string name="sleep_timer">Tajmer za isključivanje</string>
     <string name="sleep_minutes">%1$d min</string>
     <string name="sleep_warning">TV se isključuje za 1 minut</string>
+    <string name="photos_background">Pozadina</string>
+    <string name="photos_source_theme">Iz teme</string>
+    <string name="photos_source_online">Internet</string>
+    <string name="photos_loading">Tražim fotografije…</string>
+    <string name="photo_info">Detalji</string>
+    <string name="photo_credit">Foto: %1$s · Unsplash</string>
+    <string name="photo_location">Mesto</string>
+    <string name="photo_by">Foto</string>
+    <string name="photo_camera">Kamera</string>
+    <string name="photo_taken">Objavljeno</string>
+    <string name="photo_size">Veličina</string>
+    <string name="saver_topics">Teme čuvara ekrana</string>
+    <string name="saver_topics_hint">Odvojene zarezima, npr. planine, okean, grad noću. Prvo idu fotografije aktivne teme.</string>
+    <string name="saver_topics_default">Raznovrsno</string>
+    <string name="saver_daynight">Dnevne i noćne fotografije</string>
+    <string name="photo_dream_name">Fotografije</string>
+    <string name="photo_no_description">Ova fotografija nema opis</string>
+    <string name="photo_not_given">Nije navedeno</string>
+    <string name="photo_interval">Menjaj fotografiju na</string>
+    <string name="photo_seconds">%1$d s</string>
 </resources>

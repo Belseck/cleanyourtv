@@ -118,4 +118,24 @@
     <string name="sleep_timer">مؤقت النوم</string>
     <string name="sleep_minutes">%1$d د</string>
     <string name="sleep_warning">سيتم إيقاف التلفاز خلال دقيقة واحدة</string>
+    <string name="photos_background">الخلفية</string>
+    <string name="photos_source_theme">من السمة</string>
+    <string name="photos_source_online">الإنترنت</string>
+    <string name="photos_loading">جارٍ البحث عن صور…</string>
+    <string name="photo_info">التفاصيل</string>
+    <string name="photo_credit">الصورة: %1$s · Unsplash</string>
+    <string name="photo_location">المكان</string>
+    <string name="photo_by">الصورة</string>
+    <string name="photo_camera">الكاميرا</string>
+    <string name="photo_taken">نُشرت</string>
+    <string name="photo_size">الحجم</string>
+    <string name="saver_topics">مواضيع شاشة التوقف</string>
+    <string name="saver_topics_hint">مفصولة بفواصل، مثل جبال، محيط، مدينة ليلًا. صور السمة النشطة أولًا.</string>
+    <string name="saver_topics_default">متنوعة</string>
+    <string name="saver_daynight">صور النهار والليل</string>
+    <string name="photo_dream_name">الصور</string>
+    <string name="photo_no_description">لا يوجد وصف لهذه الصورة</string>
+    <string name="photo_not_given">غير محدد</string>
+    <string name="photo_interval">تغيير الصورة كل</string>
+    <string name="photo_seconds">%1$d ث</string>
 </resources>
