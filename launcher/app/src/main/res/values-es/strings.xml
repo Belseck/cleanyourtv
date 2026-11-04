@@ -166,4 +166,24 @@
     <string name="sleep_timer">Temporizador de apagado</string>
     <string name="sleep_minutes">%1$d min</string>
     <string name="sleep_warning">La tele se apaga en 1 minuto</string>
+    <string name="photos_background">Fondo</string>
+    <string name="photos_source_theme">Del tema</string>
+    <string name="photos_source_online">Internet</string>
+    <string name="photos_loading">Buscando fotos…</string>
+    <string name="photo_info">Detalles</string>
+    <string name="photo_credit">Foto: %1$s · Unsplash</string>
+    <string name="photo_location">Lugar</string>
+    <string name="photo_by">Foto</string>
+    <string name="photo_camera">Cámara</string>
+    <string name="photo_taken">Publicada</string>
+    <string name="photo_size">Tamaño</string>
+    <string name="saver_topics">Temas del protector de pantalla</string>
+    <string name="saver_topics_hint">Separados por comas, p. ej. montañas, océano, ciudad de noche. Primero van las fotos del tema activo.</string>
+    <string name="saver_topics_default">Variados</string>
+    <string name="saver_daynight">Fotos de día y de noche</string>
+    <string name="photo_dream_name">Fotos</string>
+    <string name="photo_no_description">Esta foto no tiene descripción</string>
+    <string name="photo_not_given">Sin datos</string>
+    <string name="photo_interval">Cambiar foto cada</string>
+    <string name="photo_seconds">%1$d s</string>
 </resources>

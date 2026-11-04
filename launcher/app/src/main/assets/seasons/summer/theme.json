@@ -17,5 +17,14 @@
   },
   "tiles": {
     "ornament": "sun"
+  },
+  "photos": {
+    "queries": [
+      "tropical beach turquoise water",
+      "summer sunset ocean",
+      "palm trees beach",
+      "sunflower field",
+      "summer lake sunshine"
+    ]
   }
 }

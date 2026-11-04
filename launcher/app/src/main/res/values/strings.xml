@@ -175,4 +175,24 @@
     <string name="sleep_timer">Sleep timer</string>
     <string name="sleep_minutes">%1$d min</string>
     <string name="sleep_warning">The TV turns off in 1 minute</string>
+    <string name="photos_background">Background</string>
+    <string name="photos_source_theme">Theme</string>
+    <string name="photos_source_online">Internet</string>
+    <string name="photos_loading">Finding photos…</string>
+    <string name="photo_info">Details</string>
+    <string name="photo_credit">Photo: %1$s · Unsplash</string>
+    <string name="photo_location">Place</string>
+    <string name="photo_by">Photo</string>
+    <string name="photo_camera">Camera</string>
+    <string name="photo_taken">Published</string>
+    <string name="photo_size">Size</string>
+    <string name="saver_topics">Screensaver topics</string>
+    <string name="saver_topics_hint">Comma-separated, e.g. mountains, ocean, city at night. The active theme\'s photos come first.</string>
+    <string name="saver_topics_default">Varied</string>
+    <string name="saver_daynight">Day and night photos</string>
+    <string name="photo_dream_name">Photos</string>
+    <string name="photo_no_description">No description for this photo</string>
+    <string name="photo_not_given">Not given</string>
+    <string name="photo_interval">Change photo every</string>
+    <string name="photo_seconds">%1$d s</string>
 </resources>

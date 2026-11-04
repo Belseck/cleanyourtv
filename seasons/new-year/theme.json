@@ -21,5 +21,13 @@
   "tiles": {
     "ornament": "image",
     "corner": "top-right"
+  },
+  "photos": {
+    "queries": [
+      "fireworks night sky",
+      "new year celebration lights",
+      "golden bokeh lights",
+      "city fireworks skyline"
+    ]
   }
 }

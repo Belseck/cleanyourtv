@@ -132,4 +132,24 @@
     <string name="sleep_timer">Uniajastin</string>
     <string name="sleep_minutes">%1$d min</string>
     <string name="sleep_warning">Televisio sammuu 1 minuutin kuluttua</string>
+    <string name="photos_background">Tausta</string>
+    <string name="photos_source_theme">Teemasta</string>
+    <string name="photos_source_online">Internet</string>
+    <string name="photos_loading">Haetaan kuvia…</string>
+    <string name="photo_info">Tiedot</string>
+    <string name="photo_credit">Kuva: %1$s · Unsplash</string>
+    <string name="photo_location">Paikka</string>
+    <string name="photo_by">Kuva</string>
+    <string name="photo_camera">Kamera</string>
+    <string name="photo_taken">Julkaistu</string>
+    <string name="photo_size">Koko</string>
+    <string name="saver_topics">Näytönsäästäjän aiheet</string>
+    <string name="saver_topics_hint">Pilkuilla erotettuina, esim. vuoret, meri, kaupunki yöllä. Aktiivisen teeman kuvat tulevat ensin.</string>
+    <string name="saver_topics_default">Vaihtelevat</string>
+    <string name="saver_daynight">Päivä- ja yökuvat</string>
+    <string name="photo_dream_name">Kuvat</string>
+    <string name="photo_no_description">Kuvalla ei ole kuvausta</string>
+    <string name="photo_not_given">Ei ilmoitettu</string>
+    <string name="photo_interval">Vaihda kuva välein</string>
+    <string name="photo_seconds">%1$d s</string>
 </resources>

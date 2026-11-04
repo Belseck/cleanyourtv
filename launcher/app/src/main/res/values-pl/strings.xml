@@ -116,4 +116,24 @@
     <string name="sleep_timer">Wyłącznik czasowy</string>
     <string name="sleep_minutes">%1$d min</string>
     <string name="sleep_warning">Telewizor wyłączy się za 1 minutę</string>
+    <string name="photos_background">Tło</string>
+    <string name="photos_source_theme">Z motywu</string>
+    <string name="photos_source_online">Internet</string>
+    <string name="photos_loading">Szukam zdjęć…</string>
+    <string name="photo_info">Szczegóły</string>
+    <string name="photo_credit">Zdjęcie: %1$s · Unsplash</string>
+    <string name="photo_location">Miejsce</string>
+    <string name="photo_by">Zdjęcie</string>
+    <string name="photo_camera">Aparat</string>
+    <string name="photo_taken">Opublikowano</string>
+    <string name="photo_size">Rozmiar</string>
+    <string name="saver_topics">Tematy wygaszacza</string>
+    <string name="saver_topics_hint">Oddzielone przecinkami, np. góry, ocean, miasto nocą. Najpierw zdjęcia aktywnego motywu.</string>
+    <string name="saver_topics_default">Różne</string>
+    <string name="saver_daynight">Zdjęcia dzienne i nocne</string>
+    <string name="photo_dream_name">Zdjęcia</string>
+    <string name="photo_no_description">To zdjęcie nie ma opisu</string>
+    <string name="photo_not_given">Brak danych</string>
+    <string name="photo_interval">Zmieniaj zdjęcie co</string>
+    <string name="photo_seconds">%1$d s</string>
 </resources>

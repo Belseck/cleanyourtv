@@ -31,4 +31,24 @@
     <string name="sleep_timer">Temporizador para desligar</string>
     <string name="sleep_minutes">%1$d min</string>
     <string name="sleep_warning">A TV desliga-se dentro de 1 minuto</string>
+    <string name="photos_background">Fundo</string>
+    <string name="photos_source_theme">Do tema</string>
+    <string name="photos_source_online">Internet</string>
+    <string name="photos_loading">A procurar fotografias…</string>
+    <string name="photo_info">Detalhes</string>
+    <string name="photo_credit">Foto: %1$s · Unsplash</string>
+    <string name="photo_location">Local</string>
+    <string name="photo_by">Foto</string>
+    <string name="photo_camera">Câmara</string>
+    <string name="photo_taken">Publicada</string>
+    <string name="photo_size">Tamanho</string>
+    <string name="saver_topics">Temas da proteção de ecrã</string>
+    <string name="saver_topics_hint">Separados por vírgulas, ex.: montanhas, oceano, cidade à noite. As fotos do tema ativo aparecem primeiro.</string>
+    <string name="saver_topics_default">Variados</string>
+    <string name="saver_daynight">Fotos de dia e de noite</string>
+    <string name="photo_dream_name">Fotos</string>
+    <string name="photo_no_description">Esta fotografia não tem descrição</string>
+    <string name="photo_not_given">Não indicado</string>
+    <string name="photo_interval">Mudar de foto a cada</string>
+    <string name="photo_seconds">%1$d s</string>
 </resources>

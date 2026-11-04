@@ -166,4 +166,24 @@
     <string name="sleep_timer">Timer di spegnimento</string>
     <string name="sleep_minutes">%1$d min</string>
     <string name="sleep_warning">La TV si spegne tra 1 minuto</string>
+    <string name="photos_background">Sfondo</string>
+    <string name="photos_source_theme">Del tema</string>
+    <string name="photos_source_online">Internet</string>
+    <string name="photos_loading">Ricerca foto…</string>
+    <string name="photo_info">Dettagli</string>
+    <string name="photo_credit">Foto: %1$s · Unsplash</string>
+    <string name="photo_location">Luogo</string>
+    <string name="photo_by">Foto</string>
+    <string name="photo_camera">Fotocamera</string>
+    <string name="photo_taken">Pubblicata</string>
+    <string name="photo_size">Dimensioni</string>
+    <string name="saver_topics">Temi del salvaschermo</string>
+    <string name="saver_topics_hint">Separati da virgole, es. montagne, oceano, città di notte. Prima le foto del tema attivo.</string>
+    <string name="saver_topics_default">Vari</string>
+    <string name="saver_daynight">Foto di giorno e di notte</string>
+    <string name="photo_dream_name">Foto</string>
+    <string name="photo_no_description">Questa foto non ha descrizione</string>
+    <string name="photo_not_given">Non indicato</string>
+    <string name="photo_interval">Cambia foto ogni</string>
+    <string name="photo_seconds">%1$d s</string>
 </resources>

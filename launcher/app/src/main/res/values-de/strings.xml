@@ -91,4 +91,24 @@
     <string name="sleep_timer">Sleep-Timer</string>
     <string name="sleep_minutes">%1$d Min.</string>
     <string name="sleep_warning">Der Fernseher schaltet sich in 1 Minute aus</string>
+    <string name="photos_background">Hintergrund</string>
+    <string name="photos_source_theme">Vom Design</string>
+    <string name="photos_source_online">Internet</string>
+    <string name="photos_loading">Fotos werden gesucht…</string>
+    <string name="photo_info">Details</string>
+    <string name="photo_credit">Foto: %1$s · Unsplash</string>
+    <string name="photo_location">Ort</string>
+    <string name="photo_by">Foto</string>
+    <string name="photo_camera">Kamera</string>
+    <string name="photo_taken">Veröffentlicht</string>
+    <string name="photo_size">Größe</string>
+    <string name="saver_topics">Bildschirmschoner-Themen</string>
+    <string name="saver_topics_hint">Durch Kommas getrennt, z. B. Berge, Meer, Stadt bei Nacht. Fotos des aktiven Designs kommen zuerst.</string>
+    <string name="saver_topics_default">Gemischt</string>
+    <string name="saver_daynight">Tag- und Nachtfotos</string>
+    <string name="photo_dream_name">Fotos</string>
+    <string name="photo_no_description">Dieses Foto hat keine Beschreibung</string>
+    <string name="photo_not_given">Nicht angegeben</string>
+    <string name="photo_interval">Foto wechseln alle</string>
+    <string name="photo_seconds">%1$d s</string>
 </resources>

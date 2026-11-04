@@ -169,4 +169,24 @@
     <string name="sleep_timer">טיימר שינה</string>
     <string name="sleep_minutes">%1$d דק׳</string>
     <string name="sleep_warning">הטלוויזיה תיכבה בעוד דקה</string>
+    <string name="photos_background">רקע</string>
+    <string name="photos_source_theme">מהערכה</string>
+    <string name="photos_source_online">אינטרנט</string>
+    <string name="photos_loading">מחפש תמונות…</string>
+    <string name="photo_info">פרטים</string>
+    <string name="photo_credit">צילום: %1$s · Unsplash</string>
+    <string name="photo_location">מקום</string>
+    <string name="photo_by">צילום</string>
+    <string name="photo_camera">מצלמה</string>
+    <string name="photo_taken">פורסם</string>
+    <string name="photo_size">גודל</string>
+    <string name="saver_topics">נושאי שומר המסך</string>
+    <string name="saver_topics_hint">מופרדים בפסיקים, למשל הרים, אוקיינוס, עיר בלילה. תמונות הערכה הפעילה קודם.</string>
+    <string name="saver_topics_default">מגוון</string>
+    <string name="saver_daynight">תמונות יום ולילה</string>
+    <string name="photo_dream_name">תמונות</string>
+    <string name="photo_no_description">לתמונה זו אין תיאור</string>
+    <string name="photo_not_given">לא צוין</string>
+    <string name="photo_interval">החלפת תמונה כל</string>
+    <string name="photo_seconds">%1$d שנ׳</string>
 </resources>

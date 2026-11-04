@@ -136,4 +136,24 @@
     <string name="sleep_timer">Temporizador d\'apagáu</string>
     <string name="sleep_minutes">%1$d min</string>
     <string name="sleep_warning">La tele apágase en 1 minutu</string>
+    <string name="photos_background">Fondu</string>
+    <string name="photos_source_theme">Del tema</string>
+    <string name="photos_source_online">Internet</string>
+    <string name="photos_loading">Buscando semeyes…</string>
+    <string name="photo_info">Detalles</string>
+    <string name="photo_credit">Semeya: %1$s · Unsplash</string>
+    <string name="photo_location">Llugar</string>
+    <string name="photo_by">Semeya</string>
+    <string name="photo_camera">Cámara</string>
+    <string name="photo_taken">Espublizada</string>
+    <string name="photo_size">Tamañu</string>
+    <string name="saver_topics">Temes del curiapantalles</string>
+    <string name="saver_topics_hint">Separaos por comes, p. ex. montes, océanu, ciudá de nueche. Primero les semeyes del tema activu.</string>
+    <string name="saver_topics_default">Variaos</string>
+    <string name="saver_daynight">Semeyes de día y de nueche</string>
+    <string name="photo_dream_name">Semeyes</string>
+    <string name="photo_no_description">Esta semeya nun tien descripción</string>
+    <string name="photo_not_given">Ensin datos</string>
+    <string name="photo_interval">Camudar semeya cada</string>
+    <string name="photo_seconds">%1$d s</string>
 </resources>

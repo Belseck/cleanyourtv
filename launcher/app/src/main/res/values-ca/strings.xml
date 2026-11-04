@@ -129,4 +129,24 @@
     <string name="sleep_timer">Temporitzador d\'apagada</string>
     <string name="sleep_minutes">%1$d min</string>
     <string name="sleep_warning">El televisor s\'apaga d\'aquí a 1 minut</string>
+    <string name="photos_background">Fons</string>
+    <string name="photos_source_theme">Del tema</string>
+    <string name="photos_source_online">Internet</string>
+    <string name="photos_loading">Cercant fotos…</string>
+    <string name="photo_info">Detalls</string>
+    <string name="photo_credit">Foto: %1$s · Unsplash</string>
+    <string name="photo_location">Lloc</string>
+    <string name="photo_by">Foto</string>
+    <string name="photo_camera">Càmera</string>
+    <string name="photo_taken">Publicada</string>
+    <string name="photo_size">Mida</string>
+    <string name="saver_topics">Temes de l\'estalvi de pantalla</string>
+    <string name="saver_topics_hint">Separats per comes, p. ex. muntanyes, oceà, ciutat de nit. Primer van les fotos del tema actiu.</string>
+    <string name="saver_topics_default">Variats</string>
+    <string name="saver_daynight">Fotos de dia i de nit</string>
+    <string name="photo_dream_name">Fotos</string>
+    <string name="photo_no_description">Aquesta foto no té descripció</string>
+    <string name="photo_not_given">Sense dades</string>
+    <string name="photo_interval">Canvia la foto cada</string>
+    <string name="photo_seconds">%1$d s</string>
 </resources>

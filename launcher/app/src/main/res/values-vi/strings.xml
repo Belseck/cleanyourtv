@@ -143,4 +143,24 @@
     <string name="sleep_timer">Hẹn giờ tắt</string>
     <string name="sleep_minutes">%1$d phút</string>
     <string name="sleep_warning">TV sẽ tắt sau 1 phút</string>
+    <string name="photos_background">Hình nền</string>
+    <string name="photos_source_theme">Theo chủ đề</string>
+    <string name="photos_source_online">Internet</string>
+    <string name="photos_loading">Đang tìm ảnh…</string>
+    <string name="photo_info">Chi tiết</string>
+    <string name="photo_credit">Ảnh: %1$s · Unsplash</string>
+    <string name="photo_location">Địa điểm</string>
+    <string name="photo_by">Ảnh</string>
+    <string name="photo_camera">Máy ảnh</string>
+    <string name="photo_taken">Đăng ngày</string>
+    <string name="photo_size">Kích thước</string>
+    <string name="saver_topics">Chủ đề trình bảo vệ màn hình</string>
+    <string name="saver_topics_hint">Cách nhau bằng dấu phẩy, vd. núi, đại dương, thành phố về đêm. Ảnh của chủ đề đang dùng sẽ hiện trước.</string>
+    <string name="saver_topics_default">Đa dạng</string>
+    <string name="saver_daynight">Ảnh ngày và đêm</string>
+    <string name="photo_dream_name">Ảnh</string>
+    <string name="photo_no_description">Ảnh này không có mô tả</string>
+    <string name="photo_not_given">Không có thông tin</string>
+    <string name="photo_interval">Đổi ảnh mỗi</string>
+    <string name="photo_seconds">%1$d giây</string>
 </resources>

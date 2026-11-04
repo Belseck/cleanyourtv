@@ -168,4 +168,24 @@
     <string name="sleep_timer">睡眠定时器</string>
     <string name="sleep_minutes">%1$d 分钟</string>
     <string name="sleep_warning">电视将在 1 分钟后关闭</string>
+    <string name="photos_background">背景</string>
+    <string name="photos_source_theme">主题自带</string>
+    <string name="photos_source_online">互联网</string>
+    <string name="photos_loading">正在查找照片…</string>
+    <string name="photo_info">详情</string>
+    <string name="photo_credit">照片：%1$s · Unsplash</string>
+    <string name="photo_location">地点</string>
+    <string name="photo_by">照片</string>
+    <string name="photo_camera">相机</string>
+    <string name="photo_taken">发布于</string>
+    <string name="photo_size">尺寸</string>
+    <string name="saver_topics">屏保主题</string>
+    <string name="saver_topics_hint">用逗号分隔，例如 山, 海洋, 城市夜景。当前主题的照片优先。</string>
+    <string name="saver_topics_default">多样</string>
+    <string name="saver_daynight">白天和夜晚照片</string>
+    <string name="photo_dream_name">照片</string>
+    <string name="photo_no_description">这张照片没有描述</string>
+    <string name="photo_not_given">未提供</string>
+    <string name="photo_interval">照片切换间隔</string>
+    <string name="photo_seconds">%1$d 秒</string>
 </resources>

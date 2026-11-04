@@ -18,5 +18,14 @@
   "tiles": {
     "ornament": "image",
     "corner": "top"
+  },
+  "photos": {
+    "queries": [
+      "snowy mountains",
+      "snow covered forest",
+      "frozen lake ice",
+      "northern lights snow",
+      "winter cabin snow"
+    ]
   }
 }

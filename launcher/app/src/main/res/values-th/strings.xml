@@ -88,4 +88,24 @@
     <string name="sleep_timer">ตั้งเวลาปิด</string>
     <string name="sleep_minutes">%1$d นาที</string>
     <string name="sleep_warning">ทีวีจะปิดใน 1 นาที</string>
+    <string name="photos_background">พื้นหลัง</string>
+    <string name="photos_source_theme">จากธีม</string>
+    <string name="photos_source_online">อินเทอร์เน็ต</string>
+    <string name="photos_loading">กำลังค้นหารูปภาพ…</string>
+    <string name="photo_info">รายละเอียด</string>
+    <string name="photo_credit">ภาพ: %1$s · Unsplash</string>
+    <string name="photo_location">สถานที่</string>
+    <string name="photo_by">ภาพ</string>
+    <string name="photo_camera">กล้อง</string>
+    <string name="photo_taken">เผยแพร่เมื่อ</string>
+    <string name="photo_size">ขนาด</string>
+    <string name="saver_topics">หัวข้อภาพพักหน้าจอ</string>
+    <string name="saver_topics_hint">คั่นด้วยจุลภาค เช่น ภูเขา, มหาสมุทร, เมืองยามค่ำคืน รูปของธีมที่ใช้งานอยู่จะมาก่อน</string>
+    <string name="saver_topics_default">หลากหลาย</string>
+    <string name="saver_daynight">รูปกลางวันและกลางคืน</string>
+    <string name="photo_dream_name">รูปภาพ</string>
+    <string name="photo_no_description">ภาพนี้ไม่มีคำอธิบาย</string>
+    <string name="photo_not_given">ไม่ระบุ</string>
+    <string name="photo_interval">เปลี่ยนรูปทุก</string>
+    <string name="photo_seconds">%1$d วิ</string>
 </resources>

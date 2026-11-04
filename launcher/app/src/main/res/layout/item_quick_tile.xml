@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One tile of the quick panel: icon, name and an optional state ("Connected", "30 min"). -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="0dp"
+    android:layout_height="88dp"
+    android:layout_weight="1"
+    android:orientation="vertical"
+    android:gravity="center_vertical"
+    android:paddingStart="18dp"
+    android:paddingEnd="14dp"
+    android:background="@drawable/qs_tile_bg"
+    android:focusable="true"
+    android:clickable="true">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:tint="@color/qs_tile_text"
+        android:duplicateParentState="true"
+        android:contentDescription="@null" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/qs_tile_text"
+        android:duplicateParentState="true"
+        android:textSize="15sp"
+        android:fontFamily="@string/font_medium"
+        android:singleLine="true"
+        android:ellipsize="end" />
+
+    <TextView
+        android:id="@+id/status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:textColor="@color/qs_tile_dim"
+        android:duplicateParentState="true"
+        android:textSize="12sp"
+        android:fontFamily="@string/font_regular"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:visibility="gone" />
+</LinearLayout>
