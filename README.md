@@ -110,6 +110,8 @@ per photo.
 
 ### Photo screensaver
 
+<img src="docs/photo-screensaver.jpg" width="640" alt="The photo screensaver full screen: an autumn forest with sunbeams, and the photo's credit and a hint that Up shows the details at the bottom">
+
 The same carousel is a screensaver. Press **Back** on Home to start it, or let the TV start it when idle: the installer
 step above makes it the TV's screensaver. It shows the active theme's photos first (its name and search terms), then
 **Screensaver topics** from Launcher settings, or a varied mix when none are set. With **Day and night photos** on, it
@@ -118,6 +120,10 @@ looks for daylight photos by day and night photos after sunset. The keys are tho
 With a theme on, the cinematic shelf's app-colour glow and artwork stay off, so they never wash over the photo.
 
 ### Quick panel and sleep countdown
+
+<img src="docs/quick-panel.jpg" width="640" alt="The quick panel at the right of the screen over Home: the time and date, then tiles for TV settings, Network (connected), Picture, Sleep timer (off), Apps and Launcher settings">
+
+<img src="docs/sleep-countdown.jpg" width="640" alt="The sleep countdown at the top of the screen: a moon, Sleep timer, 0:45">
 
 - **Hold Home**, where the firmware has no dashboard of its own, for a quick panel: the time and date, TV settings,
   network, picture, the sleep timer, apps and Launcher settings.
