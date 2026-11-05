@@ -88,6 +88,13 @@ after three days, or when the search terms change.
 
 **Credit.** Every photo shows its author, source and licence, and the place it was taken when it is known.
 
+**No theme.** With the theme set to None, **Background** offers **None** (the wallpaper), **Picture on the TV** (any
+picture in Download, Pictures, DCIM or `TVHome/wallpapers`) and **Internet** (photos of the photo topics below). An
+internet background shows its first photo as soon as it arrives, while the rest download behind it. In every submenu
+of the theme menu, **Back** returns to the menu instead of closing it.
+
+<img src="docs/photos-none-menu.jpg" width="640" alt="With no theme, the Background list under the theme button: None, Picture on the TV, and Internet ticked">
+
 ### View background and the details of a photo
 
 **View background** in the theme menu shows the photos full screen:
@@ -114,21 +121,35 @@ per photo.
 
 The same carousel is a screensaver. Press **Back** on Home to start it, or let the TV start it when idle: the installer
 step above makes it the TV's screensaver. It shows the active theme's photos first (its name and search terms), then
-**Screensaver topics** from Launcher settings, or a varied mix when none are set. With **Day and night photos** on, it
+the **photo topics**, or a varied mix when none are set. With **Day and night photos** on, it
 looks for daylight photos by day and night photos after sunset. The keys are those of View background.
 
 With a theme on, the cinematic shelf's app-colour glow and artwork stay off, so they never wash over the photo.
 
+### Photo topics
+
+<img src="docs/photos-topics.jpg" width="640" alt="The Photo topics screen: a field to type a topic with an Add button, then suggested topics as tiles grouped under Holidays, Seasons, and Nature and more">
+
+**Photo topics**, a tile in the quick panel, opens a screen of its own: tick any number of the suggested topics,
+grouped as holidays, seasons, and nature and more, or type your own. While you type, the suggestions complete it, so a
+topic that already exists is picked instead of added twice. The screensaver and the no-theme internet background
+search these topics; the suggestions are English search terms, which find the most photos.
+
 ### Quick panel and sleep countdown
 
-<img src="docs/quick-panel.jpg" width="640" alt="The quick panel at the right of the screen over Home: the time and date, then tiles for TV settings, Network (connected), Picture, Sleep timer (off), Apps and Launcher settings">
+<img src="docs/quick-panel.jpg" width="640" alt="The quick panel at the right of the screen over Home: the time and date, then tiles for TV settings, Network with the network's name (blurred here), Sleep timer (off), Photo topics (Varied), Apps and Launcher settings">
 
-<img src="docs/sleep-countdown.jpg" width="640" alt="The sleep countdown at the top of the screen: a moon, Sleep timer, 0:45">
+<img src="docs/sleep-countdown.jpg" width="480" alt="The sleep notice at the top of the screen: a moon, Sleep timer 0:53, and two buttons, 15 more minutes (chosen) and Turn off now">
 
-- **Hold Home**, where the firmware has no dashboard of its own, for a quick panel: the time and date, TV settings,
-  network, picture, the sleep timer, apps and Launcher settings.
-- In the sleep timer's last minute, a countdown stays at the top of the screen over any app until the box goes to
-  standby.
+- The **gear** at the top right, an icon alone, opens the quick panel; so does **holding Home** where the firmware has
+  no dashboard of its own. The panel has the time and date, then TV settings, Network with the network's name, the
+  sleep timer, photo topics, apps and Launcher settings. The tiles scroll when they do not fit. Picture is left to
+  TV settings, which opens the same screen.
+- **Sleep timer** opens a list: Off, 15, 30, 60, 90 or 120 minutes, the lengths of the original's Sleep Timer
+  add-on. The next length after the time left has the focus, so OK alone steps on.
+- In the timer's last minute a notice stays at the top of the screen over any app, with two buttons: **15 more
+  minutes** and **Turn off now**. Left and Right choose, OK presses, Back hides the notice and leaves the timer
+  running; every other key still goes to the app.
 
 ### The built-in calendar
 
@@ -293,14 +314,15 @@ own pull request, from the ideas discussion [#3246](https://github.com/Gathin23/
 | What | Where | In the original |
 |---|---|---|
 | This fork, in SHOWCASE.md | [#3147](https://github.com/Gathin23/cleanyourtv/pull/3147) | Merged |
-| Internet photos, the viewer and the photo screensaver, as a separate app with no key: photos of your own topics from Wikimedia Commons, at the screen's resolution, with the details on Up | [#3283](https://github.com/Gathin23/cleanyourtv/pull/3283), the **Topic Photos** add-on | Open |
-| The quick panel as a full-height sheet of tiles | [#3284](https://github.com/Gathin23/cleanyourtv/pull/3284), switch `quick_panel_sheet` | Open |
+| Internet photos, the viewer and the photo screensaver, as a separate app with no key: photos of your own topics from Wikimedia Commons, at the screen's resolution, with the details on Up, and the topics picked on a screen of their own | [#3283](https://github.com/Gathin23/cleanyourtv/pull/3283), the **Topic Photos** add-on | Open |
+| The quick panel as a full-height sheet of tiles | [#3284](https://github.com/Gathin23/cleanyourtv/pull/3284), switch `quick_panel_sheet` | Closed: the core keeps its panel's look, so it stays here |
 | Holding Home opens the quick panel where the stock dashboard is gone | [#3241](https://github.com/Gathin23/cleanyourtv/pull/3241), switch `home_hold_panel` | Open |
 | AdGuard DNS blocks `sp.pluto.tv`, and Pluto TV forgets where an episode was left | [#3238](https://github.com/Gathin23/cleanyourtv/pull/3238), a troubleshooting note | Open |
 | Chromecast notes: the held Home, HDMI-CEC and the Input button | [#3239](https://github.com/Gathin23/cleanyourtv/pull/3239), in its example folder | Open |
 
 What stays only here: the seasonal calendar and season packs (a new storage permission and well over the size gate),
-internet photos as Home's background and from Unsplash (network in the launcher), and the sleep pill on Home (the
+internet photos as Home's background and from Unsplash (network in the launcher), the quick panel as a sheet, and
+the sleep pill on Home (the
 original has the Sleep Timer add-on, countdown included).
 
 <p align="center">

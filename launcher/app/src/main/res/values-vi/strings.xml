@@ -165,4 +165,16 @@
     <string name="photo_seconds">%1$d giây</string>
     <string name="photo_shot">Chụp ngày</string>
     <string name="photo_original">gốc %1$s</string>
+    <string name="sleep_more">Thêm 15 phút</string>
+    <string name="sleep_off_now">Tắt ngay</string>
+    <string name="photos_source_device">Ảnh trên TV</string>
+    <string name="photos_no_pictures">Không có ảnh trong Download, Pictures hoặc DCIM</string>
+    <string name="photo_topics">Chủ đề ảnh</string>
+    <string name="photo_topics_write">Nhập chủ đề…</string>
+    <string name="photo_topics_holidays">Ngày lễ</string>
+    <string name="photo_topics_seasons">Mùa</string>
+    <string name="photo_topics_more">Thiên nhiên và hơn thế</string>
+    <string name="photo_topics_hint">Chọn bao nhiêu tùy thích. Trình bảo vệ màn hình và hình nền từ internet khi không có chủ đề sẽ dùng chúng.</string>
+    <string name="photo_topics_add">Thêm</string>
+    <string name="photo_topics_yours">Chủ đề của bạn</string>
 </resources>

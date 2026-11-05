@@ -264,6 +264,8 @@ public class HomeKeyService extends AccessibilityService {
 
     @Override
     protected boolean onKeyEvent(KeyEvent event) {
+        // The sleep notice's buttons come first: for its last minute the timer outranks every other key use.
+        if (sleepNotice != null && sleepNoticeKey(event)) return true;
         // power_on_home: the first key after power-on hands the TV to the user (power and wake keys don't count).
         if (powerOnUntil != 0 && event.getAction() == KeyEvent.ACTION_DOWN
                 && event.getKeyCode() != KeyEvent.KEYCODE_POWER && event.getKeyCode() != KeyEvent.KEYCODE_WAKEUP) {
@@ -394,8 +396,10 @@ public class HomeKeyService extends AccessibilityService {
 
     /** One minute before standby a notice says so, over whatever app is in front. */
     static final long SLEEP_WARNING_MS = 60_000;
-    /** Timer lengths: 1 minute, then the lengths an LG TV's own sleep timer offers. */
-    static final int[] SLEEP_MINUTES = {1, 10, 20, 30, 60, 90, 120, 180, 240};
+    /** Timer lengths, the same as the Sleep Timer add-on's (addons/sleep-timer). */
+    static final int[] SLEEP_MINUTES = {15, 30, 60, 90, 120};
+    /** What "15 more minutes" in the last minute's notice sets the timer to. */
+    static final int SLEEP_MORE_MINUTES = 15;
     /** A step this late means the box slept meanwhile (the handler counts uptime) and has just been woken. */
     private static final long SLEEP_STALE_MS = 2 * 60_000;
     /** Wall-clock end of the sleep timer, 0 when it is off. */
@@ -436,6 +440,9 @@ public class HomeKeyService extends AccessibilityService {
     /** The last minute's countdown, drawn over whatever app is in front until standby or until the timer stops. */
     private android.view.View sleepNotice;
     private android.widget.TextView sleepNoticeText;
+    /** The notice's two buttons, "15 more minutes" and "Turn off now", and which one the remote is on. */
+    private final android.widget.TextView[] sleepButtons = new android.widget.TextView[2];
+    private int sleepChoice;
     private final Runnable sleepTick = this::sleepTick;
 
     private void sleepWarning() {
@@ -453,23 +460,48 @@ public class HomeKeyService extends AccessibilityService {
         sleepHandler.postDelayed(sleepTick, (left - 1) % 1000 + 1);   // at the next whole second
     }
 
-    /** An accessibility overlay: no extra permission, and unlike a toast it stays up and never takes focus. */
+    /**
+     * An accessibility overlay: no extra permission, and unlike a toast it stays up. It never takes focus: while it
+     * is up, onKeyEvent gives it Left, Right, OK and Back for its two buttons, and every other key, play and pause
+     * included, still goes to the app.
+     */
     private void showSleepNotice() {
         if (sleepNotice != null) return;
         float d = getResources().getDisplayMetrics().density;
         android.widget.LinearLayout box = new android.widget.LinearLayout(this);
-        box.setGravity(android.view.Gravity.CENTER_VERTICAL);
+        box.setOrientation(android.widget.LinearLayout.VERTICAL);
+        box.setGravity(android.view.Gravity.CENTER_HORIZONTAL);
         box.setBackgroundResource(R.drawable.qs_panel_bg);
-        box.setPadding((int) (20 * d), (int) (12 * d), (int) (24 * d), (int) (12 * d));
+        box.setPadding((int) (24 * d), (int) (16 * d), (int) (24 * d), (int) (18 * d));
+        android.widget.LinearLayout head = new android.widget.LinearLayout(this);
+        head.setGravity(android.view.Gravity.CENTER_VERTICAL);
         android.widget.ImageView icon = new android.widget.ImageView(this);
         icon.setImageResource(R.drawable.ic_sleep);
-        box.addView(icon, new android.widget.LinearLayout.LayoutParams((int) (28 * d), (int) (28 * d)));
+        head.addView(icon, new android.widget.LinearLayout.LayoutParams((int) (28 * d), (int) (28 * d)));
         android.widget.TextView text = new android.widget.TextView(this);
         text.setTextColor(0xFFFFFFFF);
         text.setTextSize(20);
         text.setFontFeatureSettings("tnum");
         text.setPaddingRelative((int) (12 * d), 0, 0, 0);
-        box.addView(text);
+        head.addView(text);
+        box.addView(head);
+        android.widget.LinearLayout buttons = new android.widget.LinearLayout(this);
+        buttons.setPadding(0, (int) (14 * d), 0, 0);
+        int[] labels = {R.string.sleep_more, R.string.sleep_off_now};
+        for (int i = 0; i < 2; i++) {
+            android.widget.TextView b = new android.widget.TextView(this);
+            b.setText(labels[i]);
+            b.setTextSize(16);
+            b.setPadding((int) (20 * d), (int) (10 * d), (int) (20 * d), (int) (10 * d));
+            android.widget.LinearLayout.LayoutParams blp = new android.widget.LinearLayout.LayoutParams(
+                    android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, android.widget.LinearLayout.LayoutParams.WRAP_CONTENT);
+            if (i == 1) blp.setMarginStart((int) (12 * d));
+            buttons.addView(b, blp);
+            sleepButtons[i] = b;
+        }
+        box.addView(buttons);
+        sleepChoice = 0;
+        markSleepChoice();
         android.view.WindowManager.LayoutParams lp = new android.view.WindowManager.LayoutParams(
                 android.view.WindowManager.LayoutParams.WRAP_CONTENT, android.view.WindowManager.LayoutParams.WRAP_CONTENT,
                 android.view.WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY,
@@ -486,6 +518,54 @@ public class HomeKeyService extends AccessibilityService {
         }
         sleepNotice = box;
         sleepNoticeText = text;
+    }
+
+    /** The chosen button light with dark text, the other a faint glass, as tiles in the quick panel. */
+    private void markSleepChoice() {
+        float d = getResources().getDisplayMetrics().density;
+        for (int i = 0; i < 2; i++) {
+            boolean on = i == sleepChoice;
+            android.graphics.drawable.GradientDrawable bg = new android.graphics.drawable.GradientDrawable();
+            bg.setCornerRadius(18 * d);
+            bg.setColor(on ? 0xFFF1F3F6 : 0x1AFFFFFF);
+            sleepButtons[i].setBackground(bg);
+            sleepButtons[i].setTextColor(on ? 0xFF14171C : 0xFFFFFFFF);
+        }
+    }
+
+    /**
+     * The remote while the notice is up: Left and Right pick a button, OK presses it, Back closes the notice and
+     * leaves the timer running. Returns whether the key was the notice's.
+     */
+    private boolean sleepNoticeKey(KeyEvent event) {
+        boolean up = event.getAction() == KeyEvent.ACTION_UP;
+        switch (event.getKeyCode()) {
+            case KeyEvent.KEYCODE_DPAD_LEFT:
+            case KeyEvent.KEYCODE_DPAD_RIGHT:
+                if (!up) {
+                    sleepChoice = event.getKeyCode() == KeyEvent.KEYCODE_DPAD_LEFT ? 0 : 1;
+                    markSleepChoice();
+                }
+                return true;
+            case KeyEvent.KEYCODE_DPAD_CENTER:
+            case KeyEvent.KEYCODE_ENTER:
+            case KeyEvent.KEYCODE_NUMPAD_ENTER:
+                if (up) {
+                    if (sleepChoice == 0) {
+                        setSleepTimer(SLEEP_MORE_MINUTES);   // closes the notice and starts the time again
+                    } else {
+                        sleepHandler.removeCallbacksAndMessages(null);
+                        sleepAt = System.currentTimeMillis();
+                        sleepNow();
+                    }
+                }
+                return true;
+            case KeyEvent.KEYCODE_BACK:
+                if (up) hideSleepNotice();
+                return true;
+            default:
+                return false;
+        }
     }
 
     private void hideSleepNotice() {

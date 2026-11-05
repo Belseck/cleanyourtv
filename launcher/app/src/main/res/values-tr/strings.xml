@@ -136,4 +136,16 @@
     <string name="photo_seconds">%1$d sn</string>
     <string name="photo_shot">Çekim</string>
     <string name="photo_original">orijinal %1$s</string>
+    <string name="sleep_more">15 dakika daha</string>
+    <string name="sleep_off_now">Şimdi kapat</string>
+    <string name="photos_source_device">TV\'deki resim</string>
+    <string name="photos_no_pictures">Download, Pictures veya DCIM\'de resim yok</string>
+    <string name="photo_topics">Fotoğraf konuları</string>
+    <string name="photo_topics_write">Konu yaz…</string>
+    <string name="photo_topics_holidays">Bayramlar</string>
+    <string name="photo_topics_seasons">Mevsimler</string>
+    <string name="photo_topics_more">Doğa ve daha fazlası</string>
+    <string name="photo_topics_hint">İstediğiniz kadar seçin. Ekran koruyucu ve temasız internet arka planı bunları kullanır.</string>
+    <string name="photo_topics_add">Ekle</string>
+    <string name="photo_topics_yours">Konularınız</string>
 </resources>

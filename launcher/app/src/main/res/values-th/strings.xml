@@ -110,4 +110,16 @@
     <string name="photo_seconds">%1$d วิ</string>
     <string name="photo_shot">ถ่ายเมื่อ</string>
     <string name="photo_original">ต้นฉบับ %1$s</string>
+    <string name="sleep_more">อีก 15 นาที</string>
+    <string name="sleep_off_now">ปิดตอนนี้</string>
+    <string name="photos_source_device">รูปภาพในทีวี</string>
+    <string name="photos_no_pictures">ไม่มีรูปภาพใน Download, Pictures หรือ DCIM</string>
+    <string name="photo_topics">หัวข้อรูปภาพ</string>
+    <string name="photo_topics_write">พิมพ์หัวข้อ…</string>
+    <string name="photo_topics_holidays">เทศกาล</string>
+    <string name="photo_topics_seasons">ฤดูกาล</string>
+    <string name="photo_topics_more">ธรรมชาติและอื่น ๆ</string>
+    <string name="photo_topics_hint">เลือกได้มากเท่าที่ต้องการ โปรแกรมรักษาหน้าจอและพื้นหลังจากอินเทอร์เน็ตแบบไม่มีธีมจะใช้หัวข้อเหล่านี้</string>
+    <string name="photo_topics_add">เพิ่ม</string>
+    <string name="photo_topics_yours">หัวข้อของคุณ</string>
 </resources>

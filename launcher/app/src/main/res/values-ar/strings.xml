@@ -140,4 +140,16 @@
     <string name="photo_seconds">%1$d ث</string>
     <string name="photo_shot">التُقطت</string>
     <string name="photo_original">الأصل %1$s</string>
+    <string name="sleep_more">15 دقيقة أخرى</string>
+    <string name="sleep_off_now">إيقاف الآن</string>
+    <string name="photos_source_device">صورة على التلفزيون</string>
+    <string name="photos_no_pictures">لا توجد صور في Download أو Pictures أو DCIM</string>
+    <string name="photo_topics">مواضيع الصور</string>
+    <string name="photo_topics_write">اكتب موضوعًا…</string>
+    <string name="photo_topics_holidays">المناسبات</string>
+    <string name="photo_topics_seasons">الفصول</string>
+    <string name="photo_topics_more">الطبيعة والمزيد</string>
+    <string name="photo_topics_hint">اختر ما تشاء. تستخدمها شاشة التوقف وخلفية الإنترنت دون سمة.</string>
+    <string name="photo_topics_add">إضافة</string>
+    <string name="photo_topics_yours">مواضيعك</string>
 </resources>

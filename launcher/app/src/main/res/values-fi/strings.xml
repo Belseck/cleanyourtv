@@ -154,4 +154,16 @@
     <string name="photo_seconds">%1$d s</string>
     <string name="photo_shot">Otettu</string>
     <string name="photo_original">alkuperäinen %1$s</string>
+    <string name="sleep_more">15 minuuttia lisää</string>
+    <string name="sleep_off_now">Sammuta nyt</string>
+    <string name="photos_source_device">Kuva televisiossa</string>
+    <string name="photos_no_pictures">Ei kuvia kansioissa Download, Pictures tai DCIM</string>
+    <string name="photo_topics">Kuvien aiheet</string>
+    <string name="photo_topics_write">Kirjoita aihe…</string>
+    <string name="photo_topics_holidays">Juhlapyhät</string>
+    <string name="photo_topics_seasons">Vuodenajat</string>
+    <string name="photo_topics_more">Luonto ja muut</string>
+    <string name="photo_topics_hint">Valitse niin monta kuin haluat. Näytönsäästäjä ja internet-tausta ilman teemaa käyttävät niitä.</string>
+    <string name="photo_topics_add">Lisää</string>
+    <string name="photo_topics_yours">Omat aiheet</string>
 </resources>

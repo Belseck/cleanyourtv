@@ -137,4 +137,16 @@
     <string name="photo_seconds">%1$d s</string>
     <string name="photo_shot">Prise le</string>
     <string name="photo_original">original %1$s</string>
+    <string name="sleep_more">15 minutes de plus</string>
+    <string name="sleep_off_now">Éteindre maintenant</string>
+    <string name="photos_source_device">Image sur le téléviseur</string>
+    <string name="photos_no_pictures">Aucune image dans Download, Pictures ou DCIM</string>
+    <string name="photo_topics">Thèmes des photos</string>
+    <string name="photo_topics_write">Saisir un thème…</string>
+    <string name="photo_topics_holidays">Fêtes</string>
+    <string name="photo_topics_seasons">Saisons</string>
+    <string name="photo_topics_more">Nature et plus</string>
+    <string name="photo_topics_hint">Choisissez-en autant que vous voulez. L\'économiseur d\'écran et le fond Internet sans thème les utilisent.</string>
+    <string name="photo_topics_add">Ajouter</string>
+    <string name="photo_topics_yours">Vos thèmes</string>
 </resources>

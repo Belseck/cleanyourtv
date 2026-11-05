@@ -153,4 +153,16 @@
     <string name="photo_seconds">%1$d s</string>
     <string name="photo_shot">Olingan</string>
     <string name="photo_original">asl %1$s</string>
+    <string name="sleep_more">Yana 15 daqiqa</string>
+    <string name="sleep_off_now">Hozir o‘chirish</string>
+    <string name="photos_source_device">Televizordagi rasm</string>
+    <string name="photos_no_pictures">Download, Pictures yoki DCIM’da rasm yo‘q</string>
+    <string name="photo_topics">Foto mavzulari</string>
+    <string name="photo_topics_write">Mavzu yozing…</string>
+    <string name="photo_topics_holidays">Bayramlar</string>
+    <string name="photo_topics_seasons">Fasllar</string>
+    <string name="photo_topics_more">Tabiat va boshqalar</string>
+    <string name="photo_topics_hint">Xohlagancha tanlang. Ekran saqlovchi va mavzusiz internet foni ulardan foydalanadi.</string>
+    <string name="photo_topics_add">Qo‘shish</string>
+    <string name="photo_topics_yours">Mavzularingiz</string>
 </resources>

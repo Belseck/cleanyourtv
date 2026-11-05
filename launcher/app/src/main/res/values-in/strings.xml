@@ -152,4 +152,16 @@
     <string name="photo_seconds">%1$d dtk</string>
     <string name="photo_shot">Diambil</string>
     <string name="photo_original">asli %1$s</string>
+    <string name="sleep_more">15 menit lagi</string>
+    <string name="sleep_off_now">Matikan sekarang</string>
+    <string name="photos_source_device">Gambar di TV</string>
+    <string name="photos_no_pictures">Tidak ada gambar di Download, Pictures, atau DCIM</string>
+    <string name="photo_topics">Topik foto</string>
+    <string name="photo_topics_write">Ketik topik…</string>
+    <string name="photo_topics_holidays">Hari raya</string>
+    <string name="photo_topics_seasons">Musim</string>
+    <string name="photo_topics_more">Alam dan lainnya</string>
+    <string name="photo_topics_hint">Pilih sebanyak yang Anda mau. Screensaver dan latar internet tanpa tema memakainya.</string>
+    <string name="photo_topics_add">Tambah</string>
+    <string name="photo_topics_yours">Topik Anda</string>
 </resources>

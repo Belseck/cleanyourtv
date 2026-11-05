@@ -158,4 +158,16 @@
     <string name="photo_seconds">%1$d s</string>
     <string name="photo_shot">Fecha</string>
     <string name="photo_original">orixinal %1$s</string>
+    <string name="sleep_more">15 minutos más</string>
+    <string name="sleep_off_now">Apagar agora</string>
+    <string name="photos_source_device">Imaxe del preséu</string>
+    <string name="photos_no_pictures">Nun hai imáxenes en Download, Pictures nin DCIM</string>
+    <string name="photo_topics">Temes de fotos</string>
+    <string name="photo_topics_write">Escribir un tema…</string>
+    <string name="photo_topics_holidays">Fiestes</string>
+    <string name="photo_topics_seasons">Estaciones</string>
+    <string name="photo_topics_more">Natura y más</string>
+    <string name="photo_topics_hint">Marca los que quieras. Úsenlos el curiapantalles y el fondu d\'internet ensin tema.</string>
+    <string name="photo_topics_add">Amestar</string>
+    <string name="photo_topics_yours">Los tos temes</string>
 </resources>

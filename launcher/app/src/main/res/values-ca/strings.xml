@@ -151,4 +151,16 @@
     <string name="photo_seconds">%1$d s</string>
     <string name="photo_shot">Presa</string>
     <string name="photo_original">original %1$s</string>
+    <string name="sleep_more">15 minuts més</string>
+    <string name="sleep_off_now">Apaga ara</string>
+    <string name="photos_source_device">Imatge del dispositiu</string>
+    <string name="photos_no_pictures">No hi ha imatges a Download, Pictures ni DCIM</string>
+    <string name="photo_topics">Temes de fotos</string>
+    <string name="photo_topics_write">Escriu un tema…</string>
+    <string name="photo_topics_holidays">Festivitats</string>
+    <string name="photo_topics_seasons">Estacions</string>
+    <string name="photo_topics_more">Natura i més</string>
+    <string name="photo_topics_hint">Marca\'n tants com vulguis. Els fan servir l\'estalvi de pantalla i el fons d\'internet sense tema.</string>
+    <string name="photo_topics_add">Afegeix</string>
+    <string name="photo_topics_yours">Els teus temes</string>
 </resources>

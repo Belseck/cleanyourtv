@@ -191,4 +191,16 @@
     <string name="photo_seconds">%1$d שנ׳</string>
     <string name="photo_shot">צולם</string>
     <string name="photo_original">מקור %1$s</string>
+    <string name="sleep_more">עוד 15 דקות</string>
+    <string name="sleep_off_now">כבה עכשיו</string>
+    <string name="photos_source_device">תמונה בטלוויזיה</string>
+    <string name="photos_no_pictures">אין תמונות ב-Download, Pictures או DCIM</string>
+    <string name="photo_topics">נושאי תמונות</string>
+    <string name="photo_topics_write">הקלד נושא…</string>
+    <string name="photo_topics_holidays">חגים</string>
+    <string name="photo_topics_seasons">עונות</string>
+    <string name="photo_topics_more">טבע ועוד</string>
+    <string name="photo_topics_hint">בחרו כמה שתרצו. שומר המסך ורקע האינטרנט ללא ערכת נושא משתמשים בהם.</string>
+    <string name="photo_topics_add">הוספה</string>
+    <string name="photo_topics_yours">הנושאים שלך</string>
 </resources>

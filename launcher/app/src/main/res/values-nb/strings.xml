@@ -153,4 +153,16 @@
     <string name="photo_seconds">%1$d s</string>
     <string name="photo_shot">Tatt</string>
     <string name="photo_original">original %1$s</string>
+    <string name="sleep_more">15 minutter til</string>
+    <string name="sleep_off_now">Slå av nå</string>
+    <string name="photos_source_device">Bilde på TV-en</string>
+    <string name="photos_no_pictures">Ingen bilder i Download, Pictures eller DCIM</string>
+    <string name="photo_topics">Fotoemner</string>
+    <string name="photo_topics_write">Skriv et emne…</string>
+    <string name="photo_topics_holidays">Høytider</string>
+    <string name="photo_topics_seasons">Årstider</string>
+    <string name="photo_topics_more">Natur og mer</string>
+    <string name="photo_topics_hint">Velg så mange du vil. Skjermspareren og internettbakgrunnen uten tema bruker dem.</string>
+    <string name="photo_topics_add">Legg til</string>
+    <string name="photo_topics_yours">Dine emner</string>
 </resources>

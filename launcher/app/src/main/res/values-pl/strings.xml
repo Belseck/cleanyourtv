@@ -138,4 +138,16 @@
     <string name="photo_seconds">%1$d s</string>
     <string name="photo_shot">Wykonano</string>
     <string name="photo_original">oryginał %1$s</string>
+    <string name="sleep_more">Jeszcze 15 minut</string>
+    <string name="sleep_off_now">Wyłącz teraz</string>
+    <string name="photos_source_device">Obraz z telewizora</string>
+    <string name="photos_no_pictures">Brak obrazów w Download, Pictures ani DCIM</string>
+    <string name="photo_topics">Tematy zdjęć</string>
+    <string name="photo_topics_write">Wpisz temat…</string>
+    <string name="photo_topics_holidays">Święta</string>
+    <string name="photo_topics_seasons">Pory roku</string>
+    <string name="photo_topics_more">Przyroda i więcej</string>
+    <string name="photo_topics_hint">Zaznacz dowolnie wiele. Korzystają z nich wygaszacz ekranu i tło z internetu bez motywu.</string>
+    <string name="photo_topics_add">Dodaj</string>
+    <string name="photo_topics_yours">Twoje tematy</string>
 </resources>

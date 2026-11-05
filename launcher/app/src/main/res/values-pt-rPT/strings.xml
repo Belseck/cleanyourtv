@@ -53,4 +53,16 @@
     <string name="photo_seconds">%1$d s</string>
     <string name="photo_shot">Tirada em</string>
     <string name="photo_original">original %1$s</string>
+    <string name="sleep_more">Mais 15 minutos</string>
+    <string name="sleep_off_now">Desligar agora</string>
+    <string name="photos_source_device">Imagem na TV</string>
+    <string name="photos_no_pictures">Nenhuma imagem em Download, Pictures ou DCIM</string>
+    <string name="photo_topics">Temas das fotos</string>
+    <string name="photo_topics_write">Escrever um tema…</string>
+    <string name="photo_topics_holidays">Festividades</string>
+    <string name="photo_topics_seasons">Estações do ano</string>
+    <string name="photo_topics_more">Natureza e mais</string>
+    <string name="photo_topics_hint">Marque os que quiser. A proteção de ecrã e o fundo da internet sem tema usam-nos.</string>
+    <string name="photo_topics_add">Adicionar</string>
+    <string name="photo_topics_yours">Os seus temas</string>
 </resources>
