@@ -173,8 +173,8 @@
     <bool name="settings_key_panel">false</bool>
 
     <!-- The quick panel as a full-height sheet at the screen's edge, like Android TV's dashboard: the time and
-         the date on top, then its rows as tiles in two columns, Network with its state. Same rows and keys as the
-         small panel. A theme's config.json can set it too. Off by default. -->
+         the date on top, then its rows as tiles in two columns, Network with its state. The small panel's
+         rows but Picture, which TV settings holds, and the same keys; the tiles scroll when they do not fit. A theme's config.json can set it too. Off by default. -->
     <bool name="quick_panel_sheet">false</bool>
 
     <!-- A force stop of the launcher (Settings, a cleaner app, am force-stop) takes HomeKeyService and InputKeyService

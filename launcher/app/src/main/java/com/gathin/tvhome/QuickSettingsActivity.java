@@ -47,7 +47,8 @@ public final class QuickSettingsActivity extends Activity {
         sheet = Config.load(this).quickPanelSheet;
         if (sheet) asSheet(rows);
         addRow(rows, R.drawable.ic_settings, R.string.tv_settings, 0, SystemSettings.intent(this, Settings.ACTION_SETTINGS));
-        addRow(rows, R.drawable.ic_picture, R.string.quick_picture, 0, SystemSettings.intent(this, Settings.ACTION_DISPLAY_SETTINGS));
+        // The sheet leaves Picture out: the TV settings tile next to it holds the same screen.
+        if (!sheet) addRow(rows, R.drawable.ic_picture, R.string.quick_picture, 0, SystemSettings.intent(this, Settings.ACTION_DISPLAY_SETTINGS));
         ConnectivityManager cm = getSystemService(ConnectivityManager.class);
         addRow(rows, R.drawable.ic_wifi, R.string.quick_network, !sheet ? 0 : cm != null && cm.getActiveNetwork() != null
                 ? R.string.connected : R.string.offline, SystemSettings.intent(this, Settings.ACTION_WIFI_SETTINGS));
