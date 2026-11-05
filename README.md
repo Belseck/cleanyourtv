@@ -101,7 +101,7 @@ of the theme menu, **Back** returns to the menu instead of closing it.
 
 | Key | What it does |
 |---|---|
-| Left / Right | The previous or the next photo |
+| Left / Right | Back through the photos already shown, in order; forward again, then a new photo |
 | Up | The photo's details |
 | Down, or Back | Hides the details |
 | Back, or Home | Back to Home |

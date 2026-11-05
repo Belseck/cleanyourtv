@@ -43,7 +43,8 @@ final class PhotoCarouselView extends FrameLayout {
     private List<PhotoSets.Item> items = new ArrayList<>();
     private int index = -1, intervalSec = 60, generation;
     private boolean shuffle, running;
-    private final Runnable tick = () -> show(nextIndex(1), true);
+    private final Runnable tick = () -> step(1);
+    private final PhotoHistory history = new PhotoHistory();
 
     PhotoCarouselView(Context c) {
         super(c);
@@ -122,7 +123,9 @@ final class PhotoCarouselView extends FrameLayout {
                 }
             }
         }
-        show(Math.max(0, Math.min(start, items.size() - 1)), false);
+        int first = Math.max(0, Math.min(start, items.size() - 1));
+        history.push(items.get(first).file.getPath());
+        show(first, false);
     }
 
     boolean isEmpty() {
@@ -150,14 +153,37 @@ final class PhotoCarouselView extends FrameLayout {
         if (running && items.size() > 1) handler.postDelayed(tick, intervalSec * 1000L);
     }
 
-    private int nextIndex(int step) {
-        int n = items.size();
-        if (n < 2) return Math.max(0, index);
-        if (shuffle && step > 0) {
-            int next = random.nextInt(n - 1);
-            return next >= index ? next + 1 : next;   // never the same photo twice in a row
+    /**
+     * Left goes back through the photos already shown, in the order they were shown. Right, and the timer, go
+     * forward through them again, then on to a new photo: any other at random when shuffled, else the next in
+     * the list. Nothing earlier than the first photo: Left stays.
+     */
+    private void step(int dir) {
+        if (items.size() < 2) return;
+        String key = dir < 0 ? history.back(this::listed) : history.forward(this::listed);
+        if (key != null) {
+            show(indexOf(key), true);
+            return;
         }
-        return ((index + step) % n + n) % n;
+        if (dir < 0) return;
+        int n = items.size(), now = Math.max(0, index), next;   // index is -1 until the first photo is up
+        if (shuffle) {
+            next = random.nextInt(n - 1);
+            if (next >= now) next++;   // never the same photo twice in a row
+        } else {
+            next = (now + 1) % n;
+        }
+        history.push(items.get(next).file.getPath());
+        show(next, true);
+    }
+
+    private boolean listed(String path) {
+        return indexOf(path) >= 0;
+    }
+
+    private int indexOf(String path) {
+        for (int i = 0; i < items.size(); i++) if (items.get(i).file.getPath().equals(path)) return i;
+        return -1;
     }
 
     /** Arrows: Left/Right change the photo, Up shows its details, Down hides them. Other keys are not taken. */
@@ -167,7 +193,7 @@ final class PhotoCarouselView extends FrameLayout {
         switch (code) {
             case KeyEvent.KEYCODE_DPAD_LEFT:
             case KeyEvent.KEYCODE_DPAD_RIGHT:
-                if (down && items.size() > 1) show(nextIndex(code == KeyEvent.KEYCODE_DPAD_RIGHT ? 1 : -1), true);
+                if (down) step(code == KeyEvent.KEYCODE_DPAD_RIGHT ? 1 : -1);
                 return true;
             case KeyEvent.KEYCODE_DPAD_UP:
                 if (down && e.getRepeatCount() == 0 && !items.isEmpty()) setInfo(true);
