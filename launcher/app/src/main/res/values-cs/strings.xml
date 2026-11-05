@@ -151,4 +151,16 @@
     <string name="photo_seconds">%1$d s</string>
     <string name="photo_shot">Pořízeno</string>
     <string name="photo_original">originál %1$s</string>
+    <string name="sleep_more">O 15 minut déle</string>
+    <string name="sleep_off_now">Vypnout hned</string>
+    <string name="photos_source_device">Obrázek v televizi</string>
+    <string name="photos_no_pictures">Žádné obrázky v Download, Pictures ani DCIM</string>
+    <string name="photo_topics">Témata fotek</string>
+    <string name="photo_topics_write">Napsat téma…</string>
+    <string name="photo_topics_holidays">Svátky</string>
+    <string name="photo_topics_seasons">Roční období</string>
+    <string name="photo_topics_more">Příroda a další</string>
+    <string name="photo_topics_hint">Vyberte libovolný počet. Používá je spořič obrazovky a pozadí z internetu bez motivu.</string>
+    <string name="photo_topics_add">Přidat</string>
+    <string name="photo_topics_yours">Vaše témata</string>
 </resources>

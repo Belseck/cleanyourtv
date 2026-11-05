@@ -3,8 +3,14 @@ package com.gathin.tvhome;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
@@ -12,10 +18,13 @@ import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Date;
 import java.util.Locale;
 
@@ -32,6 +41,8 @@ public final class QuickSettingsActivity extends Activity {
     }
 
     private TextView sleepStatus;
+    /** The list open under a tile: the sleep lengths or the photo topics. */
+    private PopupWindow list;
 
     @Override
     protected void onCreate(Bundle state) {
@@ -60,19 +71,16 @@ public final class QuickSettingsActivity extends Activity {
         LinearLayout rows = findViewById(R.id.rows);
         addTile(rows, R.drawable.ic_settings, getString(R.string.tv_settings), null,
                 SystemSettings.intent(this, Settings.ACTION_SETTINGS));
-        addTile(rows, R.drawable.ic_wifi, getString(R.string.quick_network), getString(online()
-                ? R.string.connected : R.string.offline), SystemSettings.intent(this, Settings.ACTION_WIFI_SETTINGS));
-        addTile(rows, R.drawable.ic_picture, getString(R.string.quick_picture), null,
-                SystemSettings.intent(this, Settings.ACTION_DISPLAY_SETTINGS));
+        addTile(rows, R.drawable.ic_wifi, getString(R.string.quick_network), networkState(),
+                SystemSettings.intent(this, Settings.ACTION_WIFI_SETTINGS));
         if (HomeKeyService.canSleep()) {
             View sleep = addTile(rows, R.drawable.ic_sleep, getString(R.string.sleep_timer), "", null);
             sleepStatus = sleep.findViewById(R.id.status);
             showSleep(sleep);
-            sleep.setOnClickListener(v -> {
-                HomeKeyService.setSleepTimer(nextSleepMinutes());
-                showSleep(v);
-            });
+            sleep.setOnClickListener(this::showSleepList);
         }
+        View topics = addTile(rows, R.drawable.ic_picture, getString(R.string.photo_topics), topicsState(), null);
+        topics.setOnClickListener(v -> startActivity(new Intent(this, PhotoTopicsActivity.class)));
         addTile(rows, R.drawable.ic_apps, getString(R.string.quick_apps), getString(R.string.quick_apps_hint),
                 SystemSettings.intent(this, Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS));
         // Through Home, so it rebuilds with the new choices when Launcher settings closes.
@@ -105,9 +113,100 @@ public final class QuickSettingsActivity extends Activity {
         overridePendingTransition(0, 0);
     }
 
-    private boolean online() {
+    /**
+     * The Wi-Fi network's name, "Ethernet", or "Offline", as Home's network pill said. Every network is looked at,
+     * since with a VPN up the active one is the VPN itself.
+     */
+    @SuppressWarnings("deprecation")
+    private String networkState() {
         ConnectivityManager cm = getSystemService(ConnectivityManager.class);
-        return cm != null && cm.getActiveNetwork() != null;
+        boolean online = false, wifi = false;
+        for (Network net : cm != null ? cm.getAllNetworks() : new Network[0]) {
+            NetworkCapabilities caps = cm.getNetworkCapabilities(net);
+            if (caps == null || caps.hasTransport(NetworkCapabilities.TRANSPORT_VPN)
+                    || !caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) continue;
+            if (caps.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) return getString(R.string.ethernet);
+            online = true;
+            wifi |= caps.hasTransport(NetworkCapabilities.TRANSPORT_WIFI);
+        }
+        if (!online) return getString(R.string.offline);
+        if (wifi) {
+            WifiManager wm = getApplicationContext().getSystemService(WifiManager.class);
+            WifiInfo info = wm != null ? wm.getConnectionInfo() : null;
+            String ssid = info != null ? info.getSSID() : null;
+            if (ssid != null) {
+                ssid = ssid.replace("\"", "").trim();
+                if (!ssid.isEmpty() && !ssid.contains("unknown") && !ssid.equals("0x")) return ssid;
+            }
+        }
+        return getString(R.string.connected);
+    }
+
+    // ---- lists under a tile -------------------------------------------------------------------
+
+    /** A glass list for under a tile, as Home's pill menus; a long one scrolls. Fill it, then showList. */
+    private LinearLayout openList() {
+        View panel = getLayoutInflater().inflate(R.layout.popup_inputs, null);
+        ScrollView scroll = new ScrollView(this);
+        scroll.setVerticalScrollBarEnabled(false);
+        scroll.addView(panel);
+        list = new PopupWindow(scroll, (int) (280 * getResources().getDisplayMetrics().density),
+                ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        list.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));   // needed for Back to close it
+        list.setOutsideTouchable(true);
+        return panel.findViewById(R.id.rows);
+    }
+
+    private void showList(View tile, LinearLayout rows, int focus) {
+        View panel = (View) rows.getParent();
+        panel.measure(View.MeasureSpec.makeMeasureSpec(list.getWidth(), View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.UNSPECIFIED);
+        list.setHeight(Math.min(panel.getMeasuredHeight(), (int) (getResources().getDisplayMetrics().heightPixels * 0.6f)));
+        list.showAsDropDown(tile, 0, (int) (8 * getResources().getDisplayMetrics().density));
+        rows.getChildAt(focus).requestFocus();
+    }
+
+    private View listRow(LinearLayout rows, int icon, String title, String status, View.OnClickListener click) {
+        View row = getLayoutInflater().inflate(R.layout.item_input, rows, false);
+        ((ImageView) row.findViewById(R.id.icon)).setImageResource(icon);
+        ((TextView) row.findViewById(R.id.title)).setText(title);
+        row.findViewById(R.id.dot).setVisibility(View.GONE);
+        setRowStatus(row, status);
+        row.setOnClickListener(click);
+        rows.addView(row);
+        return row;
+    }
+
+    private static void setRowStatus(View row, String status) {
+        TextView view = row.findViewById(R.id.status);
+        view.setText(status);
+        view.setVisibility(status.isEmpty() ? View.GONE : View.VISIBLE);
+    }
+
+    /** Off and every length; the next length after the time left has the focus, so OK alone steps on as before. */
+    private void showSleepList(View tile) {
+        LinearLayout rows = openList();
+        int left = sleepMinutesLeft(), next = nextSleepMinutes(left), focus = 0;
+        listRow(rows, R.drawable.ic_sleep, getString(R.string.off), left == 0 ? "✓" : "", v -> pickSleep(tile, 0));
+        for (int minutes : HomeKeyService.SLEEP_MINUTES) {
+            if (minutes == next) focus = rows.getChildCount();
+            listRow(rows, R.drawable.ic_sleep, getString(R.string.sleep_minutes, minutes), "", v -> pickSleep(tile, minutes));
+        }
+        showList(tile, rows, focus);
+    }
+
+    private void pickSleep(View tile, int minutes) {
+        list.dismiss();
+        HomeKeyService.setSleepTimer(minutes);
+        showSleep(tile);
+    }
+
+    // ---- photo topics -------------------------------------------------------------------------
+
+    /** The chosen topics, or "Varied" when the photos use the default mix. */
+    private String topicsState() {
+        List<String> chosen = PhotoSets.saverTopics(this);
+        return chosen.isEmpty() ? getString(R.string.saver_topics_default) : String.join(", ", chosen);
     }
 
     private static int sleepMinutesLeft() {
@@ -119,10 +218,6 @@ public final class QuickSettingsActivity extends Activity {
     static int nextSleepMinutes(int current) {
         for (int minutes : HomeKeyService.SLEEP_MINUTES) if (minutes > current) return minutes;
         return 0;
-    }
-
-    private static int nextSleepMinutes() {
-        return nextSleepMinutes(sleepMinutesLeft());
     }
 
     private void showSleep(View tile) {

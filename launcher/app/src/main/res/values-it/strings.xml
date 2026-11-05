@@ -188,4 +188,16 @@
     <string name="photo_seconds">%1$d s</string>
     <string name="photo_shot">Scattata</string>
     <string name="photo_original">originale %1$s</string>
+    <string name="sleep_more">Altri 15 minuti</string>
+    <string name="sleep_off_now">Spegni ora</string>
+    <string name="photos_source_device">Immagine sulla TV</string>
+    <string name="photos_no_pictures">Nessuna immagine in Download, Pictures o DCIM</string>
+    <string name="photo_topics">Temi delle foto</string>
+    <string name="photo_topics_write">Scrivi un tema…</string>
+    <string name="photo_topics_holidays">Festività</string>
+    <string name="photo_topics_seasons">Stagioni</string>
+    <string name="photo_topics_more">Natura e altro</string>
+    <string name="photo_topics_hint">Scegline quanti vuoi. Li usano il salvaschermo e lo sfondo da Internet senza tema.</string>
+    <string name="photo_topics_add">Aggiungi</string>
+    <string name="photo_topics_yours">I tuoi temi</string>
 </resources>

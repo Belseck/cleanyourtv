@@ -118,4 +118,16 @@
     <string name="photo_seconds">%1$d s</string>
     <string name="photo_shot">Snimljeno</string>
     <string name="photo_original">original %1$s</string>
+    <string name="sleep_more">Još 15 minuta</string>
+    <string name="sleep_off_now">Isključi sada</string>
+    <string name="photos_source_device">Slika na televizoru</string>
+    <string name="photos_no_pictures">Nema slika u Download, Pictures ni DCIM</string>
+    <string name="photo_topics">Teme fotografija</string>
+    <string name="photo_topics_write">Upiši temu…</string>
+    <string name="photo_topics_holidays">Praznici</string>
+    <string name="photo_topics_seasons">Godišnja doba</string>
+    <string name="photo_topics_more">Priroda i drugo</string>
+    <string name="photo_topics_hint">Označi koliko god želiš. Koriste ih čuvar ekrana i pozadina sa interneta bez teme.</string>
+    <string name="photo_topics_add">Dodaj</string>
+    <string name="photo_topics_yours">Tvoje teme</string>
 </resources>

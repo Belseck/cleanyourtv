@@ -113,4 +113,16 @@
     <string name="photo_seconds">%1$d s</string>
     <string name="photo_shot">Aufgenommen</string>
     <string name="photo_original">Original %1$s</string>
+    <string name="sleep_more">15 Minuten mehr</string>
+    <string name="sleep_off_now">Jetzt ausschalten</string>
+    <string name="photos_source_device">Bild auf dem Fernseher</string>
+    <string name="photos_no_pictures">Keine Bilder in Download, Pictures oder DCIM</string>
+    <string name="photo_topics">Fotothemen</string>
+    <string name="photo_topics_write">Thema eingeben…</string>
+    <string name="photo_topics_holidays">Feiertage</string>
+    <string name="photo_topics_seasons">Jahreszeiten</string>
+    <string name="photo_topics_more">Natur und mehr</string>
+    <string name="photo_topics_hint">Wähle beliebig viele. Bildschirmschoner und Internet-Hintergrund ohne Design nutzen sie.</string>
+    <string name="photo_topics_add">Hinzufügen</string>
+    <string name="photo_topics_yours">Deine Themen</string>
 </resources>

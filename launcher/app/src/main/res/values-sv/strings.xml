@@ -164,4 +164,16 @@
     <string name="photo_seconds">%1$d s</string>
     <string name="photo_shot">Tagen</string>
     <string name="photo_original">original %1$s</string>
+    <string name="sleep_more">15 minuter till</string>
+    <string name="sleep_off_now">Stäng av nu</string>
+    <string name="photos_source_device">Bild på tv:n</string>
+    <string name="photos_no_pictures">Inga bilder i Download, Pictures eller DCIM</string>
+    <string name="photo_topics">Fotoämnen</string>
+    <string name="photo_topics_write">Skriv ett ämne…</string>
+    <string name="photo_topics_holidays">Högtider</string>
+    <string name="photo_topics_seasons">Årstider</string>
+    <string name="photo_topics_more">Natur och mer</string>
+    <string name="photo_topics_hint">Välj så många du vill. Skärmsläckaren och internetbakgrunden utan tema använder dem.</string>
+    <string name="photo_topics_add">Lägg till</string>
+    <string name="photo_topics_yours">Dina ämnen</string>
 </resources>

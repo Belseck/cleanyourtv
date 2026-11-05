@@ -184,4 +184,16 @@
     <string name="photo_seconds">%1$d s</string>
     <string name="photo_shot">Tomada</string>
     <string name="photo_original">original %1$s</string>
+    <string name="sleep_more">15 minutos más</string>
+    <string name="sleep_off_now">Apagar ahora</string>
+    <string name="photos_source_device">Imagen del dispositivo</string>
+    <string name="photos_no_pictures">No hay imágenes en Descargas, Imágenes ni DCIM</string>
+    <string name="photo_topics">Temas de fotos</string>
+    <string name="photo_topics_write">Escribir un tema…</string>
+    <string name="photo_topics_holidays">Festividades</string>
+    <string name="photo_topics_seasons">Estaciones</string>
+    <string name="photo_topics_more">Naturaleza y más</string>
+    <string name="photo_topics_hint">Marca los que quieras. Los usan el protector de pantalla y el fondo de internet sin tema.</string>
+    <string name="photo_topics_add">Agregar</string>
+    <string name="photo_topics_yours">Tus temas</string>
 </resources>

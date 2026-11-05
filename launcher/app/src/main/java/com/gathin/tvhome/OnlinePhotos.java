@@ -125,6 +125,9 @@ final class OnlinePhotos {
      * Fetches the set again in the background when its terms changed or it is stale, then runs {@code done} on the
      * main thread (only when something new was saved). Does nothing without a key or a network.
      */
+    /** {@code done} of a fetch under way, run early once the first photo of a set that had none is on disk. */
+    private static final java.util.Map<String, Runnable> FIRST = new java.util.concurrent.ConcurrentHashMap<>();
+
     static void refresh(Context c, String set, List<String> queries, List<String> exclude, int count, Runnable done) {
         Context app = c.getApplicationContext();
         if (queries.isEmpty() || !online(app)) return;
@@ -137,6 +140,7 @@ final class OnlinePhotos {
                 && System.currentTimeMillis() - index.optLong("fetched") < MAX_AGE_MS
                 && !load(app, set).isEmpty();
         if (fresh || !RUNNING.add(set)) return;
+        if (done != null) FIRST.put(set, done);
         NET.execute(() -> {
             try {
                 if (fetch(app, set, queries, exclude, terms, count) && done != null) {
@@ -145,6 +149,7 @@ final class OnlinePhotos {
             } catch (Exception e) {
                 Log.w(TAG, "fetch " + set + ": " + e);
             } finally {
+                FIRST.remove(set);
                 RUNNING.remove(set);
             }
         });
@@ -328,6 +333,13 @@ final class OnlinePhotos {
             for (Photo before : old) if (before.id.equals(p.id) && before.detailed) p = before;
             keep.add(p.file);
             out.put(p.toJson());
+            // An empty set is a black background until a photo arrives: publish the first one without waiting for
+            // the rest. "fetched" 0 keeps the set stale, so a fetch cut short is made again.
+            Runnable first = out.length() == 1 && old.isEmpty() ? FIRST.remove(set) : null;
+            if (first != null) {
+                writeIndex(c, set, new JSONObject().put("terms", terms).put("fetched", 0L).put("photos", out));
+                new Handler(Looper.getMainLooper()).post(first);
+            }
         }
         if (out.length() == 0) return false;
         File[] files = dir.listFiles();

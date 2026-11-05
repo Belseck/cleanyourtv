@@ -190,4 +190,16 @@
     <string name="photo_seconds">%1$d초</string>
     <string name="photo_shot">촬영일</string>
     <string name="photo_original">원본 %1$s</string>
+    <string name="sleep_more">15분 더</string>
+    <string name="sleep_off_now">지금 끄기</string>
+    <string name="photos_source_device">TV에 있는 사진</string>
+    <string name="photos_no_pictures">Download, Pictures, DCIM에 사진이 없습니다</string>
+    <string name="photo_topics">사진 주제</string>
+    <string name="photo_topics_write">주제 입력…</string>
+    <string name="photo_topics_holidays">기념일</string>
+    <string name="photo_topics_seasons">계절</string>
+    <string name="photo_topics_more">자연 등</string>
+    <string name="photo_topics_hint">원하는 만큼 선택하세요. 화면 보호기와 테마 없는 인터넷 배경에 사용됩니다.</string>
+    <string name="photo_topics_add">추가</string>
+    <string name="photo_topics_yours">내 주제</string>
 </resources>
