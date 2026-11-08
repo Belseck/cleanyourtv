@@ -141,4 +141,16 @@
     <string name="photo_seconds">%1$d সে</string>
     <string name="photo_shot">তোলা হয়েছে</string>
     <string name="photo_original">মূল %1$s</string>
+    <string name="sleep_more">আরও ১৫ মিনিট</string>
+    <string name="sleep_off_now">এখনই বন্ধ করুন</string>
+    <string name="photos_source_device">টিভিতে থাকা ছবি</string>
+    <string name="photos_no_pictures">Download, Pictures বা DCIM-এ কোনো ছবি নেই</string>
+    <string name="photo_topics">ছবির বিষয়</string>
+    <string name="photo_topics_write">একটি বিষয় লিখুন…</string>
+    <string name="photo_topics_holidays">উৎসব</string>
+    <string name="photo_topics_seasons">ঋতু</string>
+    <string name="photo_topics_more">প্রকৃতি ও আরও</string>
+    <string name="photo_topics_hint">যতগুলো চান বেছে নিন। স্ক্রিনসেভার ও থিম ছাড়া ইন্টারনেট ব্যাকগ্রাউন্ড এগুলো ব্যবহার করে।</string>
+    <string name="photo_topics_add">যোগ করুন</string>
+    <string name="photo_topics_yours">আপনার বিষয়</string>
 </resources>

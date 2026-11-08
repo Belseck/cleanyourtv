@@ -197,4 +197,16 @@
     <string name="photo_seconds">%1$d s</string>
     <string name="photo_shot">Taken</string>
     <string name="photo_original">original %1$s</string>
+    <string name="sleep_more">15 more minutes</string>
+    <string name="sleep_off_now">Turn off now</string>
+    <string name="photos_source_device">Picture on the TV</string>
+    <string name="photos_no_pictures">No pictures in Download, Pictures or DCIM</string>
+    <string name="photo_topics">Photo topics</string>
+    <string name="photo_topics_write">Type a topic…</string>
+    <string name="photo_topics_holidays">Holidays</string>
+    <string name="photo_topics_seasons">Seasons</string>
+    <string name="photo_topics_more">Nature and more</string>
+    <string name="photo_topics_hint">Pick as many as you like. The screensaver and the internet background without a theme use them.</string>
+    <string name="photo_topics_add">Add</string>
+    <string name="photo_topics_yours">Your topics</string>
 </resources>

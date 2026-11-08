@@ -193,4 +193,16 @@
     <string name="photo_seconds">%1$d с</string>
     <string name="photo_shot">Знято</string>
     <string name="photo_original">оригінал %1$s</string>
+    <string name="sleep_more">Ще 15 хвилин</string>
+    <string name="sleep_off_now">Вимкнути зараз</string>
+    <string name="photos_source_device">Зображення на телевізорі</string>
+    <string name="photos_no_pictures">Немає зображень у Download, Pictures або DCIM</string>
+    <string name="photo_topics">Теми фото</string>
+    <string name="photo_topics_write">Ввести тему…</string>
+    <string name="photo_topics_holidays">Свята</string>
+    <string name="photo_topics_seasons">Пори року</string>
+    <string name="photo_topics_more">Природа та інше</string>
+    <string name="photo_topics_hint">Позначте скільки завгодно. Їх використовує заставка та фон з інтернету без теми.</string>
+    <string name="photo_topics_add">Додати</string>
+    <string name="photo_topics_yours">Ваші теми</string>
 </resources>

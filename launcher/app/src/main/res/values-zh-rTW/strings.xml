@@ -136,4 +136,16 @@
     <string name="photo_seconds">%1$d 秒</string>
     <string name="photo_shot">拍攝於</string>
     <string name="photo_original">原圖 %1$s</string>
+    <string name="sleep_more">再看 15 分鐘</string>
+    <string name="sleep_off_now">立即關閉</string>
+    <string name="photos_source_device">電視上的圖片</string>
+    <string name="photos_no_pictures">Download、Pictures 或 DCIM 中沒有圖片</string>
+    <string name="photo_topics">相片主題</string>
+    <string name="photo_topics_write">輸入主題…</string>
+    <string name="photo_topics_holidays">節日</string>
+    <string name="photo_topics_seasons">季節</string>
+    <string name="photo_topics_more">自然及更多</string>
+    <string name="photo_topics_hint">可多選。螢幕保護程式和無主題時的網路背景會使用它們。</string>
+    <string name="photo_topics_add">新增</string>
+    <string name="photo_topics_yours">你的主題</string>
 </resources>

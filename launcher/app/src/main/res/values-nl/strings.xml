@@ -154,4 +154,16 @@
     <string name="photo_seconds">%1$d s</string>
     <string name="photo_shot">Genomen</string>
     <string name="photo_original">origineel %1$s</string>
+    <string name="sleep_more">15 minuten langer</string>
+    <string name="sleep_off_now">Nu uitschakelen</string>
+    <string name="photos_source_device">Afbeelding op de tv</string>
+    <string name="photos_no_pictures">Geen afbeeldingen in Download, Pictures of DCIM</string>
+    <string name="photo_topics">Fotothema\'s</string>
+    <string name="photo_topics_write">Thema typen…</string>
+    <string name="photo_topics_holidays">Feestdagen</string>
+    <string name="photo_topics_seasons">Seizoenen</string>
+    <string name="photo_topics_more">Natuur en meer</string>
+    <string name="photo_topics_hint">Kies er zoveel als je wilt. De schermbeveiliging en de internetachtergrond zonder thema gebruiken ze.</string>
+    <string name="photo_topics_add">Toevoegen</string>
+    <string name="photo_topics_yours">Jouw thema\'s</string>
 </resources>

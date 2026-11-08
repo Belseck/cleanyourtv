@@ -140,4 +140,16 @@
     <string name="photo_seconds">%1$d s</string>
     <string name="photo_shot">Taget</string>
     <string name="photo_original">original %1$s</string>
+    <string name="sleep_more">15 minutter mere</string>
+    <string name="sleep_off_now">Sluk nu</string>
+    <string name="photos_source_device">Billede på tv\'et</string>
+    <string name="photos_no_pictures">Ingen billeder i Download, Pictures eller DCIM</string>
+    <string name="photo_topics">Fotoemner</string>
+    <string name="photo_topics_write">Skriv et emne…</string>
+    <string name="photo_topics_holidays">Helligdage</string>
+    <string name="photo_topics_seasons">Årstider</string>
+    <string name="photo_topics_more">Natur og mere</string>
+    <string name="photo_topics_hint">Vælg så mange du vil. Pauseskærmen og internetbaggrunden uden tema bruger dem.</string>
+    <string name="photo_topics_add">Tilføj</string>
+    <string name="photo_topics_yours">Dine emner</string>
 </resources>

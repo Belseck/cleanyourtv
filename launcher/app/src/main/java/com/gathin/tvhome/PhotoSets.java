@@ -22,6 +22,18 @@ final class PhotoSets {
     static final String ONLINE_PREFIX = "photos_online_";
     static final String SAVER_TOPICS = "saver_topics", SAVER_DAYNIGHT = "saver_daynight";
     static final String INTERVAL = "photo_interval";
+    /** With no theme: "" for the wallpaper, "online" for internet photos, or a picture's path on the TV. */
+    static final String HOME_BACKGROUND = "home_background";
+    /** The no-theme internet background's photos, found with the photo topics. */
+    static final String HOME_SET = "home-general";
+    /** The quick panel's suggestions, as search terms: holidays, seasons, then nature and more. */
+    static final String[][] SUGGESTED = {
+            {"christmas lights", "halloween pumpkins", "day of the dead", "valentines day", "new year fireworks",
+                    "easter eggs", "lunar new year lanterns"},
+            {"spring blossoms", "summer beach", "autumn foliage", "winter snow"},
+            {"mountain landscape", "ocean waves", "misty forest", "waterfall", "desert dunes", "northern lights",
+                    "starry night sky", "city skyline at night", "lake reflection", "flower field", "wildlife",
+                    "architecture", "aerial view"}};
     /** Choices for how often a carousel changes photo, in seconds. */
     static final int[] INTERVALS = {10, 20, 30, 60, 120, 300, 600, 1800};
     private static final String ACTIVE_FOLDER = "saver_theme_folder", ACTIVE_NAME = "saver_theme_name",
@@ -130,6 +142,16 @@ final class PhotoSets {
     private static String activeFolder(Context c) {
         SharedPreferences p = prefs(c);
         return LocalDate.now().toString().equals(p.getString(ACTIVE_DAY, "")) ? p.getString(ACTIVE_FOLDER, "") : "";
+    }
+
+    /** The photo topics, or a varied mix when none are chosen. */
+    static List<String> topics(Context c) {
+        List<String> t = saverTopics(c);
+        return t.isEmpty() ? DEFAULT_TOPICS : t;
+    }
+
+    static void setTopics(Context c, List<String> topics) {
+        prefs(c).edit().putString(SAVER_TOPICS, String.join(", ", topics)).apply();
     }
 
     static List<String> saverTopics(Context c) {

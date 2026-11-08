@@ -281,6 +281,23 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     private String seasonStamp = "";
     /** The season's background view, kept visible while the showcase hides everything else. */
     private View seasonArtView;
+    /** With no theme: the background picked in the theme menu (PhotoSets.HOME_BACKGROUND), "" for the wallpaper. */
+    private String plainBackground = "";
+    /** The popup whose row was just picked: its closing is not a Back. */
+    private PopupWindow pickedPopup;
+
+    /** Back in a submenu of the theme menu reopens {@code parent} instead of leaving the menus. */
+    private void backTo(PopupWindow popup, Runnable parent) {
+        popup.setOnDismissListener(() -> {
+            if (openPopup == popup) openPopup = null;
+            if (pickedPopup != popup && resumed && !isFinishing()) root.post(parent);
+        });
+    }
+
+    /** A theme's background or one picked for no theme: either replaces the colour glow and the artwork. */
+    private boolean hasBackdrop() {
+        return season != null || !plainBackground.isEmpty();
+    }
     /** The showcase (btnSeason): Home's UI faded out to show the season's background, with each view's alpha. */
     private final Map<View, Float> showcaseHidden = new java.util.LinkedHashMap<>();
     private SeasonShowerView seasonShower;
@@ -541,8 +558,11 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         // The glow is one bitmap, so its alpha can be applied while drawing it. Otherwise every frame of
         // a fade renders it into a full-screen offscreen buffer first.
         ambient.forceHasOverlappingRendering(false);
-        // A theme brings its own background: the app's colour glow and artwork would wash over it.
-        ambientGlow = cfg.ambientGlow && season == null;
+        // A theme brings its own background, and so does a background picked for no theme: the app's colour
+        // glow and artwork would wash over it.
+        plainBackground = season != null ? "" : getSharedPreferences(Config.SETTINGS_NAME, MODE_PRIVATE)
+                .getString(PhotoSets.HOME_BACKGROUND, "");
+        ambientGlow = cfg.ambientGlow && !hasBackdrop();
         glowSnap = cfg.glowSnap;
         appGlow = cfg.appGlow;
         if (!ambientGlow) ambient.setVisibility(View.GONE);
@@ -558,7 +578,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         glowStyle = cfg.glowStyle;
         heroDotsShown = cfg.cinematicDots;
         cinematicWhiteFocus = cfg.cinematicWhiteFocus;
-        heroArtAlpha = season != null ? 0f : cfg.cinematicArt / 100f;
+        heroArtAlpha = hasBackdrop() ? 0f : cfg.cinematicArt / 100f;
         if (cinematic) setUpCinematicShelf(cfg.cinematicScrim);
         // dock_title false: the name above the dock (and the cinematic lines under it) never shows; the glow
         // still follows the dock.
@@ -864,11 +884,12 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             ((TextView) btnSettings).setText(R.string.launcher_settings);
             ((TextView) btnSettings).setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_home_settings_pill, 0, 0, 0);
         }
-        btnSettings.setOnClickListener(v -> {
-            if (launcherSettingsButton) startActivityForResult(
-                    new Intent(this, LauncherSettingsActivity.class), LAUNCHER_SETTINGS_REQUEST);
-            else open(systemIntent(Settings.ACTION_SETTINGS));
-        });
+        // The gear is an icon alone and opens the quick panel, which holds TV and Launcher settings.
+        ((TextView) btnSettings).setText(R.string.settings);
+        ((TextView) btnSettings).setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_settings, 0, 0, 0);
+        makeIconOnly((TextView) btnSettings);
+        btnSettings.setOnClickListener(v -> open(new Intent(this, QuickSettingsActivity.class)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)));
         btnReorder = findViewById(R.id.btnReorder);
         btnReorder.setOnClickListener(v -> toggleReorder());
         btnReorder.setVisibility(cfg.reorderButton ? View.VISIBLE : View.GONE);
@@ -1322,7 +1343,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     }
 
     private static Bitmap seasonBitmap(java.io.File f, int maxSide) {
-        if (!f.isFile() || f.length() > 4L * 1024 * 1024) return null;
+        if (!f.isFile() || f.length() > 16L * 1024 * 1024) return null;
         android.graphics.BitmapFactory.Options o = new android.graphics.BitmapFactory.Options();
         o.inJustDecodeBounds = true;
         android.graphics.BitmapFactory.decodeFile(f.getPath(), o);
@@ -1498,6 +1519,18 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
 
     /** Fetches the theme's internet photos when they are missing or stale, and shows them once they arrive. */
     private void refreshThemePhotos() {
+        if (season == null && "online".equals(plainBackground)) {
+            List<String> topics = PhotoSets.topics(this);
+            OnlinePhotos.refresh(this, PhotoSets.HOME_SET, topics, PhotoSets.excludeFor(topics), PhotoSets.THEME_COUNT, () -> {
+                if (isDestroyed() || season != null || !"online".equals(plainBackground)) return;
+                // Called with the first photo and again with all of them: only the first call puts one on screen.
+                boolean waiting = seasonBackgrounds.isEmpty();
+                seasonBackgrounds = plainFiles();
+                if (waiting && !seasonBackgrounds.isEmpty() && resumed) showSeasonBackground(firstSeasonBackground());
+                else scheduleSeasonBackground();
+            });
+            return;
+        }
         if (season == null || !PhotoSets.themeOnline(this, season.folder)) return;
         String folder = season.folder;
         List<String> queries = PhotoSets.themeQueries(season);
@@ -1514,7 +1547,18 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
      * photos or several pictures; a single picture keeps the showcase over Home with its particles.
      */
     private void viewBackground() {
-        if (season == null) return;
+        if (season == null) {
+            if (!"online".equals(plainBackground)) {
+                enterShowcase();
+                return;
+            }
+            startActivity(new Intent(this, PhotoViewerActivity.class)
+                    .putExtra(PhotoViewerActivity.EXTRA_START, seasonBackgroundIndex)
+                    .putExtra(PhotoViewerActivity.EXTRA_INTERVAL, PhotoSets.interval(this))
+                    .putExtra(PhotoViewerActivity.EXTRA_SHUFFLE, true)
+                    .putExtra(PhotoViewerActivity.EXTRA_SET, PhotoSets.HOME_SET));
+            return;
+        }
         boolean online = PhotoSets.themeOnline(this, season.folder);
         if (!online && seasonBackgrounds.size() < 2) {
             enterShowcase();
@@ -1554,7 +1598,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     }
 
     private int firstSeasonBackground() {
-        return "shuffle".equals(season.backgroundOrder) ? new java.util.Random().nextInt(seasonBackgrounds.size()) : 0;
+        return season == null || "shuffle".equals(season.backgroundOrder) ? new java.util.Random().nextInt(seasonBackgrounds.size()) : 0;
     }
 
     /**
@@ -1564,7 +1608,10 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
      * A missing picture leaves Home as it was.
      */
     private void addSeasonArt() {
-        if (season == null) return;
+        if (season == null) {
+            addPlainArt();
+            return;
+        }
         android.util.DisplayMetrics dm = getResources().getDisplayMetrics();
         int screenW = dm.widthPixels, screenH = dm.heightPixels;
         seasonDayparts = !seasonFiles("background/day", 1, SEASON_PICTURES).isEmpty()
@@ -1580,6 +1627,29 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         seasonArtView = addSeasonArtView(seasonArt(art, screenW, screenH));
     }
 
+    /** No theme: the background picked in the theme menu, internet photos or a picture on the TV, full screen. */
+    private void addPlainArt() {
+        if (plainBackground.isEmpty()) return;
+        seasonOnlineArt = true;   // full screen at full strength, changing at the photo interval
+        seasonDayparts = false;
+        seasonBackgrounds = plainFiles();
+        if (seasonBackgrounds.isEmpty()) return;   // internet photos still to come: refreshThemePhotos shows them
+        seasonBackgroundIndex = firstSeasonBackground();
+        android.util.DisplayMetrics dm = getResources().getDisplayMetrics();
+        Bitmap art = seasonBitmap(seasonBackgrounds.get(seasonBackgroundIndex), Math.max(dm.widthPixels, dm.heightPixels));
+        if (art != null) seasonArtView = addSeasonArtView(coverSeasonArt(art, dm.widthPixels, dm.heightPixels));
+    }
+
+    private java.util.List<java.io.File> plainFiles() {
+        java.util.List<java.io.File> out = new ArrayList<>();
+        if ("online".equals(plainBackground)) {
+            for (PhotoSets.Item item : PhotoSets.items(this, PhotoSets.HOME_SET)) out.add(item.file);
+        } else if (new java.io.File(plainBackground).isFile()) {
+            out.add(new java.io.File(plainBackground));
+        }
+        return out;
+    }
+
     /**
      * While Home is in front: arms the next background change (two or more pictures) and, with day or night
      * pictures, the next sunrise or sunset; switches to the other set now if its time came while Home was away.
@@ -1587,7 +1657,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     private void scheduleSeasonBackground() {
         handler.removeCallbacks(seasonBackgroundTick);
         handler.removeCallbacks(seasonDaypartTick);
-        if (season == null || !resumed) return;
+        if (!hasBackdrop() || !resumed) return;
         if (seasonDayparts && !seasonDaypart().equals(seasonDaypartNow)) {
             seasonDaypartNow = seasonDaypart();
             seasonBackgrounds = seasonBackgroundFiles();
@@ -1601,9 +1671,9 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     }
 
     private void nextSeasonBackground() {
-        if (season == null || seasonBackgrounds.size() < 2 || !resumed) return;
+        if (!hasBackdrop() || seasonBackgrounds.size() < 2 || !resumed) return;
         int n = seasonBackgrounds.size(), next;
-        if ("shuffle".equals(season.backgroundOrder)) {
+        if (season == null || "shuffle".equals(season.backgroundOrder)) {
             next = new java.util.Random().nextInt(n - 1);
             if (next >= seasonBackgroundIndex) next++;   // never the same picture twice in a row
         } else {
@@ -1622,7 +1692,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             Bitmap art = seasonBitmap(file, Math.max(screenW, screenH));
             Bitmap faded = art == null ? null : seasonArt(art, screenW, screenH);
             handler.post(() -> {
-                if (isDestroyed() || season == null) {
+                if (isDestroyed() || !hasBackdrop()) {
                     if (faded != null) faded.recycle();
                     return;
                 }
@@ -1664,7 +1734,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     }
 
     private void fadeSeasonArtAlpha(int target) {
-        if (!(seasonArtView instanceof ImageView) || season == null) return;
+        if (!(seasonArtView instanceof ImageView) || !hasBackdrop()) return;
         ImageView art = (ImageView) seasonArtView;
         ValueAnimator a = ValueAnimator.ofInt(art.getImageAlpha(), target);
         a.setDuration(reducedMotion ? Motion.REDUCED_MS : 450);
@@ -1673,7 +1743,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     }
 
     private void exitShowcase(boolean animate) {
-        if (!showcaseHidden.isEmpty() && seasonArtView instanceof ImageView && season != null) {
+        if (!showcaseHidden.isEmpty() && seasonArtView instanceof ImageView && hasBackdrop()) {
             if (animate) fadeSeasonArtAlpha(seasonArtAlpha());
             else ((ImageView) seasonArtView).setImageAlpha(seasonArtAlpha());
         }
@@ -3646,6 +3716,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
 
     /** Turns a labelled top pill into the round TopButtonIcon shape: no text, the icon centred by even padding. */
     private void makeIconOnly(TextView pill) {
+        if (TextUtils.isEmpty(pill.getText())) return;   // already an icon: keep its description
         pill.setContentDescription(pill.getText());
         pill.setText(null);
         pill.setMaxWidth(Integer.MAX_VALUE);
@@ -4288,6 +4359,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             dot.setVisibility(View.GONE);
         }
         row.setOnClickListener(v -> {
+            pickedPopup = popup;
             popup.dismiss();
             action.run();
         });
@@ -4351,6 +4423,18 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
                         () -> root.post(this::showPhotoIntervalPicker));
                 setRowStatus(rows, intervalLabel(PhotoSets.interval(this)));
             }
+        } else {
+            if (!plainBackground.isEmpty()) addInputRow(rows, popup, R.drawable.ic_picture,
+                    getString(R.string.season_menu_view), -1, () -> root.post(this::viewBackground));
+            addInputRow(rows, popup, R.drawable.ic_picture, getString(R.string.photos_background), -1,
+                    () -> root.post(this::showPlainBackgroundPicker));
+            setRowStatus(rows, getString(plainBackground.isEmpty() ? R.string.wallpaper_none
+                    : "online".equals(plainBackground) ? R.string.photos_source_online : R.string.photos_source_device));
+            if ("online".equals(plainBackground)) {
+                addInputRow(rows, popup, R.drawable.ic_picture, getString(R.string.photo_interval), -1,
+                        () -> root.post(this::showPhotoIntervalPicker));
+                setRowStatus(rows, intervalLabel(PhotoSets.interval(this)));
+            }
         }
         addInputRow(rows, popup, R.drawable.ic_season_view, getString(R.string.season_menu_auto), -1, () -> {
             prefs.edit().putBoolean(SEASON_AUTO, !auto).apply();
@@ -4385,6 +4469,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         View panel = getLayoutInflater().inflate(R.layout.popup_inputs, root, false);
         LinearLayout rows = panel.findViewById(R.id.rows);
         PopupWindow popup = glassPopup(panel, (int) (260 * density));
+        backTo(popup, this::showSeasonMenu);
         addInputRow(rows, popup, R.drawable.ic_picture, getString(R.string.photos_source_theme), -1,
                 () -> setBackgroundSource(folder, online, false));
         if (!online) setRowStatus(rows, "✓");
@@ -4395,6 +4480,69 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         popup.setWidth(Math.max((int) (260 * density), Math.min(panel.getMeasuredWidth(), (int) (420 * density))));
         dropIn(popup, panel, btnSeason, getResources().getBoolean(R.bool.rtl_menu_bar) ? Gravity.START : Gravity.END);
         rows.getChildAt(online ? 1 : 0).requestFocus();
+    }
+
+    /** No theme: none (the wallpaper), a picture on the TV, or internet photos on the photo topics. */
+    private void showPlainBackgroundPicker() {
+        View panel = getLayoutInflater().inflate(R.layout.popup_inputs, root, false);
+        LinearLayout rows = panel.findViewById(R.id.rows);
+        PopupWindow popup = glassPopup(panel, (int) (260 * density));
+        backTo(popup, this::showSeasonMenu);
+        boolean online = "online".equals(plainBackground), device = !plainBackground.isEmpty() && !online;
+        addInputRow(rows, popup, R.drawable.ic_picture, getString(R.string.wallpaper_none), -1,
+                () -> setPlainBackground(""));
+        if (plainBackground.isEmpty()) setRowStatus(rows, "✓");
+        addInputRow(rows, popup, R.drawable.ic_picture, getString(R.string.photos_source_device), -1,
+                () -> root.post(this::showDevicePicturePicker));
+        if (device) setRowStatus(rows, "✓");
+        addInputRow(rows, popup, R.drawable.ic_picture, getString(R.string.photos_source_online), -1,
+                () -> setPlainBackground("online"));
+        if (online) setRowStatus(rows, "✓");
+        panel.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        popup.setWidth(Math.max((int) (260 * density), Math.min(panel.getMeasuredWidth(), (int) (420 * density))));
+        dropIn(popup, panel, btnSeason, getResources().getBoolean(R.bool.rtl_menu_bar) ? Gravity.START : Gravity.END);
+        rows.getChildAt(online ? 2 : device ? 1 : 0).requestFocus();
+    }
+
+    private void setPlainBackground(String value) {
+        if (value.equals(plainBackground)) return;
+        getSharedPreferences(Config.SETTINGS_NAME, MODE_PRIVATE).edit().putString(PhotoSets.HOME_BACKGROUND, value).apply();
+        recreate();
+    }
+
+    /** Pictures in Download, Pictures, DCIM and TVHome/wallpapers; the one picked becomes the background. */
+    private void showDevicePicturePicker() {
+        java.util.List<java.io.File> images = new ArrayList<>();
+        java.io.File tvHome = Config.dir(this), dcim = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+        for (java.io.File dir : new java.io.File[]{
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                new java.io.File(dcim, "Camera"), dcim, tvHome == null ? null : new java.io.File(tvHome, "wallpapers")}) {
+            for (java.io.File f : WallpaperRotation.images(dir)) if (images.size() < 100) images.add(f);
+        }
+        if (images.isEmpty()) {
+            Toast.makeText(this, R.string.photos_no_pictures, Toast.LENGTH_LONG).show();
+            return;
+        }
+        View panel = getLayoutInflater().inflate(R.layout.popup_inputs, root, false);
+        LinearLayout rows = panel.findViewById(R.id.rows);
+        android.widget.ScrollView scroll = new android.widget.ScrollView(this);
+        scroll.setVerticalScrollBarEnabled(false);
+        scroll.setClipToPadding(false);
+        scroll.addView(panel);
+        PopupWindow popup = glassPopup(scroll, (int) (320 * density));
+        backTo(popup, this::showPlainBackgroundPicker);
+        int focus = 0;
+        for (java.io.File f : images) {
+            if (f.getPath().equals(plainBackground)) focus = rows.getChildCount();
+            addInputRow(rows, popup, R.drawable.ic_picture, f.getName(), -1, () -> setPlainBackground(f.getPath()));
+            setRowStatus(rows, f.getPath().equals(plainBackground) ? "✓" : f.getParentFile().getName());
+        }
+        panel.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        popup.setWidth(Math.max((int) (320 * density), Math.min(panel.getMeasuredWidth(), (int) (480 * density))));
+        popup.setHeight(Math.min(panel.getMeasuredHeight(), (int) (root.getHeight() * 0.7f)));
+        dropIn(popup, scroll, btnSeason, getResources().getBoolean(R.bool.rtl_menu_bar) ? Gravity.START : Gravity.END);
+        rows.getChildAt(focus).requestFocus();
     }
 
     private void setBackgroundSource(String folder, boolean was, boolean online) {
@@ -4417,6 +4565,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         scroll.setClipToPadding(false);
         scroll.addView(panel);
         PopupWindow popup = glassPopup(scroll, (int) (240 * density));
+        backTo(popup, this::showSeasonMenu);
         int current = PhotoSets.interval(this), focus = 0;
         for (int seconds : PhotoSets.INTERVALS) {
             if (seconds == current) focus = rows.getChildCount();
@@ -4443,6 +4592,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         scroll.setClipToPadding(false);
         scroll.addView(panel);
         PopupWindow popup = glassPopup(scroll, (int) (260 * density));
+        backTo(popup, this::showSeasonMenu);
         SharedPreferences prefs = getSharedPreferences(Config.SETTINGS_NAME, MODE_PRIVATE);
         String current = seasonId(season);
         int focus = 0;
@@ -4471,6 +4621,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         scroll.setClipToPadding(false);
         scroll.addView(panel);
         PopupWindow popup = glassPopup(scroll, (int) (420 * density));
+        backTo(popup, this::showSeasonMenu);
         for (String e : errors) {
             View row = addInputRow(rows, popup, R.drawable.ic_warning, e, -1, () -> { });
             TextView title = row.findViewById(R.id.title);
